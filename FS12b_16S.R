@@ -1,4 +1,4 @@
-setwd('~/Documents/FS12/final/')
+# setwd('~/Documents/FS12/final/')
 getwd()
 library(phyloseq)
 library(tidyverse)
@@ -11,17 +11,14 @@ library(funfuns)
 list.files()
 
 
-meta <- read.csv('FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
-shared <- read_delim('FS12.shared', delim = '\t') %>% as.data.frame()
+meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
+shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
 
 
 
-# shared <- as.matrix(read.csv('ESV_table.csv', header = TRUE, row.names = 1, stringsAsFactors = FALSE))
-# shared <- read.table('FS12.mothur.shared', header = TRUE)
-# taxa <- read.csv('dada_taxa.csv', header = TRUE, row.names = 1, stringsAsFactors = FALSE)
-taxa <- extract_mothur_tax('FS12.taxonomy')
+taxa <- extract_mothur_tax('./data/FS12.taxonomy')
 taxa[1:10,1:8]
 
 rownames(shared) <- shared$Group
@@ -29,27 +26,9 @@ shared <- shared[,-c(1,2,3)]
 
 hist(rowSums(shared), breaks = 50)
 
-rowSums(shared)
-
-shared[1:10,1:10]
-
-sum(rowSums(shared) < 2000)
-sum(rowSums(shared) < 2500)
-sum(rowSums(shared) < 3000)
-sum(rowSums(shared) < 2000)
-
-
-# colnames(shared) <- gsub('ESV', 'shared', colnames(shared))
-# colnames(taxa)[2] <- 'shared'
-
-# taxa$shared <- gsub('ESV', 'shared', taxa$shared)
-
-#rownames(shared) == meta$sample_ID
-
-
 shared <- shared[rowSums(shared) > 1250,] # remove samples with less than 1500 reads
 shared <- shared[,colSums(shared > 0) > 3] # removes otus that are detected in fewer than 4 samples globally (including timecourse data)
-shared <- shared[,colSums(shared) > 5] # at least 10 observations globally
+shared <- shared[,colSums(shared) > 5] # at least 6 observations globally
 
 length(colnames(shared)) # 2993 total OTUs detected
 
@@ -68,36 +47,6 @@ shared <- shared[order(rownames(shared)),]
 
 rownames(shared) == meta$sample_ID
 
-# taxa <- taxa[taxa$shared %in% colnames(shared),]
-# taxa <- taxa %>% select(-seq,-shared, everything(), seq, shared) 
-
-# meta$pig_pen
-# 
-# meta$pignum <- as.numeric(gsub('P([0-9]+)', '\\1', meta$pig_pen))
-# meta$pen <- as.numeric(gsub('N([0-9]+)', '\\1', meta$pig_pen))
-# rooms <- read.csv('Rooms.csv')
-# 
-# 
-# meta$replicate <- gsub('([0-9][0-9][0-9])([0-9])', '\\2',meta$pignum)
-# 
-# grep('[0-9][0-9][0-9][0-9]', meta$pignum)
-# 
-# meta <- meta[-c(31,43,94),]
-# meta$pignum[30] <- 126
-# 
-# meta$pignum[grep(273, meta$pignum)] <- 237
-#  
-# 
-# shared <- shared[rownames(shared) %in% rownames(meta),]
-# 
-# 
-# meta$treatment <- ifelse(meta$pignum %in% rooms$X6, 'control',
-#                              ifelse(meta$pignum %in% rooms$X7, 'RPS',
-#                                     ifelse(meta$pignum %in% rooms$X8, 'Acid',
-#                                            ifelse(meta$pignum %in% rooms$X9, 'ZnCu',
-#                                                   ifelse(meta$pignum %in% rooms$X10, 'RCS',
-#                                                          ifelse(meta$pignum %in% rooms$X11, 'Bglu', NA))))))
-# 
 meta$set <- paste(meta$experiment, meta$day, meta$tissue, meta$treatment, sep = '_')
 
 nnnn <- meta %>% group_by(set) %>% summarise(N=n())
@@ -110,154 +59,16 @@ shared <- shared[match(rownames(meta), rownames(shared)),]
 
 rownames(meta) == rownames(shared)
 
-
-# rownames(taxa) <- taxa$shared
-
 taxa <- taxa[taxa$OTU %in% colnames(shared),]
 
-#match(colnames(shared), rownames(taxa))
-# taxa <- taxa[match(colnames(shared), rownames(taxa)),]
-
-# all(colnames(shared) == rownames(taxa))
-
-# is.na(meta$treatment)
-########## Tree?  ###########
-
-
-library(phyloseq)
 p_meta <- sample_data(meta) 
-p_taxa <- import_mothur(mothur_constaxonomy_file = 'FS12.taxonomy')
+p_taxa <- import_mothur(mothur_constaxonomy_file = './data/FS12.taxonomy')
 
-# p_taxa <- tax_table(taxa)
+
 colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
-# taxa_names(p_taxa) <- rownames(taxa)
-rank_names(p_taxa)
 
-meta$treatment
-FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))
-
-#NMDS_ellipse(metadata = meta, OTU_table = shared, grouping_set = 'set')
-
-FS12@sam_data$experiment
-
-# FS12a <- subset_samples(FS12, experiment == 'X12a')
-# 
-# 
-# 
-# FS12a.otu <- FS12a@otu_table
-# 
-# rowSums(FS12a.otu)
-# FS12a@sam_data$sample_ID == sample_names(FS12a)
-# 
-# 
-# rownames(FS12a@otu_table) ==FS12a@sam_data$sample_ID
-# 
-# # FS12a_pens <- read.csv('FS12a_pentreat.csv') %>% na.exclude()
-# 
-# # FS12a@sam_data$pig_pen
-# # 
-# # 
-# # 
-# # 
-# # FS12a@sam_data$pen
-# # 
-# # pentreatvec <- FS12a_pens$Diet
-# # names(pentreatvec) <- FS12a_pens$Pen
-# # 
-# # 
-# # # 1cont, 2abx, 3rps, 6acid, 8zn, 9rcs, 10bglu
-# # 
-# # treatvec <- c('control', 'Abx', 'RPS', '4', '5', 'Acid', '7', 'ZnCu', 'RCS', 'Bglu')
-# # names(treatvec) <- c(1,2,3,4,5,6,7,8,9,10)
-# # 
-# # 
-# # treats <- pentreatvec[FS12a@sam_data$pen]
-# # 
-# # FS12a@sam_data$treatment <- treatvec[treats]
-# # 
-# # sort(rowSums(FS12a@otu_table))
-# # 
-# # 
-# # FS12a@sam_data$day <- sub('W','',FS12a@sam_data$day)
-# # FS12a@sam_data$day <- sub('[Dd]+','',FS12a@sam_data$day)
-# # 
-# # 
-# # FS12a@sam_data$day <- as.numeric(FS12a@sam_data$day)
-# 
-# library(vegan)
-# 
-# # ERROR day not found
-# #prune_samples(day %in% c(0,23), FS12a)
-# 
-# sample_data(FS12a)
-# 
-# # FS12a <- subset_samples(FS12a, day %in% c(0,23))
-# 
-# FS12a <- FS12a %>% subset_samples(day %in% c('D0', 'D23', 'D30'))
-# FS12a <- FS12a %>% subset_samples(!(day =='D30' & treatment =='Phyto'))
-# 
-# FS12a.otu.rare <- rrarefy(FS12a@otu_table, sample = min(rowSums(FS12a@otu_table)))
-# 
-# FS12a@sam_data$shan <- diversity(FS12a.otu.rare)
-# 
-# FS12a@sam_data %>% ggplot(aes(x=treatment, y=shan)) + geom_boxplot()+ facet_wrap(~day)
-# 
-# FS12a@sam_data$set <- paste(FS12a@sam_data$treatment, FS12a@sam_data$day)
-# # Only have data from D0 and D23 
-# 
-# #FS12a.o
-# 
-# FS12a.ord <- NMDS_ellipse(metadata = FS12a@sam_data, OTU_table = FS12a.otu.rare, grouping_set = 'set')
-# 
-# FS12a.meta <- FS12a.ord[[1]]
-# FS12a.ell <- FS12a.ord[[2]]
-# FS12a.ell$treatment <- gsub('(.*) (.*)','\\1',FS12a.ell$group)
-# FS12a.ell$day <- gsub('(.*) (.*)','\\2',FS12a.ell$group)
-# 
-# 
-# 
-# FS12a.meta %>% filter(day == 'D0') %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   geom_point(alpha=0.5, size=2) +  
-#   geom_segment(aes(xend =centroidX , yend = centroidY), alpha=0.5) + 
-#   geom_path(data = filter(FS12a.ell, day == 'D0'), aes(x=NMDS1,y=NMDS2), size=1.05)
-#   # scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + theme(panel.background = element_blank()) + 
-#   # annotate(geom='text', label='Day 0', x=-1.25, y=.6, size = 7)
-# 
-# FS12a.meta %>% filter(day == 'D23' & treatment %in% c('Control', 'Malto')) %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   geom_point(alpha=0.5, size=2) +  
-#   geom_segment(aes(xend =centroidX , yend = centroidY), alpha=0.5) + 
-#   geom_path(data = filter(FS12a.ell, day == 'D23' & treatment %in% c('Control', 'Malto')), aes(x=NMDS1,y=NMDS2), size=1.05) + 
-#   scale_color_manual(values = c('blue1', 'green4'), labels = c('Maltodextrin', 'Control')) + ggtitle('Community similarity at day 23 post-weaning (feces)',
-#                                                               subtitle = 'uncorrected PERMANOVA pvalue = 0.04, pseudo F = 1.9231317') + 
-# 
-# FS12a.foadon <- subset_samples(FS12a, day == 23 & !is.na(treatment))
-# 
-# FS12a.adonres <- pairwise.adonis(FS12a.foadon@otu_table, factors = FS12a.foadon@sam_data$treatment, permutations = 999)
-# FS12a.adonres[grep(4, FS12a.adonres$pairs),]
-# 
-# # Deseq
-# 
-# 
-# Deseq.quickplot()
-# FS12a.23@sam_data$set
-# library(DESeq2)
-# FS12a.23 <- subset_samples(FS12a, day > 0)
-# FS12a.23.glom <- tax_glom(FS12a.23,taxrank = 'Genus')
-# 
-# rank_names(FS12a.23)
-# FS12.de <- phyloseq_to_deseq2(FS12a.23.glom, ~set)
-# 
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# 
-# FS12a.malto <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                              phyloseq.object = FS12a.23.glom, pvalue = .05,
-#                              contrast.vector = c('set', 'control 23', '4 23'),
-#                              taxlabel = 'Genus', colors = c('green4', 'blue1')) 
-# 
-# FS12a.malto[[1]] + xlab('Genus') + ggtitle('Differentially abundant genera 23 days post-weaning (feces)',
-#                                            subtitle = 'As determined by DeSeq2, p < 0.05') 
+# meta$treatment  
+FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
 
 ############ FS12b from here down ! ##############
 
@@ -275,23 +86,16 @@ FS12b@sam_data$set
 library(vegan)
 library(funfuns)
 library(tidyverse)
-# FS12b@otu_table
-
-# shared[shared[,'shared2424'] > 0,'shared2424']
 
 FS12b <- prune_taxa(taxa_sums(FS12b) > 2, FS12b) # removes singletons
-FS12b@sam_data
-# prune_samples(!(is.na(treatment)), FS12b)
-# subset_samples(!(is.na(treatment), FS12b))
-# which(is.na(FS12b@sam_data$treatment))
 
 FS12b <- prune_samples(!is.na(FS12b@sam_data$treatment), FS12b)
 
 min(sample_sums(FS12b))
 
-taxa_sums(FS12b) > 2
+# taxa_sums(FS12b) > 2
 
-grep('Clostridium_sensu_stricto_1', FS12b@tax_table[,6])
+# grep('Clostridium_sensu_stricto_1', FS12b@tax_table[,6])
 
 FS12b_metanmds <- NMDS_ellipse(metadata = FS12b@sam_data,
                                OTU_table = rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))),
@@ -333,14 +137,6 @@ FS12b_meta$shan <- diversity(rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_tabl
 FS12b_meta$rich <- specnumber(rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))))
 FS12b_meta$even <- FS12b_meta$shan/log(FS12b_meta$rich)
 
-# # fecal shannon
-# FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=dayfact, y=shan, group=set, fill = treatment)) + geom_boxplot(position = position_dodge2(preserve = 'total')) + 
-#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Fecal Shannon Diversity (alpha) over time') #+ geom_text(aes(label=pignum))
-# 
-# #fecal dispersion
-# FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=dayfact, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot() + 
-#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + ggtitle('Fecal community dispersion over time')#+ geom_text(aes(label=pignum))
-
 
 #fecal shannon
 FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot(position = position_dodge2(preserve = 'total')) + facet_wrap(~day)+
@@ -359,12 +155,6 @@ FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=rich, group=s
 #fecal dispersion
 FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot(position=position_dodge2(preserve = 'total')) + facet_wrap(~day)+
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + ggtitle('Fecal community dispersion over time')+ geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)#+ geom_text(aes(label=pignum))
-
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=dispers.distances, group=treatment, fill = treatment, color=treatment)) +
-  #scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  +
-  ggtitle('Fecal community dispersion over time') + geom_smooth()
-
 
 
 get_pairs <- function(df){
@@ -419,21 +209,7 @@ FS12b_meta %>% filter(tissue == 'I') %>% ggplot(aes(x=treatment, y=shan, group=s
 
 
 
-disps <- FS12b_meta %>% group_by(day, treatment, tissue) %>% summarise(mean_disp = mean(dispers.distances),
-                                                              sd_disp = sd(dispers.distances), 
-                                                              se_disp = sd_disp/sqrt(n()))
 
-
-FS12b_meta[which(is.na(FS12b_meta$treatment)),]
-
-disps %>% filter(tissue == 'F') %>% 
-  ggplot(aes(x=day, y=mean_disp, color=treatment, group=treatment)) +
-  geom_line() + geom_errorbar(aes(ymin=mean_disp-se_disp, ymax=mean_disp+se_disp), width=.2)
-
-
-
-#vegdist()
-#FS12b_meta <- FS12b_metanmds[[1]] 
 df_ell <- FS12b_metanmds[[2]]
 
 df_ell$experiment <- gsub('(.*)_(.*)_(.*)_(.*)','\\1', df_ell$group)
@@ -535,38 +311,34 @@ FS12b_meta %>% filter(tissue == 'I' & day == 21) %>%
 
 
 
-
-linestuff <- FS12b_meta %>% group_by(set) %>%
-  summarise(centx=mean(MDS1), centy=mean(MDS2),
-            lineg=unique(paste(treatment, tissue)),
-            day=unique(sub('D', '', day)))
-
-linestuff$day <- as.numeric(linestuff$day)
-linestuff <- linestuff[order(linestuff$day),]
-
-#linestuff$lineg <- factor(lineg, levels = c())
-linestuff$tissue <- gsub('[A-Za-z]+ ([FCX])', '\\1', linestuff$lineg)
-linestuff$treatment <- gsub('([A-Za-z]+) ([FCX])', '\\1', linestuff$lineg)
-linestuff$treatment <- factor(linestuff$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))
-
-
-linestuff %>%filter(tissue == 'F') %>% 
-  ggplot(aes(x=centx, y=centy, group=lineg, color=treatment)) +
-  geom_path() + geom_point(size=5)+ geom_text(aes(label=day), color='black') +
-  scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + theme(panel.background = element_blank()) +ylab('MDS2') + xlab('MDS1')
-
-
-
-# D0 vs D2 : Early Salmonella infection changes
-# D0 vs D7 : 
+# 
+# linestuff <- FS12b_meta %>% group_by(set) %>%
+#   summarise(centx=mean(MDS1), centy=mean(MDS2),
+#             lineg=unique(paste(treatment, tissue)),
+#             day=unique(sub('D', '', day)))
+# 
+# linestuff$day <- as.numeric(linestuff$day)
+# linestuff <- linestuff[order(linestuff$day),]
+# 
+# #linestuff$lineg <- factor(lineg, levels = c())
+# linestuff$tissue <- gsub('[A-Za-z]+ ([FCX])', '\\1', linestuff$lineg)
+# linestuff$treatment <- gsub('([A-Za-z]+) ([FCX])', '\\1', linestuff$lineg)
+# linestuff$treatment <- factor(linestuff$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))
+# 
+# 
+# linestuff %>%filter(tissue == 'F') %>% 
+#   ggplot(aes(x=centx, y=centy, group=lineg, color=treatment)) +
+#   geom_path() + geom_point(size=5)+ geom_text(aes(label=day), color='black') +
+#   scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + theme(panel.background = element_blank()) +ylab('MDS2') + xlab('MDS1')
 
 
-# scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + theme(panel.background = element_blank())
 ########## PW ADON HERE ########
+
 #should split fecal and tissue 1st to reduce # of permutations...
 
 
 PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', permutations = 9999)
+
 
 PW.ad$pairs
 
@@ -575,7 +347,7 @@ goods <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_\\2_\\3_(.*)', PW.ad$pairs),]
 
 times <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_(.*)_\\3_\\4', PW.ad$pairs),]
 
-length(goods[,1])
+# length(goods[,1])
 
 # goods$p.adjusted <- p.adjust(p=goods$p.value,method = 'holm')
 
@@ -600,7 +372,8 @@ fin$pairs <- gsub('_X_', ' cec_muc ', fin$pairs)
 fin$pairs <- gsub('_I_', ' il_muc ', fin$pairs)
 fin$pairs <- gsub('_Q_', ' tet ', fin$pairs)
 
-write.csv(fin, 'mothur_PERMANOVA_results.csv')
+
+# write.csv(fin, 'mothur_PERMANOVA_results.csv')
 
 
 to_conts <- fin[grep('Control', fin$pairs),]
@@ -613,8 +386,8 @@ to_conts$treatment[to_conts$treatment == 'Control'] <- gsub('D[0-9]+ ([A-Za-z_]+
 
 
 
-to_conts$p.hoch <- p.adjust(to_conts$p.value, method = 'hoch')
-to_conts$p.holm <- p.adjust(to_conts$p.value, method = 'holm')
+# to_conts$p.hoch <- p.adjust(to_conts$p.value, method = 'hoch')
+# to_conts$p.holm <- p.adjust(to_conts$p.value, method = 'holm')
 to_conts$p.fdr <- p.adjust(to_conts$p.value, method = 'fdr')
 to_conts$p.fdr <- round(to_conts$p.fdr, digits = 3)
 to_conts$p.fdr.lab <- ifelse(to_conts$p.fdr < 0.05, to_conts$p.fdr, NA)
@@ -700,25 +473,20 @@ not_conts <- fin[-grep('Control', fin$pairs),]
 to_conts$tissue <- gsub('D[0-9]+ (.*) ([A-Za-z_]+) vs D[0-9]+ .* ([A-Za-z]+)', '\\1', to_conts$pairs)
 to_conts$treatment <- gsub('D[0-9]+ .* ([A-Za-z_]+) vs D[0-9]+ .* ([A-Za-z]+)', '\\2', to_conts$pairs)
 
-# to_conts$treatment[to_conts$treatment == 'control'] <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\3', to_conts[to_conts$treatment == 'control',]$pairs)
 
-
-
-to_conts$p.hoch <- p.adjust(to_conts$p.value, method = 'hoch')
-to_conts$p.holm <- p.adjust(to_conts$p.value, method = 'holm')
 to_conts$p.fdr <- p.adjust(to_conts$p.value, method = 'fdr')
 to_conts$p.fdr <- round(to_conts$p.fdr, digits = 3)
 to_conts$p.fdr.lab <- ifelse(to_conts$p.fdr < 0.05, to_conts$p.fdr, NA)
 
 # to_conts$treatment <- factor(to_conts$treatment, levels=c('RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu'))
 
-to_conts %>% filter(tissue =='feces') %>%  ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
+p1 <- to_conts %>% filter(tissue =='feces') %>%  ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
   geom_line(size=1.52) + geom_point(shape=21) + scale_color_brewer(palette = 'Set1') + 
   geom_label(color='black') +
   scale_fill_brewer(palette = 'Set1') + 
   ggtitle('Community differences compared to control group over time', subtitle = 'RPS only') + labs(fill='Shedding', 
                                                                                            color='Shedding')
-to_conts %>% filter(tissue !='feces') %>% 
+to_conts %>% filter(!(tissue %in% c('feces', 'tet'))) %>% 
   ggplot(aes(x=tissue, y=F.Model, fill=treatment)) +
   geom_col(position = 'dodge', color='black') + geom_text(aes(label=p.fdr.lab), position=position_dodge(width = 1), vjust=1.5) + 
   ggtitle('PERMANOVA F.stat. : Difference compared to controls across tissues',
@@ -819,62 +587,9 @@ T0s %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatme
 
 
 
-# T0s[T0s$day == "D0",]
-
-# gsub('(D[0-9]+) ([A-Za-z_]+) [A-Za-z]+ vs (D[0-9]+) [A-Za-z_]+ ([A-Za-z]+)', '\\1', T0s[T0s$day == "D0",]$pairs)
-
-# T0s[T0s$treatment == 'control',]
-
-# FS12b_meta %>% filter(treatment %in% c('control', 'RCS')) %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   facet_wrap(~day) + geom_text(aes(label=pignum)) +
-#   geom_segment(aes(xend =centroidX , yend = centroidY)) + 
-#   geom_path(data = filter(df_ell, treatment %in% c('RCS', 'control') & tissue == 'F'), aes(x=NMDS1,y=NMDS2))
-
-
-# FS12b_meta %>% filter(treatment %in% c('control', 'Acid')) %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   facet_wrap(~day) + geom_text(aes(label=pignum)) +
-#   geom_segment(aes(xend =centroidX , yend = centroidY)) + 
-#   geom_path(data = filter(df_ell, treatment %in% c('Acid', 'control') & tissue == 'F'), aes(x=NMDS1,y=NMDS2))
-
-
-# FS12b_meta %>% filter(treatment %in% c('control', 'ZnCu')) %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   facet_wrap(~day) + geom_text(aes(label=pignum)) +
-#   geom_segment(aes(xend =centroidX , yend = centroidY)) + 
-#   geom_path(data = filter(df_ell, treatment %in% c('ZnCu', 'control') & tissue == 'F'), aes(x=NMDS1,y=NMDS2))
-# 
-# FS12b_meta %>% filter(treatment %in% c('control', 'Bglu') & tissue == 'F')  %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   facet_wrap(~day) + geom_text(aes(label=pignum)) +
-#   geom_segment(aes(xend =centroidX , yend = centroidY)) + 
-#   geom_path(data = filter(df_ell, treatment %in% c('Bglu', 'control') & tissue == 'F'), aes(x=NMDS1,y=NMDS2))
-# 
-# 
-# 
-# FS12b_meta %>% filter(tissue == 'F' & treatment %in% c('control', 'RPS', 'Bglu')) %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   facet_wrap(~day) + geom_text(aes(label=pignum)) +
-#   geom_segment(aes(xend =centroidX , yend = centroidY)) + 
-#   geom_path(data = filter(df_ell, tissue == 'F' & treatment %in% c('control', 'RPS', 'Bglu')), aes(x=NMDS1,y=NMDS2)) + ggtitle('Similarity of fecal communities over time')
-# 
-# FS12b_meta %>% filter(tissue == 'C' & treatment %in% c('control', 'RPS', 'Bglu')) %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   facet_wrap(~day, scales = 'free') + geom_text(aes(label=pignum)) +
-#   geom_segment(aes(xend =centroidX , yend = centroidY)) + 
-#   geom_path(data = filter(df_ell, tissue == 'C' & treatment %in% c('control', 'RPS', 'Bglu')), aes(x=NMDS1,y=NMDS2))
-# 
-# FS12b_meta %>% filter(tissue == 'X' & treatment %in% c('control', 'RPS', 'Bglu')) %>% 
-#   ggplot(aes(x=MDS1, y=MDS2, fill=treatment, color=treatment)) +
-#   facet_wrap(~day, scales = 'free') + geom_text(aes(label=pignum)) +
-#   geom_segment(aes(xend =centroidX , yend = centroidY)) + 
-#   geom_path(data = filter(df_ell, tissue == 'X' & treatment %in% c('control', 'RPS', 'Bglu')), aes(x=NMDS1,y=NMDS2))
-# 
 
 
 
-###############################################
 
 library(DESeq2)
 
@@ -1128,8 +843,7 @@ FS12_RPS@sam_data$shed <- factor(FS12_RPS@sam_data$shed, levels = c('high', 'low
 
 FS12_RPS@sam_data$set <- paste(FS12_RPS@sam_data$set, FS12_RPS@sam_data$shed, sep = '_')
 #
-FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~day*shed)
-#
+
 # Keeping samples separate by day #
 
 FS12b.glom <- FS12_RPS
@@ -1138,13 +852,16 @@ FS12b.glom <- subset_samples(FS12b.glom, day =='D0' & tissue == 'F')
 FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
 
 FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-library(DESeq2)
+
 FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
 resultsNames(FS12.de)
 
 tmpres <- results(FS12.de, name = 'shed_low_vs_high', cooksCutoff = FALSE)
 tmpres <- lfcShrink(FS12.de, res=tmpres, coef = 'shed_low_vs_high', type = 'apeglm')
 tmpres[tmpres$padj < 0.1,]
+
+
+#### NEED TO UPDATE THE FUNFUNS REPO FOR THIS TO WORK!!!!
 
 D0_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                 phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
@@ -1389,7 +1106,7 @@ RPS_split_master %>% group_by(OTU, group) %>% tally() %>%
 
 int_OTUs <- RPS_split_master %>% group_by(OTU, group) %>% tally() %>% filter(n>1) %>% select(OTU) %>% unlist(use.names = FALSE)
 
-write_csv(RPS_split_ints, 'RPS_split_int_OTUs.csv')
+# write_csv(RPS_split_ints, 'RPS_split_int_OTUs.csv')
 RPS_split_ints <- RPS_split_master %>% filter(OTU %in% int_OTUs) %>% 
   select(OTU, Treatment, Genus) %>% unique()
 
@@ -1408,9 +1125,9 @@ tax$OTU <- rownames(tax)
 # need to add tissue and timepoint to dataframe before return
 
 
-unique(FS12b@sam_data$pignum)
-
-FS12b@sam_data$treatment
+# unique(FS12b@sam_data$pignum)
+# 
+# FS12b@sam_data$treatment
 
 
 DESeq_difabund <- function(phyloseq, day, tissue, scientific = TRUE, shrink_type='normal', 
