@@ -236,11 +236,11 @@ filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment
 sum_sal.filter <- filter(sum_sal, pignum !=101)
 
 ####### FOr keystone poster #######
-sum_sal.poster <- filter(sum_sal, pignum !=101 & treatment %in% c('control', 'RPS'))
-
-sum_sal.poster %>% ggplot(aes(x=treatment, y=AULC, fill=treatment)) +
-  geom_boxplot() + geom_jitter(width = .2, shape=21, size=2, stroke=1) +
-  scale_fill_brewer(palette = 'Dark2') + ggtitle('Cumulative Salmonella shedding over 21 days', subtitle = 'Wilcox pvalue=0.013')
+# sum_sal.poster <- filter(sum_sal, pignum !=101 & treatment %in% c('control', 'RPS'))
+# 
+# sum_sal.poster %>% ggplot(aes(x=treatment, y=AULC, fill=treatment)) +
+#   geom_boxplot() + geom_jitter(width = .2, shape=21, size=2, stroke=1) +
+#   scale_fill_brewer(palette = 'Dark2') + ggtitle('Cumulative Salmonella shedding over 21 days', subtitle = 'Wilcox pvalue=0.013')
 
 
 
@@ -413,6 +413,7 @@ sal_for_cor <- merge(sum_sal, tis.sp, by = 'pignum')
 
 ### NEED CECAL VFA DATA FOR THIS NEXT SECTION ###
 
+read_csv('data/FS12b_vfas_for_cor.csv')
 
 
 

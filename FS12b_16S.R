@@ -2,13 +2,7 @@
 getwd()
 library(phyloseq)
 library(tidyverse)
-
-
-#library(ggscinames)
-
-
 library(funfuns)
-list.files()
 
 
 meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
@@ -16,21 +10,18 @@ shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
 
-
+#####
 
 taxa <- extract_mothur_tax('./data/FS12.taxonomy')
-taxa[1:10,1:8]
+# taxa[1:10,1:8]
 
 rownames(shared) <- shared$Group
 shared <- shared[,-c(1,2,3)]
 
 hist(rowSums(shared), breaks = 50)
 
-shared <- shared[rowSums(shared) > 1250,] # remove samples with less than 1500 reads
-shared <- shared[,colSums(shared > 0) > 3] # removes otus that are detected in fewer than 4 samples globally (including timecourse data)
-shared <- shared[,colSums(shared) > 5] # at least 6 observations globally
 
-length(colnames(shared)) # 2993 total OTUs detected
+# length(colnames(shared)) # 10648 total OTUs detected (no removal mocks and NTCs and all kinds of garbage here)
 
 
 rownames(shared) %in% meta$sample_ID
@@ -41,6 +32,14 @@ shared <- shared[rownames(shared) %in% meta$sample_ID,]
 rownames(shared) == meta$sample_ID
 
 rownames(meta) <- meta$sample_ID
+
+shared <- shared[rowSums(shared) > 1250,] # remove samples with less than 1500 reads
+shared <- shared[,colSums(shared > 0) > 3] # removes otus that are detected in fewer than 4 samples globally (including timecourse data)
+shared <- shared[,colSums(shared) > 5] # at least 6 observations globally
+
+length(colnames(shared))
+hist(rowSums(shared), breaks = 50)
+
 
 meta <- meta[order(meta$sample_ID),]
 shared <- shared[order(rownames(shared)),]
@@ -59,7 +58,7 @@ shared <- shared[match(rownames(meta), rownames(shared)),]
 
 rownames(meta) == rownames(shared)
 
-taxa <- taxa[taxa$OTU %in% colnames(shared),]
+# taxa <- taxa[taxa$OTU %in% colnames(shared),]
 
 p_meta <- sample_data(meta) 
 p_taxa <- import_mothur(mothur_constaxonomy_file = './data/FS12.taxonomy')
@@ -69,6 +68,147 @@ colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
 
 # meta$treatment  
 FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
+
+####
+
+FS12@sam_data
+
+ABcomp <- FS12 %>% subset_samples((experiment == 'X12a' & day == 'D30' & tissue == 'F') | (experiment == 'X12b' & day == 'D0' & tissue == 'F'))
+ABcomp <- ABcomp %>% subset_samples(treatment != 'Pos_control')
+ABcomp@sam_data$treatment
+
+## OK SO I NEED TO CHECK TREATMENT EFFECTS
+# 1) all together
+# 
+set.seed(357)
+ABcomp <- phyloseq::rarefy_even_depth(ABcomp,sample.size =  min(phyloseq::sample_sums(ABcomp)))
+
+
+ABNMDS <- NMDS_ellipse(ABcomp@sam_data, OTU_table = ABcomp@otu_table, grouping_set = 'treatment', distance_method = 'jaccard')
+
+
+ABNMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) + geom_point(aes(color=treatment)) + geom_segment(aes(xend=centroidX, yend=centroidY, color=treatment)) + geom_path(data = ABNMDS[[2]], aes(x=NMDS1, y=NMDS2, group=group, color=group))
+
+ 
+all_pwad <- pairwise.adonis(ABcomp@otu_table, ABcomp@sam_data$treatment)
+
+all_pwad[grep('Control', all_pwad$pairs),]
+
+##### now splitting by exp
+
+ABcomp@sam_data$set
+
+split_pwad <- pairwise.adonis(ABcomp@otu_table, ABcomp@sam_data$set,sim.method = 'bray')
+
+
+split_pwad$pairs
+
+
+'X12b_D0_F_Acid vs X12a_D30_F_Control'
+within_treats <- split_pwad[grep('.*_.*_.*_(.*) vs .*_.*_.*_\\1', split_pwad$pairs),]
+
+within_treats$treatment <- sub('.*_.*_.*_(.*) vs .*_.*_.*_.*', '\\1', within_treats$pairs)
+
+within_treats %>% ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + geom_col() + geom_text(aes(label=p.adjusted), nudge_y = -.2)
+
+# can statistically distinguish between the two sets of treatments at very close time points. 
+# this drives home the fact that each animal can respond very differently to the same diet.  
+# interindividual variation is important
+
+ABNMDS <- NMDS_ellipse(ABcomp@sam_data, OTU_table = ABcomp@otu_table, grouping_set = 'treatment')
+
+##### FS12a #####
+
+FS12a <- FS12 %>% subset_samples(experiment == 'X12a')
+
+# unique(FS12a@sam_data$day)
+
+# FS12a@sam_data$day <- factor(FS12a@sam_data$day, levels=c("D0", "D3", "D9", "D14", "D17", "D23", "D30"))
+
+
+hist(sample_sums(FS12a), breaks = 50)
+
+
+# FS12a@sam_data %>% group_by(day, treatment, tissue) %>% tally() %>% filter(n==1)
+# FS12a@sam_data %>% group_by(day, treatment) %>% tally()
+
+
+FS12a@sam_data %>% filter(day == 'D30' & treatment == 'Phyto')
+
+FS12a <- FS12a %>% subset_samples(day %in% c('D0', 'D23', 'D30'))
+# check <- FS12a %>% subset_samples(grepl('dup', sample_ID))
+# check@sam_data
+rems <- !(FS12a@sam_data$sample_ID %in% c('X12N64WD0dup', 'X12N77WD0dup', 'X12N70XD30'))
+FS12a <- prune_samples(x = FS12a, rems)
+
+FS12a@sam_data %>% group_by(day, treatment) %>% tally()
+
+# FS12a %>% subset_samples()
+
+
+# good_controls <- FS12a@sam_data %>% filter(day != 'D23' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
+# bad_controls <- FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
+FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control')
+# bad_pignums <- bad_controls[!(bad_controls %in% good_controls)]
+
+# FS12a <- FS12a %>% subset_samples(!(pignum %in% bad_pignums))
+
+keeps_at_d23 <- FS12a@sam_data %>% filter(day == 'D0' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
+REMOVE_THESE <- FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control') %>% filter(!(pignum %in% keeps_at_d23)) %>% select(sample_ID) %>% unlist()
+
+FS12a <- FS12a %>% subset_samples(!(sample_ID %in% REMOVE_THESE))
+
+## STILL HAVE 2 SETS OF CONTROLS!
+## HAVE THE FS12b controls as well as FS12a necropsy controls.  both are present at D23...
+## might need to fix this.
+
+
+
+#### PERMANOVAS VS CONTROL
+
+
+FS12a@sam_data$set <- paste(FS12a@sam_data$day, FS12a@sam_data$tissue, FS12a@sam_data$treatment, sep='_')
+FS12a_rare <- phyloseq::rarefy_even_depth(FS12a,sample.size =  min(phyloseq::sample_sums(FS12a)))
+
+
+FS12a_NMDS <- NMDS_ellipse(FS12a_rare@sam_data, OTU_table = FS12a_rare@otu_table, grouping_set = 'set', distance_method = 'bray')
+
+labbies <- FS12a_NMDS[[1]] %>% select(tissue, treatment, day, set, centroidX, centroidY) %>% unique()
+
+FS12a_NMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) +
+  geom_point(aes(color=day))+
+  geom_segment(aes(xend=centroidX, yend=centroidY, color=day)) +
+  geom_point(aes(x=centroidX, y=centroidY)) + 
+  geom_text_repel(data=labbies, aes(label=treatment, x=centroidX, y=centroidY))#+ geom_path(data = FS12a_NMDS[[2]], aes(x=NMDS1, y=NMDS2, group=group))
+
+all_pwad <- pairwise.adonis(FS12a_rare@otu_table, FS12a_rare@sam_data$set)
+
+pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
+# same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
+same_day_tissue <- pwad_to_cont[grep('.*_(.*)_(.*)_.* vs .*_\\1_\\2_.*', pwad_to_cont$pairs),]
+
+#### PERMANOVAS VS POS_CONTROL
+
+
+
+#### Deseq comparisons
+# D23 each diet vs control
+# D23 each diet vs pos_control
+
+# D30 each diet vs control
+# D30 each diet vs pos_control
+
+
+
+
+
+
+
+
+
+
+
+
 
 ############ FS12b from here down ! ##############
 
@@ -338,6 +478,9 @@ FS12b_meta %>% filter(tissue == 'I' & day == 21) %>%
 
 
 PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', permutations = 9999)
+# PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
+
+
 
 
 PW.ad$pairs
@@ -422,7 +565,7 @@ FS12b_HL@sam_data
 
 
 PW.ad <- pairwise.adonis(x=rrarefy(FS12b_HL@otu_table, min(rowSums(FS12b_HL@otu_table))), factors = FS12b_HL@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', permutations = 9999)
-
+# PW.ad <- pairwise.adonis(x=rrarefy(FS12b_HL@otu_table, min(rowSums(FS12b_HL@otu_table))), factors = FS12b_HL@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
 PW.ad$pairs
 
 
@@ -865,7 +1008,7 @@ tmpres[tmpres$padj < 0.1,]
 
 D0_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                 phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 ### D0 Q
 
@@ -881,7 +1024,7 @@ resultsNames(FS12.de)
 
 D0_Q_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                                 phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 
 ##### D2
@@ -898,7 +1041,7 @@ resultsNames(FS12.de)
 
 D2_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
                              phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                             name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                             name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 #### D7
 FS12b.glom <- FS12_RPS
@@ -914,7 +1057,7 @@ resultsNames(FS12.de)
 
 D7_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
                              phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                             name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                             name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 
 # D14 #
@@ -932,7 +1075,7 @@ resultsNames(FS12.de)
 
 D14_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                                phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                               name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                               name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 ##### D21 F
 
@@ -949,7 +1092,7 @@ resultsNames(FS12.de)
 
 D21F_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                                 phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 #### Tissue X
 
@@ -967,7 +1110,7 @@ resultsNames(FS12.de)
 
 D21X_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
                                phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                               name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                               name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 
 ##### tissue C
@@ -1008,7 +1151,7 @@ D21I_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
 
 
 
-apeglm::apeglm()
+
 
 #
 D0_highlow[[2]]$set <- 'D0_feces'
@@ -1228,31 +1371,30 @@ sigtab7 <- test7[which(test7$padj < 0.1),]
 all(rownames(sigtab2) == rownames(sigtab7))
 
 
-sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(FS12b.glom)[rownames(sigtab), ], "matrix"))
-sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = scientific)
-sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, 'Control')
-sigtab$OTU <- rownames(sigtab)
-sigtab$tissue <- tissue
-sigtab$day <- day
-sigtab$comp <- comp
+sigtab2 = cbind(as(sigtab2, "data.frame"), as(tax_table(FS12b.glom)[rownames(sigtab2), ], "matrix"))
+sigtab2$newp <- format(round(sigtab2$padj, digits = 3), scientific = TRUE)
+sigtab2$Treatment <- ifelse(sigtab2$log2FoldChange >=0, 'Salmonella', 'Control')
+sigtab2$OTU <- rownames(sigtab2)
+sigtab2$tissue <- 'feces'
+sigtab2$day <- 2
+# sigtab$comp <- comp
+
+
+sigtab2
+
+
+### I THINK IM ON TO SOMETHING HERE.
+
+### IDENTIFY IMPORTANT OTUS THAT SEEM TO CHANGE WITH SAL AND THEN PLOT TIME COURSE INFO
+### CAN DO BY TREATMENT BUT ALSO CAN DO HIGH LOW SHEDDER SPLIT
+
+######## SUM SAL DF ########
+
+read_csv('')
 
 
 
 
-
-
-
-
-
-
-
-
-# FS12b@sam_data$tissue
-
-
-
-C_ss_1 <- taxa[grep('Clostridium_sensu_stricto_1', taxa$Genus),]
-write.csv(C_ss_1, 'C_ss_1.csv')
 ################### pig trips ##############
 
 
@@ -1334,7 +1476,7 @@ dist.gather$FT <- paste(dist.gather$from, dist.gather$to, sep = ' ')
 total_ground_covered <- dist.gather[grep('X12bP([0-9]+)D[0-9]+F X12bP\\1D[0-9]+F', dist.gather$FT),] %>% group_by(fromPig) %>% summarise(allpw=sum(distance),
                                                                                                                                          num=n())
 
-rooms <- read.csv('Rooms.csv')
+rooms <- read.csv('./data/Rooms.csv')
 total_ground_covered$treatment <- ifelse(total_ground_covered$fromPig %in% rooms$X6, 'control',
                                          ifelse(total_ground_covered$fromPig %in% rooms$X7, 'RPS', 
                                                 ifelse(total_ground_covered$fromPig %in% rooms$X8, 'Acid', 
