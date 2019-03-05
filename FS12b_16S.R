@@ -75,7 +75,7 @@ FS12@sam_data
 
 ABcomp <- FS12 %>% subset_samples((experiment == 'X12a' & day == 'D30' & tissue == 'F') | (experiment == 'X12b' & day == 'D0' & tissue == 'F'))
 ABcomp <- ABcomp %>% subset_samples(treatment != 'Pos_control')
-ABcomp@sam_data$treatment
+# ABcomp@sam_data$treatment
 
 ## OK SO I NEED TO CHECK TREATMENT EFFECTS
 # 1) all together
@@ -89,7 +89,8 @@ ABNMDS <- NMDS_ellipse(ABcomp@sam_data, OTU_table = ABcomp@otu_table, grouping_s
 
 ABNMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) + geom_point(aes(color=treatment)) + geom_segment(aes(xend=centroidX, yend=centroidY, color=treatment)) + geom_path(data = ABNMDS[[2]], aes(x=NMDS1, y=NMDS2, group=group, color=group))
 
- 
+
+#
 all_pwad <- pairwise.adonis(ABcomp@otu_table, ABcomp@sam_data$treatment)
 
 all_pwad[grep('Control', all_pwad$pairs),]
@@ -104,17 +105,21 @@ split_pwad <- pairwise.adonis(ABcomp@otu_table, ABcomp@sam_data$set,sim.method =
 split_pwad$pairs
 
 
-'X12b_D0_F_Acid vs X12a_D30_F_Control'
+# 'X12b_D0_F_Acid vs X12a_D30_F_Control'
 within_treats <- split_pwad[grep('.*_.*_.*_(.*) vs .*_.*_.*_\\1', split_pwad$pairs),]
 
 within_treats$treatment <- sub('.*_.*_.*_(.*) vs .*_.*_.*_.*', '\\1', within_treats$pairs)
 
-within_treats %>% ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + geom_col() + geom_text(aes(label=p.adjusted), nudge_y = -.2)
+within_treats %>%
+  ggplot(aes(x=treatment, y=F.Model, fill=treatment)) +
+  geom_col() + geom_text(aes(label=p.adjusted), nudge_y = -.2) +
+  ggtitle('Differences between FS12a and FS12b groups at end of nursery')
 
 # can statistically distinguish between the two sets of treatments at very close time points. 
 # this drives home the fact that each animal can respond very differently to the same diet.  
 # interindividual variation is important
 
+#whats this for?
 ABNMDS <- NMDS_ellipse(ABcomp@sam_data, OTU_table = ABcomp@otu_table, grouping_set = 'treatment')
 
 ##### FS12a #####
@@ -149,22 +154,24 @@ FS12a@sam_data %>% group_by(day, treatment) %>% tally()
 # good_controls <- FS12a@sam_data %>% filter(day != 'D23' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
 # bad_controls <- FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
 FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control')
+
+
+
 # bad_pignums <- bad_controls[!(bad_controls %in% good_controls)]
 
 # FS12a <- FS12a %>% subset_samples(!(pignum %in% bad_pignums))
 
 keeps_at_d23 <- FS12a@sam_data %>% filter(day == 'D0' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
 REMOVE_THESE <- FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control') %>% filter(!(pignum %in% keeps_at_d23)) %>% select(sample_ID) %>% unlist()
+ANDTHESE <- c('X12N16WD23', 'X12N18WD23', 'X12N32WD23', 'X12N39WD23', 'X12N45WD23', 'X12N68WD23')
+REMOVE_THESE <- c(REMOVE_THESE, ANDTHESE)
 
 FS12a <- FS12a %>% subset_samples(!(sample_ID %in% REMOVE_THESE))
-
-## STILL HAVE 2 SETS OF CONTROLS!
-## HAVE THE FS12b controls as well as FS12a necropsy controls.  both are present at D23...
-## might need to fix this.
-
-
+FS12a@sam_data %>% group_by(day, treatment) %>% tally()
 
 #### PERMANOVAS VS CONTROL
+
+FS12a@sam_data %>% group_by(day, tissue) %>% mutate(minseqs=min(num_seqs)) %>% select(day, tissue, minseqs) %>% unique()
 
 
 FS12a@sam_data$set <- paste(FS12a@sam_data$day, FS12a@sam_data$tissue, FS12a@sam_data$treatment, sep='_')
@@ -174,22 +181,39 @@ FS12a_rare <- phyloseq::rarefy_even_depth(FS12a,sample.size =  min(phyloseq::sam
 FS12a_NMDS <- NMDS_ellipse(FS12a_rare@sam_data, OTU_table = FS12a_rare@otu_table, grouping_set = 'set', distance_method = 'bray')
 
 labbies <- FS12a_NMDS[[1]] %>% select(tissue, treatment, day, set, centroidX, centroidY) %>% unique()
-
+library(ggrepel)
 FS12a_NMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) +
   geom_point(aes(color=day))+
   geom_segment(aes(xend=centroidX, yend=centroidY, color=day)) +
-  geom_point(aes(x=centroidX, y=centroidY)) + 
+  geom_point(data=labbies,aes(x=centroidX, y=centroidY, fill=treatment), shape=21, size=3) + 
   geom_text_repel(data=labbies, aes(label=treatment, x=centroidX, y=centroidY))#+ geom_path(data = FS12a_NMDS[[2]], aes(x=NMDS1, y=NMDS2, group=group))
 
-all_pwad <- pairwise.adonis(FS12a_rare@otu_table, FS12a_rare@sam_data$set)
+all_pwad <- pairwise.adonis(FS12a_rare@otu_table, FS12a_rare@sam_data$set, permutations = 9999, sim.method = 'bray')
 
 pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
 # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
-same_day_tissue <- pwad_to_cont[grep('.*_(.*)_(.*)_.* vs .*_\\1_\\2_.*', pwad_to_cont$pairs),]
+same_day_tissue <- pwad_to_cont[grep('(.*)_(.*)_.* vs \\1_\\2_.*', pwad_to_cont$pairs),]
+same_day_tissue$treatment <- sub('D[0-9]+_[FX]_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
 
-#### PERMANOVAS VS POS_CONTROL
+same_day_tissue[same_day_tissue$treatment == 'Control',]$treatment <- sub('.*_.*_.* vs .*_.*_(.*)','\\1', same_day_tissue[same_day_tissue$treatment == 'Control',]$pairs)
+# sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
+same_day_tissue$tissue <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
+same_day_tissue$day <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
 
+same_day_tissue$tissue <- ifelse(same_day_tissue$tissue == 'F', 'feces', 'cecal_mucosa')
 
+# same_day_tissue$p.adjusted <- p.adjust(same_day_tissue$p.value, method = 'fdr')
+
+same_day_tissue <- same_day_tissue %>% mutate(set=paste(tissue, day, sep = '_'))
+same_day_tissue <- same_day_tissue %>% group_by(set) %>% mutate(p.adjusted = p.adjust(p.value, method = 'fdr'))
+same_day_tissue$p.plot <- ifelse(same_day_tissue$p.adjusted <= 0.05, paste('p=', round(same_day_tissue$p.adjusted, 3), sep = ''), NA)
+
+same_day_tissue$set <- factor(same_day_tissue$set, levels = c('feces_D0', 'feces_D23', 'feces_D30', 'cecal_mucosa_D30'))
+
+same_day_tissue %>%
+  ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + 
+  geom_col(color='black') + facet_wrap(~set) + geom_text(aes(label=p.plot), nudge_y = .2) + 
+  ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05')
 
 #### Deseq comparisons
 # D23 each diet vs control
@@ -198,15 +222,46 @@ same_day_tissue <- pwad_to_cont[grep('.*_(.*)_(.*)_.* vs .*_\\1_\\2_.*', pwad_to
 # D30 each diet vs control
 # D30 each diet vs pos_control
 
+# this is the same function i wrote for doing all the FS12b treatment comps for each day and tissue
+
+FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control', 
+                                                                        'RPS',
+                                                                        'Acid', 
+                                                                        'ZnCu', 
+                                                                        'RCS', 
+                                                                        'Bglu', 
+                                                                        'Pos_control', 
+                                                                        'Phyto', 
+                                                                        'Malto', 
+                                                                        'SBP'))
+
+unique(FS12a@sam_data$treatment)
+
+tocont <- list(DESeq_difabund(phyloseq = FS12a, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
+               DESeq_difabund(phyloseq = FS12a, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
+               DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
+               DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'))
 
 
+tocont <- bind_rows(tocont)
+
+tocontf <- tocont[abs(tocont$log2FoldChange) > .75,]
+
+tocontf %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
+  geom_col(color='black') + coord_flip() + geom_hline(yintercept = 20, color='red', size=3)
 
 
+biguns <- tocontf %>% group_by(OTU) %>% summarise(tot=sum(log2FoldChange)) %>% filter(tot >20) %>% select(OTU) %>% unlist()
 
+tocont %>% filter(OTU %in% biguns) %>% select(OTU,Genus) %>% unique()
 
+tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.frame()
 
+taxa[taxa$OTU=='Otu00141',]
 
+taxa[taxa$OTU=='Otu00154',]
 
+taxa[taxa$OTU=='Otu00168',]
 
 
 
