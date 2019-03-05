@@ -210,10 +210,15 @@ same_day_tissue$p.plot <- ifelse(same_day_tissue$p.adjusted <= 0.05, paste('p=',
 
 same_day_tissue$set <- factor(same_day_tissue$set, levels = c('feces_D0', 'feces_D23', 'feces_D30', 'cecal_mucosa_D30'))
 
+#### NEED TO COME UP WITH COLOR TO USE
+# 
+
+
 same_day_tissue %>%
   ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + 
   geom_col(color='black') + facet_wrap(~set) + geom_text(aes(label=p.plot), nudge_y = .2) + 
-  ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05')
+  ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
+  scale_fill_brewer(palette = 'Set1')
 
 #### Deseq comparisons
 # D23 each diet vs control
@@ -247,9 +252,6 @@ tocont <- bind_rows(tocont)
 
 tocontf <- tocont[abs(tocont$log2FoldChange) > .75,]
 
-tocontf %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-  geom_col(color='black') + coord_flip() + geom_hline(yintercept = 20, color='red', size=3)
-
 
 biguns <- tocontf %>% group_by(OTU) %>% summarise(tot=sum(log2FoldChange)) %>% filter(tot >20) %>% select(OTU) %>% unlist()
 
@@ -258,10 +260,53 @@ tocont %>% filter(OTU %in% biguns) %>% select(OTU,Genus) %>% unique()
 tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.frame()
 
 taxa[taxa$OTU=='Otu00141',]
-
 taxa[taxa$OTU=='Otu00154',]
-
 taxa[taxa$OTU=='Otu00168',]
+
+
+# Meh, not happy with this really...
+
+tocontf$Treatment <- factor(tocontf$Treatment, levels = c('RPS',
+                                                          'Acid', 
+                                                          'ZnCu', 
+                                                          'RCS', 
+                                                          'Bglu', 
+                                                          'Pos_control', 
+                                                          'Phyto', 
+                                                          'Malto', 
+                                                          'SBP', 
+                                                          'down_RPS',
+                                                          'down_Acid', 
+                                                          'down_ZnCu', 
+                                                          'down_RCS', 
+                                                          'down_Bglu', 
+                                                          'down_Pos_control', 
+                                                          'down_Phyto', 
+                                                          'down_Malto', 
+                                                          'down_SBP'))
+
+
+col_set1 <- RColorBrewer::brewer.pal(9, 'Set1')
+col_set2 <- sapply(col_set1, lighten)
+
+fin_colset <- c(col_set1, col_set2)
+
+levs <- c('RPS','Acid', 'ZnCu', 'RCS', 'Bglu', 'Pos_control', 'Phyto', 
+          'Malto', 'SBP', 'down_RPS','down_Acid', 'down_ZnCu', 'down_RCS', 
+          'down_Bglu', 'down_Pos_control', 'down_Phyto', 'down_Malto', 'down_SBP')
+
+names(fin_colset) <- levs
+
+tocontf %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
+  geom_col(color='black') + coord_flip() + scale_fill_manual(values = fin_colset) + 
+  geom_text(aes(label=Genus, y=0))
+
+
+###### BLAST RESULTS FOR ALL THESE OTUS
+
+tocontf %>% select(OTU) %>% unlist(use.names = FALSE) %>% write_lines('./data/FS12a_int_OTUs.txt')
+
+
 
 
 
