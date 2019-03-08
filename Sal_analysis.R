@@ -80,15 +80,15 @@ all_daily <- sal_data %>% filter(pignum != 101) %>% group_by(time_point, treatme
             se_sal=sd_sal/sqrt(num))
 
 
-
-ZN_CONT <- sal_data %>% filter(pignum != 101 & treatment %in% c('control', 'Zn+Cu')) %>%
-  group_by(time_point, treatment) %>% 
-  summarise(mean_sal=mean(log_sal), sd_sal=sd(log_sal), se_sal=sd_sal/sqrt(n()))
-
-
-ZN_CONT %>% ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +geom_line(aes(color=treatment))+ geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) + 
-  geom_point(shape=21, size=4) +scale_color_manual(values=c('#33CC33', 'red', 'orange', 'red', 'grey', 'purple')) + 
-  scale_fill_manual(values=c('#33CC33', 'red', 'orange', 'red', 'grey', 'purple')) + ylab('log Salmonella') + annotate(x=21, y=3, geom='text', label='p=0.06')+ xlab('Day post-challenge')
+# Just ZnCu vs Control 
+# ZN_CONT <- sal_data %>% filter(pignum != 101 & treatment %in% c('control', 'Zn+Cu')) %>%
+#   group_by(time_point, treatment) %>% 
+#   summarise(mean_sal=mean(log_sal), sd_sal=sd(log_sal), se_sal=sd_sal/sqrt(n()))
+# 
+# 
+# ZN_CONT %>% ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +geom_line(aes(color=treatment))+ geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) + 
+#   geom_point(shape=21, size=4) +scale_color_manual(values=c('#33CC33', 'red', 'orange', 'red', 'grey', 'purple')) + 
+#   scale_fill_manual(values=c('#33CC33', 'red', 'orange', 'red', 'grey', 'purple')) + ylab('log Salmonella') + annotate(x=21, y=3, geom='text', label='p=0.06')+ xlab('Day post-challenge')
 
 
 
@@ -110,7 +110,7 @@ all_daily %>% filter(treatment %in% c('control', 'RPS')) %>% ggplot(aes(x=time_p
 ZN_CONT_stats <- sal_data %>% filter(pignum != 101 & treatment %in% c('control', 'Zn+Cu'))
 
 
-ZN_CONT_stats
+# ZN_CONT_stats
 
 pairwise.t.test(ZN_CONT_stats$log_sal,ZN_CONT_stats$treatXtime, p.adjust.method = 'none', var.equal=FALSE)
 #### maybe some statistical test at each timepoint?
@@ -181,6 +181,8 @@ AULCs_av %>% filter(treatment %in% c('control', 'RPS')) %>% ggplot(aes(x=day, y=
 # 
 # write_tsv(ZN_AULCs, 'brad_AULCs.tsv')
 # write_tsv(ZN_AULCs_av, 'brad_AULCs_sum_stats.tsv')
+
+# what's this?
 #########temp ##########
 
 
@@ -194,7 +196,7 @@ filter(sal_data, time_point==14)$pignum == filter(sal_data, time_point==21)$pign
 filter(sal_data, time_point==2)$pignum == filter(sal_data, time_point==21)$pignum
 sum_sal$pignum == filter(sal_data, time_point==2)$pignum
 
-#
+# There is probably a better way to do this....
 sum_sal$d2_shed <- filter(sal_data, time_point==2)$log_sal
 sum_sal$d7_shed <- filter(sal_data, time_point==7)$log_sal
 sum_sal$d14_shed <- filter(sal_data, time_point==14)$log_sal
@@ -205,8 +207,8 @@ sum_sal$d7_temp <- filter(sal_data, time_point==7)$temp
 sum_sal$d2_Dtemp <- filter(sal_data, time_point==2)$temp - filter(sal_data, time_point==0)$temp
 sum_sal$d7_Dtemp <- filter(sal_data, time_point==7)$temp - filter(sal_data, time_point==0)$temp
 gain <- filter(sal_data, time_point == 21)$pig_weight - filter(sal_data, time_point == 0)$pig_weight
-ADG <- gain/21
-sum_sal$ADG <- ADG
+
+sum_sal$ADG <- gain/21
 sum_sal$init_weight <- filter(sal_data, time_point == 0)$pig_weight
 sum_sal$final_weight <- filter(sal_data, time_point == 21)$pig_weight
 sum_sal$P_init_gain <- (gain/sum_sal$init_weight)*100
@@ -228,10 +230,10 @@ filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment
 
 
 
-filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
-  geom_boxplot(outlier.alpha = 0) + geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + #geom_text(aes(label=pignum)) +
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  theme_bw(base_size = 16)+ ggtitle('')
+# filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
+#   geom_boxplot(outlier.alpha = 0) + geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + #geom_text(aes(label=pignum)) +
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+#   theme_bw(base_size = 16)+ ggtitle('')
 
 sum_sal.filter <- filter(sum_sal, pignum !=101)
 
@@ -408,15 +410,16 @@ tis.sp <- tis %>% select(-tisXtreat, -Salmonella) %>% spread(key = tissue, value
 sum_sal <- sum_sal[match(tis.sp$pignum, sum_sal$pignum),]
 
 sum_sal$pignum == tis.sp$pignum
+# tis.sp <- tis.sp[,2]
 tis.sp <- tis.sp[,-2]
 sal_for_cor <- merge(sum_sal, tis.sp, by = 'pignum')
 
 ### NEED CECAL VFA DATA FOR THIS NEXT SECTION ###
 
-read_csv('data/FS12b_vfas_for_cor.csv')
+vfas_for_cor <- read_csv('data/FS12b_vfas_for_cor.csv')
 
-
-
+### NEED TO REMOVE ONE TREATMENT BEFORE MERGE
+vfas_for_cor <- vfas_for_cor %>% select(-treatment)
 sal_for_cor <- merge(sal_for_cor, vfas_for_cor, by = 'pignum')
 rownames(sal_for_cor) <- sal_for_cor$pignum
 
@@ -509,16 +512,6 @@ sal_for_cor %>% filter(treatment == 'Bglu') %>% ggplot(aes(x=butyrate, y=AULC)) 
         legend.text = element_text(size=16),
         legend.title = element_text(size=16)) + ggtitle('') + xlab('butyrate (mM)')
 
-bglu <- sal_for_cor %>% filter(treatment == 'Bglu')
-RPS <- sal_for_cor %>% filter(treatment == 'RPS')
-cont <- sal_for_cor %>% filter(treatment == 'control')
-
-test
-fads <- cor.test(x = bglu$AULC, y = bglu$butyrate)
-fads$statistic
-fads$p.value
-
-cor.test(sal_for_cor$AULC, sal_for_cor$butyrate, method = 'spear')
 
 sal_for_cor %>% group_by(treatment) %>% summarise(butP = cor.test(AULC, butyrate)$p.value, 
                                                   butT = cor.test(AULC, butyrate)$statistic,
@@ -543,22 +536,22 @@ ggplot(sal_for_cor, aes(x=total, y=AULC)) +
         legend.text = element_text(size=16),
         legend.title = element_text(size=16)) + ggtitle('') + xlab('Total SCFAs (mM)')
 
-filter(sal_for_cor, treatment %in% c('control', 'RPS'))
-filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
-filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# filter(sal_for_cor, treatment %in% c('control', 'RPS'))
+# filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
 
 
-filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
-filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# 
 
 
+# filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# 
 
-filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
-filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
-
-
-filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=caproate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
-filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=caproate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# filter(sal_for_cor, treatment =='control') %>% ggplot(aes(x=caproate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
+# filter(sal_for_cor, treatment =='RPS') %>% ggplot(aes(x=caproate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')
 
 
 cor.test(filter(sal_for_cor, treatment =='control')$AULC,
@@ -611,54 +604,54 @@ cor.test(filter(sal_for_cor, treatment%in%c('RPS', 'control'))$AULC,
 
 
 
-filter(sal_for_cor, treatment =='RPS') %>% cor.test()
+# filter(sal_for_cor, treatment =='RPS') %>% cor.test()
 
-poster <- sal_for_cor %>% select(-starts_with('P_')) %>% 
-  gather(variable, response, -pignum, -treatment) %>% 
-  filter(treatment %in% c('control', 'RPS')) %>% 
-  filter(variable %in% c('AULC', 'butyrate', 'valerate', 'caproate', 'total')) %>% spread(variable, response) %>% 
-  gather(variable, response, -pignum, -treatment, -AULC)
-poster$response <- poster$response *3
-
-
-poster$variable <- factor(poster$variable, levels = c('butyrate', 'valerate', 'caproate', 'total'))
-ggplot(poster, aes(x=response, y=AULC, fill=treatment)) +
-  geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + facet_wrap(~variable, scales = 'free') +
-  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  geom_point(shape=21, stroke=1, size=3) + ggtitle('Cecal SCFA concentrations VS cumulative Salmonella shedding') + xlab('Concentration (mM)')
-
-
-poster %>% filter(variable == 'butyrate') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
-  geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
-  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
-#3399FF
-
-
-poster %>% filter(variable == 'caproate') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
-  geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
-  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
-
-
-
-poster %>% filter(variable == 'valerate') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
-  geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
-  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
-
-
-
-poster %>% filter(variable == 'total') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
-  geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
-  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
-
-
-
+# poster <- sal_for_cor %>% select(-starts_with('P_')) %>% 
+#   gather(variable, response, -pignum, -treatment) %>% 
+#   filter(treatment %in% c('control', 'RPS')) %>% 
+#   filter(variable %in% c('AULC', 'butyrate', 'valerate', 'caproate', 'total')) %>% spread(variable, response) %>% 
+#   gather(variable, response, -pignum, -treatment, -AULC)
+# poster$response <- poster$response *3
+# 
+# 
+# poster$variable <- factor(poster$variable, levels = c('butyrate', 'valerate', 'caproate', 'total'))
+# ggplot(poster, aes(x=response, y=AULC, fill=treatment)) +
+#   geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + facet_wrap(~variable, scales = 'free') +
+#   scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   geom_point(shape=21, stroke=1, size=3) + ggtitle('Cecal SCFA concentrations VS cumulative Salmonella shedding') + xlab('Concentration (mM)')
+# 
+# 
+# poster %>% filter(variable == 'butyrate') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
+#   geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
+#   scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
+# #3399FF
+# 
+# 
+# poster %>% filter(variable == 'caproate') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
+#   geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
+#   scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
+# 
+# 
+# 
+# poster %>% filter(variable == 'valerate') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
+#   geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
+#   scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
+# 
+# 
+# 
+# poster %>% filter(variable == 'total') %>% ggplot(aes(x=response, y=AULC, fill=treatment)) +
+#   geom_smooth(aes(x=response, y=AULC), inherit.aes = FALSE,method = 'lm', fullrange = TRUE, color='grey27') + #facet_wrap(~variable, scales = 'free') +
+#   scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   geom_point(shape=21, stroke=1, size=3) + ggtitle('') + xlab('Concentration (mM)')
+# 
 
 
-cecal_cont
+
+
+# cecal_cont
 #########################
 
 
@@ -674,136 +667,136 @@ sal_for_cor <- sal_for_cor[,-1]
 #
 sal_for_cor.m <- as.matrix(sal_for_cor)
 # rownames(sum_sal.m) <- pignumblers
-
-salcor <- rcorr(sal_for_cor.m)
-salcor$P
-apply(sal_for_cor, MARGIN = 2, str_trim) %>% apply(MARGIN = 2, as.numeric) %>% as.matrix()
-str_trim()
-
-salcor.sigs <- rcorr_to_ggnet(salcor, spearcut = -1, pcut = 0.05)
-
-library(funfuns)
-library(geomnet)
-################
-
-nodes <- rbind(gather_nodes(sal_for_cor.m, 'Sal'))
-
-nodes$node <- as.character(nodes$node)
-#nodes$node[770] <- 'y'
-alll <- na.exclude(fortify(as.edgedf(salcor.sigs), nodes))
-na.exclude(alll)
-alll$spear
-rep(1, length(alll$spear))
-test <- data.frame(rep(1, length(alll$spear)),alll$spear)
-colnames(test) <- c('x', 'spear')
-
-filts_pos <- filter(alll, spear > 0)
-filts_neg <- filter(alll, spear < 0)
-
-# butyrate caproate valerate neg cor w/ AULC
-
-
-
-
-
-ggplot()
-
-tetetete <- ggplot(test, aes(x=x, y=spear, color=spear)) + geom_point() + scale_color_gradient2()
-
-hmm <- ggplot_build(tetetete)
-
-hmm$data[[1]]$colour
-
-
-
-salnet <- ggplot(alll, aes(from_id = from_id, to_id = to_id, label=from, color=type, ecolour=spear)) +
-  geom_net(layout.alg = 'fruchtermanreingold', #layout.par = list(c('cell.pointpointrad', 30), c('niter', 1000)),
-           aes(color = type, label = from_id),
-           linewidth = 2, size = 5, vjust = 0, alpha = 0.3,
-           repel = TRUE, fontsize=3, singletons = FALSE,labelcolour="black",
-           labelgeom = 'text', ecolour = hmm$data[[1]]$colour) +
-  theme_net()
-
-salnet
-
-##################
-
-# Compare the ADG in different intervals back to Salmonella colonization in different tissues
-# prelavence of Salmonella in farms tend to have lower ADG.  Can we see some of this in our pigs here?
-
-# can we see some
-
-# Do larger pigs tend to have greater amounts of salmonella
-
-
-
-
-
-##### some correlation stuff here ####
-
-
-
-# prob need to replace some of this stuff #
-
-
-### change in rectal temp? ###
-
-filter(sal_data, time_point ==0)$temp
-
-
-delt_temp_2 <- filter(sal_data, time_point ==2)$temp - filter(sal_data, time_point ==0)$temp
-delt_temp_7 <- filter(sal_data, time_point ==7)$temp - filter(sal_data, time_point ==0)$temp
-
-sal_data$delta_temp <- NA
-sal_data[sal_data$time_point ==2,]$delta_temp <- delt_temp_2
-sal_data[sal_data$time_point ==7,]$delta_temp <- delt_temp_7
-
-
-
-tis$PA <- ifelse(tis$Salmonella > 0, 1, 0)
-
-
-tis
-
-
-
-
-fisher_map <- function(data, row_vector, col_vector){
-  fisher.test(data[row_vector, col_vector])$p.value
-}
-
-
-PA_tab <- tis %>% select(treatment, tissue, PA) %>%
-  group_by(tissue, treatment) %>% 
-  summarise(pos = sum(PA == 1), neg = sum(PA == 0)) %>% group_by(tissue) %>% nest() %>% 
-  mutate(RPSp = map(data, fisher_map, c(1,2), c(2,3)), 
-         Acidp = map(data, fisher_map, c(1,3), c(2,3)),
-         Znp = map(data, fisher_map, c(1,4), c(2,3)), 
-         RCSp = map(data, fisher_map, c(1,5), c(2,3)), 
-         Bglup = map(data, fisher_map, c(1,6), c(2,3))) %>% select(-data) %>% unnest()
-
-ftes <- fisher.test(PA_tab[[2]][[1]][c(1,3),-1])
-
-ftes$data.name
-
-row.
-cecconttest <- PA_tab[[2]][[1]]
-
-
-muc <- data.frame(SB1434 = c(1050, 0), 
-           SX240 = c(1832,5), row.names = c('normal', 'mucoid'))
-
-
-intra <- data.frame(norm=c(1175,0), 
-                    mono=c(1832, 5), 
-                    row.names = c('normal', 'mucoid'))
-
-t(muc)
-fisher.test(muc)
-fisher.test(t(muc))
-
-t(intra)
-fisher.test(intra)
-fisher.test(t(intra))
-
-
+# 
+# salcor <- rcorr(sal_for_cor.m)
+# salcor$P
+# apply(sal_for_cor, MARGIN = 2, str_trim) %>% apply(MARGIN = 2, as.numeric) %>% as.matrix()
+# str_trim()
+# 
+# salcor.sigs <- rcorr_to_ggnet(salcor, spearcut = -1, pcut = 0.05)
+# 
+# library(funfuns)
+# library(geomnet)
+# ################
+# 
+# nodes <- rbind(gather_nodes(sal_for_cor.m, 'Sal'))
+# 
+# nodes$node <- as.character(nodes$node)
+# #nodes$node[770] <- 'y'
+# alll <- na.exclude(fortify(as.edgedf(salcor.sigs), nodes))
+# na.exclude(alll)
+# alll$spear
+# rep(1, length(alll$spear))
+# test <- data.frame(rep(1, length(alll$spear)),alll$spear)
+# colnames(test) <- c('x', 'spear')
+# 
+# filts_pos <- filter(alll, spear > 0)
+# filts_neg <- filter(alll, spear < 0)
+# 
+# # butyrate caproate valerate neg cor w/ AULC
+# 
+# 
+# 
+# 
+# 
+# ggplot()
+# 
+# tetetete <- ggplot(test, aes(x=x, y=spear, color=spear)) + geom_point() + scale_color_gradient2()
+# 
+# hmm <- ggplot_build(tetetete)
+# 
+# hmm$data[[1]]$colour
+# 
+# 
+# 
+# salnet <- ggplot(alll, aes(from_id = from_id, to_id = to_id, label=from, color=type, ecolour=spear)) +
+#   geom_net(layout.alg = 'fruchtermanreingold', #layout.par = list(c('cell.pointpointrad', 30), c('niter', 1000)),
+#            aes(color = type, label = from_id),
+#            linewidth = 2, size = 5, vjust = 0, alpha = 0.3,
+#            repel = TRUE, fontsize=3, singletons = FALSE,labelcolour="black",
+#            labelgeom = 'text', ecolour = hmm$data[[1]]$colour) +
+#   theme_net()
+# 
+# salnet
+# 
+# ##################
+# 
+# # Compare the ADG in different intervals back to Salmonella colonization in different tissues
+# # prelavence of Salmonella in farms tend to have lower ADG.  Can we see some of this in our pigs here?
+# 
+# # can we see some
+# 
+# # Do larger pigs tend to have greater amounts of salmonella
+# 
+# 
+# 
+# 
+# 
+# ##### some correlation stuff here ####
+# 
+# 
+# 
+# # prob need to replace some of this stuff #
+# 
+# 
+# ### change in rectal temp? ###
+# 
+# filter(sal_data, time_point ==0)$temp
+# 
+# 
+# delt_temp_2 <- filter(sal_data, time_point ==2)$temp - filter(sal_data, time_point ==0)$temp
+# delt_temp_7 <- filter(sal_data, time_point ==7)$temp - filter(sal_data, time_point ==0)$temp
+# 
+# sal_data$delta_temp <- NA
+# sal_data[sal_data$time_point ==2,]$delta_temp <- delt_temp_2
+# sal_data[sal_data$time_point ==7,]$delta_temp <- delt_temp_7
+# 
+# 
+# 
+# tis$PA <- ifelse(tis$Salmonella > 0, 1, 0)
+# 
+# 
+# tis
+# 
+# 
+# 
+# 
+# fisher_map <- function(data, row_vector, col_vector){
+#   fisher.test(data[row_vector, col_vector])$p.value
+# }
+# 
+# 
+# PA_tab <- tis %>% select(treatment, tissue, PA) %>%
+#   group_by(tissue, treatment) %>% 
+#   summarise(pos = sum(PA == 1), neg = sum(PA == 0)) %>% group_by(tissue) %>% nest() %>% 
+#   mutate(RPSp = map(data, fisher_map, c(1,2), c(2,3)), 
+#          Acidp = map(data, fisher_map, c(1,3), c(2,3)),
+#          Znp = map(data, fisher_map, c(1,4), c(2,3)), 
+#          RCSp = map(data, fisher_map, c(1,5), c(2,3)), 
+#          Bglup = map(data, fisher_map, c(1,6), c(2,3))) %>% select(-data) %>% unnest()
+# 
+# ftes <- fisher.test(PA_tab[[2]][[1]][c(1,3),-1])
+# 
+# ftes$data.name
+# 
+# row.
+# cecconttest <- PA_tab[[2]][[1]]
+# 
+# 
+# muc <- data.frame(SB1434 = c(1050, 0), 
+#            SX240 = c(1832,5), row.names = c('normal', 'mucoid'))
+# 
+# 
+# intra <- data.frame(norm=c(1175,0), 
+#                     mono=c(1832, 5), 
+#                     row.names = c('normal', 'mucoid'))
+# 
+# t(muc)
+# fisher.test(muc)
+# fisher.test(t(muc))
+# 
+# t(intra)
+# fisher.test(intra)
+# fisher.test(t(intra))
+# 
+# 
