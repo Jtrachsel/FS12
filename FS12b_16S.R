@@ -2,8 +2,8 @@
 getwd()
 library(phyloseq)
 library(tidyverse)
-library(pairwiseAdonis)
 library(funfuns)
+library(pairwiseAdonis)
 
 
 meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
@@ -25,9 +25,9 @@ hist(rowSums(shared), breaks = 50)
 # length(colnames(shared)) # 10648 total OTUs detected (no removal mocks and NTCs and all kinds of garbage here)
 
 
-rownames(shared) %in% meta$sample_ID
+# rownames(shared) %in% meta$sample_ID
 meta <- meta[meta$sample_ID %in% rownames(shared),]
-
+mocks <- shared[(!rownames(shared) %in% meta$sample_ID),]
 shared <- shared[rownames(shared) %in% meta$sample_ID,]
 
 rownames(shared) == meta$sample_ID
@@ -69,6 +69,25 @@ colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
 
 # meta$treatment  
 FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
+
+### mock stuff ###
+
+rownames(mocks)
+mocks[1:5,1:5]
+mocks <- mocks[rowSums(mocks) >1000,]
+rownames(mocks)
+hist(rowSums(mocks), breaks = 50)
+
+mocks <- mocks[grep('NTC', rownames(mocks)),]
+
+mocks <- mocks[,colSums(mocks)>2]
+colSums(mocks)
+rownames(mocks)
+mock_tax <- taxa[taxa$OTU %in% colnames(mocks),]
+
+
+
+
 
 ############### FS12a CLUSTERFUCK HERE #############
 
@@ -209,9 +228,9 @@ inAnotB <- sort(FS12a_pigs[!(FS12a_pigs %in% FS12b_pigs)])
 ### CHECK THESE PIGS FOR TOTAL SHEDDING!!!!
 changed <- FS12@sam_data %>% filter(pignum %in% inBnotA) %>% select(pignum, treatment) %>% unique()
 
-sum_sal$swap <- ifelse(sum_sal$pignum %in% changed$pignum, 'swapped', 'not_swapped')
+# sum_sal$swap <- ifelse(sum_sal$pignum %in% changed$pignum, 'swapped', 'not_swapped')
 
-boxplot(sum_sal$AULC~sum_sal$swap)
+# boxplot(sum_sal$AULC~sum_sal$swap)
 ##### FS12a #####
 
 
@@ -265,7 +284,7 @@ FS12a_NMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) +
   # geom_text_repel(data=labbies, aes(label=treatment, x=centroidX, y=centroidY))#+ geom_path(data = FS12a_NMDS[[2]], aes(x=NMDS1, y=NMDS2, group=group))
 
 set.seed(71)
-all_pwad <- pairwise.adonis(FS12a_rare@otu_table, FS12a_rare@sam_data$set, permutations = 9999, sim.method = 'bray')
+all_pwad <- pairwise.adonis(FS12a_rare@otu_table, FS12a_rare@sam_data$set, perm = 9999, sim.method = 'bray')
 
 pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
 # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
@@ -305,7 +324,7 @@ global_adon <- adonis(FS12a_rare@otu_table~day + treatment + tissue,
                       data = data.frame(FS12a_rare@sam_data), method = 'bray')
 
 
-
+global_adon
 
 
 #### Deseq comparisons
@@ -421,7 +440,7 @@ tocontf.genus %>% filter(day =='D23' & grepl('Malto', Treatment))%>% ggplot(aes(
 
 tocontf.genus %>% filter(day =='D23' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0)) + ylim(-6,7)
+  geom_text(aes(label=Genus, y=0)) 
 
 tocontf.genus %>% filter(day =='D23' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
@@ -536,7 +555,7 @@ tocontf.otu %>% filter(day =='D30' & grepl('Bglu', Treatment))%>% ggplot(aes(x=O
 #   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
 #   geom_text(aes(label=Genus, y=0))
 
-tocontf.otu %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
+tocontf.otu %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=tissue)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
   geom_text(aes(label=Genus, y=0)) + ylim(-10,30)
 
@@ -840,9 +859,9 @@ set.seed(71)
 vegdist()
 resu <- list()
 
-for (x in c("manhattan", "euclidean", "canberra", "clark", "bray", "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", "mountford", "raup", "binomial", "chao", "cao", "mahalanobis")){
-  
-  all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = x, binary = FALSE)
+for (x in c("manhattan", "euclidean", "canberra", "clark", "bray", "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", "mountford", "raup", "binomial", "chao", "cao")){
+  print(x)
+  all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = x, binary = TRUE)
   
   pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
   # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
@@ -882,7 +901,7 @@ for (x in c("manhattan", "euclidean", "canberra", "clark", "bray", "kulczynski",
   
   
   min(sample_sums(FS12b_rare))
-  PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = x, p.adjust.m = 'none', perm = 999, binary = FALSE)
+  PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = x, p.adjust.m = 'none', perm = 999, binary = TRUE)
   # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
   
   
@@ -980,7 +999,7 @@ for (x in c("manhattan", "euclidean", "canberra", "clark", "bray", "kulczynski",
   
 }
 
-
+resu2 <- resu
 
 resu$manhattan
 resu$euclidean
@@ -991,16 +1010,18 @@ resu$kulczynski
 resu$jaccard
 resu$gower
 resu$altGower
-resu$morisita
+# resu$morisita
 resu$horn
 resu$mountford
 resu$raup
 resu$binomial
 resu$chao
 resu$cao
-resu$mahalanobis
-resu$
+# resu$mahalanobis
 
+
+
+# Ok, just stick k with bray
 
 #SHOULD PLOT DIVERSITY AND RICHNESS AT SAME TIMEPOINTS HERE
 
@@ -1024,7 +1045,7 @@ FS12b_HL@sam_data$set <- paste(FS12b_HL@sam_data$day, FS12b_HL@sam_data$tissue, 
 FS12b_HL@sam_data
 
 
-PW.ad <- pairwise.adonis(x=rrarefy(FS12b_HL@otu_table, min(rowSums(FS12b_HL@otu_table))), factors = FS12b_HL@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', permutations = 9999)
+PW.ad <- pairwise.adonis(x=rrarefy(FS12b_HL@otu_table, min(rowSums(FS12b_HL@otu_table))), factors = FS12b_HL@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 9999)
 # PW.ad <- pairwise.adonis(x=rrarefy(FS12b_HL@otu_table, min(rowSums(FS12b_HL@otu_table))), factors = FS12b_HL@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
 PW.ad$pairs
 
@@ -1180,6 +1201,7 @@ T0s$p.fdr.lab <- ifelse(T0s$p.fdr <0.05, T0s$p.fdr, NA)
 T0s$treatment <- factor(T0s$treatment, levels = c('Control', 'RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu'))
 
 
+# this seems different.... investigate
 
 T0s %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
   geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
@@ -1464,28 +1486,26 @@ tmpres <- lfcShrink(FS12.de, res=tmpres, coef = 'shed_low_vs_high', type = 'apeg
 tmpres[tmpres$padj < 0.1,]
 
 
-#### NEED TO UPDATE THE FUNFUNS REPO FOR THIS TO WORK!!!!
-
 D0_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                 phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
                 name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 ### D0 Q
-
-FS12b.glom <- FS12_RPS
-FS12b.glom <- subset_samples(FS12b.glom, day =='D0' & tissue == 'Q')
-
-FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-
-FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-library(DESeq2)
-FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-resultsNames(FS12.de)
-
-D0_Q_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-                                phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
-                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
-
+# 
+# FS12b.glom <- FS12_RPS
+# FS12b.glom <- subset_samples(FS12b.glom, day =='D0' & tissue == 'Q')
+# 
+# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
+# 
+# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
+# library(DESeq2)
+# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
+# resultsNames(FS12.de)
+# 
+# D0_Q_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
+#                                 phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+#                                 name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
+# 
 
 ##### D2
 FS12b.glom <- FS12_RPS
@@ -1642,6 +1662,7 @@ RPS_split_master$imp <- ifelse(RPS_split_master$padj <= 0.05, TRUE, FALSE)
 
 RPS_split_master$set <- factor(RPS_split_master$set, levels = c('D0_feces','D2_feces' ,'D7_feces', 'D14_feces', 'D21_feces', 'D21_cecal_content', 'D21_cecal_mucosa', 'D21_ileal_mucosa'))
 RPS_split_master <- RPS_split_master %>% mutate(newp2=paste0('p=', newp))
+devtools::install_github('jtrachsel/ggscinames')
 library(ggscinames)
 library(grid)
 
@@ -1774,6 +1795,9 @@ DESeq_difabund <- function(phyloseq, day, tissue, scientific = TRUE, shrink_type
   return(finres)
   
 }
+
+# something is afoot......
+# apparently I removed the Q tissues.....
 
 
 
