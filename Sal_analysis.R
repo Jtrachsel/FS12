@@ -266,35 +266,75 @@ library(lmerTest)
 
 # lmer(y ~ time * tx + (1 | subjects), data=data)
 # lmer(y ~ time * tx + (time | subjects), data=data)
-lmerTest::
+
+# filtering T0 because no pigs were shedding salmonella at t0
 sal_data2 <- sal_data %>% filter(pignum != 101 & time_point != 0)
 sal_data$pignum <- factor(sal_data$pignum)
+
+
 fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
-fit2 <- lmer(log_sal ~ time_point * treatment + (time_point|pignum), data=sal_data2)
-fit2 <- lmer(log_sal ~ time_point + treatment + (time_point|pignum), data=sal_data2)
-fit3 <- lmer(log_sal ~ treatment + (1|pignum), data = sal_data2)
-fit4 <- lmer(log_sal ~ time_point + treatment + (1|pignum), data = sal_data2)
 
-# this is the sae as 2 right?
-fit5 <- lmer(log_sal ~ time_point + treatment + time_point:treatment + (time_point | pignum), data=sal_data2)
+# fit2 <- lmer(log_sal ~ time_point * treatment + (time_point|pignum), data=sal_data2)
 
-fit
+# fit3 <- lmer(log_sal ~ treatment + (1|pignum), data = sal_data2)
+# fit4 <- lmer(log_sal ~ time_point + treatment + (1|pignum), data = sal_data2)
 
-summary(fit)
+# this is the same as 2 right?
+# fit5 <- lmer(log_sal ~ time_point + treatment + time_point:treatment + (time_point | pignum), data=sal_data2)
+
+plot(fit)
+fit@vcov_varpar
+fit@Jac_list
+fit@sigma
+fit@resp
+fit@devcomp
+
+summ <- summary(fit)
+
+conf_ints <- confint(fit)
+coefs <- summ$coefficients
+mains <- data.frame(cbind(coefs[3:7,], conf_ints[5:9,]))
+interacts <- data.frame(cbind(coefs[8:12,], conf_ints[10:14,]))
+
+
+colnames(mains) <- c('Estimate', 'std_err', 'df', 't_val', 'P_val', 'CI_L', 'CI_U')
+colnames(interacts) <- c('Estimate', 'std_err', 'df', 't_val', 'P_val', 'CI_L', 'CI_U')
+
+
+### THESE ARE DUM ###
+mains %>%
+  rownames_to_column(var = 'treat') %>%
+  mutate(treatment=sub('treatment', '', treat)) %>% 
+  select(treatment, everything(), -treat) %>% 
+  gather(key = param, value = val, -treatment) %>% 
+  filter(param %in% c('CI_L', 'CI_U', 'Estimate', 'std_err')) %>%
+  spread(key = param, value = val) %>% 
+  ggplot(aes(x=treatment, y=Estimate, ymin=CI_L, ymax=CI_U)) + geom_point() + geom_errorbar() + 
+  geom_errorbar(aes(ymin=Estimate-std_err, ymax=Estimate+std_err), color='green')
+
+interacts %>%
+  rownames_to_column(var = 'treat') %>%
+  mutate(treatment=sub('treatment', '', treat)) %>% 
+  select(treatment, everything(), -treat) %>% 
+  gather(key = param, value = val, -treatment) %>% 
+  filter(param %in% c('CI_L', 'CI_U', 'Estimate', 'std_err')) %>%
+  spread(key = param, value = val) %>% 
+  ggplot(aes(x=treatment, y=Estimate, ymin=CI_L, ymax=CI_U)) + geom_point() + geom_errorbar() + 
+  geom_errorbar(aes(ymin=Estimate-std_err, ymax=Estimate+std_err), color='green')
+
+### END DUM ###
+
 anova(fit)
 rePCA(fit)
-analyze
+
 
 sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, group=treatment, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
 
 ?isSingular
 
-glmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2, family = gaussian(link = ) )
+# glmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2, family = gaussian(link = ) )
 
-glm
 
-fm1 <- lmer(Reaction~Days+(Days|Subject), sleepstudy)
-rePCA(fm1)
 
 ######
 
