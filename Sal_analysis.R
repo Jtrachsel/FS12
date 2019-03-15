@@ -260,9 +260,43 @@ ggplot(sum_sal_sum, aes(x=treatment, y=mean_AULC)) + geom_col(aes(fill=treatment
 wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'RPS'])
 wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Acid'])
 
+#### Trying a little mixed model stuff....
 
+library(lmerTest)
 
+# lmer(y ~ time * tx + (1 | subjects), data=data)
+# lmer(y ~ time * tx + (time | subjects), data=data)
+lmerTest::
+sal_data2 <- sal_data %>% filter(pignum != 101 & time_point != 0)
+sal_data$pignum <- factor(sal_data$pignum)
+fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
+fit2 <- lmer(log_sal ~ time_point * treatment + (time_point|pignum), data=sal_data2)
+fit2 <- lmer(log_sal ~ time_point + treatment + (time_point|pignum), data=sal_data2)
+fit3 <- lmer(log_sal ~ treatment + (1|pignum), data = sal_data2)
+fit4 <- lmer(log_sal ~ time_point + treatment + (1|pignum), data = sal_data2)
 
+# this is the sae as 2 right?
+fit5 <- lmer(log_sal ~ time_point + treatment + time_point:treatment + (time_point | pignum), data=sal_data2)
+
+fit
+
+summary(fit)
+anova(fit)
+rePCA(fit)
+analyze
+
+sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, group=treatment, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+
+?isSingular
+
+glmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2, family = gaussian(link = ) )
+
+glm
+
+fm1 <- lmer(Reaction~Days+(Days|Subject), sleepstudy)
+rePCA(fm1)
+
+######
 
 sal_data %>% filter(time_point < 14) %>% ggplot(aes(x=treatment, y=temp, fill=treatment, group=treatXtime)) +
   geom_boxplot() + geom_jitter(shape=21, size=2)+ geom_text(aes(label=pignum)) +
