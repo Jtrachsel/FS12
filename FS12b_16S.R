@@ -4,12 +4,23 @@ library(phyloseq)
 library(tidyverse)
 library(funfuns)
 library(pairwiseAdonis)
-
+list.dirs()
 
 meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
+# I did this to get the salmonella shedding data in with the metadata
+# meta <- sum_sal %>% select(pignum, AULC) %>% right_join(meta, by = 'pignum')
+# 
+# tmp <- sal_data %>% mutate(day=paste('D', time_point, sep = '')) %>%
+#   mutate(pig_time=paste(pignum, day, sep = '_')) %>%
+#   select(pig_time, log_sal)
+# 
+# meta <- meta %>% mutate(pig_time=paste(pignum, day, sep = '_'))
+# meta <- meta %>% left_join(tmp, by = 'pig_time')
+# 
+# write_csv(x = meta, path = './data/FS12_final_meta.csv')
 
 #####
 
@@ -231,6 +242,9 @@ changed <- FS12@sam_data %>% filter(pignum %in% inBnotA) %>% select(pignum, trea
 # sum_sal$swap <- ifelse(sum_sal$pignum %in% changed$pignum, 'swapped', 'not_swapped')
 
 # boxplot(sum_sal$AULC~sum_sal$swap)
+
+
+
 ##### FS12a #####
 
 
@@ -1662,7 +1676,7 @@ RPS_split_master$imp <- ifelse(RPS_split_master$padj <= 0.05, TRUE, FALSE)
 
 RPS_split_master$set <- factor(RPS_split_master$set, levels = c('D0_feces','D2_feces' ,'D7_feces', 'D14_feces', 'D21_feces', 'D21_cecal_content', 'D21_cecal_mucosa', 'D21_ileal_mucosa'))
 RPS_split_master <- RPS_split_master %>% mutate(newp2=paste0('p=', newp))
-devtools::install_github('jtrachsel/ggscinames')
+# devtools::install_github('jtrachsel/ggscinames')
 library(ggscinames)
 library(grid)
 
@@ -1802,7 +1816,7 @@ DESeq_difabund <- function(phyloseq, day, tissue, scientific = TRUE, shrink_type
 
 
 tocont <- list(DESeq_difabund(phyloseq = FS12b, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
-               DESeq_difabund(phyloseq = FS12b, day = 'D0', tissue = 'Q', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
+               # DESeq_difabund(phyloseq = FS12b, day = 'D0', tissue = 'Q', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
                DESeq_difabund(phyloseq = FS12b, day = 'D2', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
                DESeq_difabund(phyloseq = FS12b, day = 'D7', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
                DESeq_difabund(phyloseq = FS12b, day = 'D14', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = TRUE, pAdjustMethod = 'BH'),
@@ -1826,8 +1840,18 @@ tocont %>% filter(OTU %in% biguns) %>% select(OTU,Genus) %>% unique()
 
 tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.frame()
 #### Ok that wasnt so bad.
-
 # Now, which OTUs changed at Salmonella infection?
+# I think I need to add sum_sal info at beginning....
+FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day == 'D2')
+
+
+merge(FS12b@sam_data, sum_sal, by='pignum')
+
+
+
+
+# below here might be on to something... LRT stuff
+
 #ALL FECES
 # D0 vs D2 within treatments
 # D0 vs D7 within treatments
@@ -1851,6 +1875,8 @@ test7 <- results(object = FS12.de, name = 'day_D7_vs_D0')
 
 sigtab2 <- test2[which(test2$padj < 0.1),]
 sigtab7 <- test7[which(test7$padj < 0.1),]
+sigtab2$log2FoldChange
+sigtab7$log2FoldChange
 
 all(rownames(sigtab2) == rownames(sigtab7))
 
@@ -1874,7 +1900,6 @@ sigtab2
 
 ######## SUM SAL DF ########
 
-read_csv('')
 
 
 

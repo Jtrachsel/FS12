@@ -258,7 +258,13 @@ ggplot(sum_sal_sum, aes(x=treatment, y=mean_AULC)) + geom_col(aes(fill=treatment
 
 
 wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'RPS'])
+t.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'RPS'])
+
 wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Acid'])
+t.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Acid'])
+
+wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Bglu'])
+t.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Bglu'])
 
 #### Trying a little mixed model stuff....
 
@@ -269,16 +275,14 @@ library(lmerTest)
 
 # filtering T0 because no pigs were shedding salmonella at t0
 sal_data2 <- sal_data %>% filter(pignum != 101 & time_point != 0)
-sal_data$pignum <- factor(sal_data$pignum)
+sal_data2$pignum <- factor(sal_data2$pignum)
 
 
 fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
 
 # fit2 <- lmer(log_sal ~ time_point * treatment + (time_point|pignum), data=sal_data2)
-
 # fit3 <- lmer(log_sal ~ treatment + (1|pignum), data = sal_data2)
 # fit4 <- lmer(log_sal ~ time_point + treatment + (1|pignum), data = sal_data2)
-
 # this is the same as 2 right?
 # fit5 <- lmer(log_sal ~ time_point + treatment + time_point:treatment + (time_point | pignum), data=sal_data2)
 
@@ -330,7 +334,7 @@ rePCA(fit)
 
 sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, group=treatment, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
 
-?isSingular
+# ?isSingular
 
 # glmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2, family = gaussian(link = ) )
 
