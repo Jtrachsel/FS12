@@ -277,23 +277,14 @@ library(lmerTest)
 sal_data2 <- sal_data %>% filter(pignum != 101 & time_point != 0)
 sal_data2$pignum <- factor(sal_data2$pignum)
 
-
 fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
 
-# fit2 <- lmer(log_sal ~ time_point * treatment + (time_point|pignum), data=sal_data2)
-# fit3 <- lmer(log_sal ~ treatment + (1|pignum), data = sal_data2)
-# fit4 <- lmer(log_sal ~ time_point + treatment + (1|pignum), data = sal_data2)
-# this is the same as 2 right?
-# fit5 <- lmer(log_sal ~ time_point + treatment + time_point:treatment + (time_point | pignum), data=sal_data2)
-
 plot(fit)
-fit@vcov_varpar
-fit@Jac_list
-fit@sigma
-fit@resp
-fit@devcomp
 
 summ <- summary(fit)
+
+# I'm going to need some help interpreting this...
+summ
 
 conf_ints <- confint(fit)
 coefs <- summ$coefficients
@@ -334,9 +325,26 @@ rePCA(fit)
 
 sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, group=treatment, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
 
-# ?isSingular
 
-# glmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2, family = gaussian(link = ) )
+
+# really dont know if this makes any sense....
+### early shed ###
+
+sal_data2 <- sal_data %>% filter(pignum != 101 & time_point %in% c(2, 7))
+sal_data2$pignum <- factor(sal_data2$pignum)
+fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
+plot(fit)
+summ <- summary(fit)
+summ
+
+### late shed ###
+sal_data2 <- sal_data %>% filter(pignum != 101 & time_point %in% c(14, 21))
+sal_data2$pignum <- factor(sal_data2$pignum)
+fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
+plot(fit)
+summ <- summary(fit)
+summ
+
 
 
 

@@ -4,11 +4,36 @@ library(phyloseq)
 library(tidyverse)
 library(funfuns)
 library(pairwiseAdonis)
-list.dirs()
 
 meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
+
+
+# This was to get the tissue salmonella matched up with the tissue 16S
+# tis$tissue <- as.character(tis$tissue)
+# 
+# tis <- tis %>% select(pignum, tissue, log_sal) %>% filter(tissue %in% c('cecal_cont', 'IPP', 'Cecum'))
+# tis$tissue <- replace(tis$tissue, tis$tissue == 'IPP', 'I')
+# tis$tissue <- replace(tis$tissue, tis$tissue == 'Cecum', 'X')
+# tis$tissue <- replace(tis$tissue, tis$tissue == 'cecal_cont', 'C')
+# tis$day <- 'D21'
+# 
+# tis$pig_tis_day <- paste(tis$pignum, tis$tissue, tis$day, sep = '_')
+# 
+# 
+# meta$pig_tis_day <- paste(meta$pignum, meta$tissue, meta$day, sep = '_')
+# 
+# 
+# meta[meta$day == 'D21' & meta$tissue != 'F',]$log_sal <- NA
+# 
+# meta2 <- tis %>% select(pig_tis_day, log_sal) %>%
+#   right_join(meta, by = 'pig_tis_day') %>%
+#   mutate(log_sal=ifelse(is.na(log_sal.x), log_sal.y, log_sal.x)) %>% 
+#   select(-log_sal.x, -log_sal.y)
+# 
+# write_csv(x = meta, path = './data/FS12_final_meta.csv')
+# 
 
 # I did this to get the salmonella shedding data in with the metadata
 # meta <- sum_sal %>% select(pignum, AULC) %>% right_join(meta, by = 'pignum')
@@ -1783,6 +1808,8 @@ DESeq_difabund <- function(phyloseq, day, tissue, scientific = TRUE, shrink_type
     print(resultsNames(FS12.de)[i])
     treat <- sub('treatment_(.*)_vs_Control','\\1',resultsNames(FS12.de)[i])
     comp <- sub('treatment_', '', resultsNames(FS12.de)[i])
+    
+    # i dont think these two strategies for results calc are compatible....
     res <- results(object = FS12.de, name = resultsNames(FS12.de)[i], alpha=alpha, cooksCutoff = cooks_cut, pAdjustMethod = pAdjustMethod)
     res <- lfcShrink(FS12.de, coef = resultsNames(FS12.de)[i], type = shrink_type)
     sigtab = res[which(res$padj < alpha), ]
@@ -1842,10 +1869,126 @@ tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.fra
 #### Ok that wasnt so bad.
 # Now, which OTUs changed at Salmonella infection?
 # I think I need to add sum_sal info at beginning....
-FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day == 'D2')
+
+c(c('D0', 'D2'))
+
+#### log_sal as continuous covariate #### 
+formula(paste('~', 'log_sal'))
+FS12b@sam_data$day %in% c(day) & FS12b@sam_data$tissue == 'F'
+
+blarg <- function(phyloseq_obj, day, tissue, covariate){
+  form <- formula(paste('~', covariate))
+  print(form)
+  FS12b.glom <- phyloseq_obj %>% prune_samples(samples = phyloseq_obj@sam_data$day %in% c(day) & phyloseq_obj@sam_data$tissue == tissue)
+  FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
+  
+  # FS12b.glom@sam_data$log_sal
+  
+  FS12b.de <- phyloseq_to_deseq2(FS12b.glom, form)
+  FS12b.de <- DESeq(FS12b.de, test = 'Wald', fitType = 'parametric')
+  
+  # these are not both possible.  Right now only lfcshrink is doing anytihng
+  res <- results(FS12b.de, cooksCutoff = FALSE, name = covariate)
+  res <- lfcShrink(FS12b.de, coef = covariate, type = 'apeglm')
+  
+  # resultsNames(FS12b.de)
+  
+  res <- res[!is.na(res$padj),]
+  res <- res[res$padj < 0.1,]
+  sigtab <- res[abs(res$log2FoldChange) > .1 ,]
+  sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(phyloseq_obj)[rownames(sigtab), ], "matrix"))
+  sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = TRUE)
+  # sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, paste('down',treat, sep = '_'))
+  sigtab$OTU <- rownames(sigtab)
+  sigtab$salm <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
+  sigtab <- sigtab[order(sigtab$log2FoldChange),]
+  sigtab$OTU <- factor(sigtab$OTU, levels = sigtab$OTU)
+  
+  
+  p <- sigtab %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=salm)) +
+    geom_col(color='black') + coord_flip() + geom_text(aes(label=Genus, y=0))
+  
+  return(list(p, sigtab))
+  
+  
+}
 
 
-merge(FS12b@sam_data, sum_sal, by='pignum')
+# across all treatments
+
+# blarg(phyloseq_obj = FS12b, day = c('D2', 'D7', 'D14', 'D21'), tissue = 'F', covariate = 'log_sal')
+
+blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'log_sal')
+blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'log_sal')
+blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'log_sal')
+blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'log_sal')
+
+blarg(phyloseq_obj = FS12b, day = 'D0', tissue = 'F', covariate = 'AULC')
+blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'AULC')
+blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'AULC')
+blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'AULC')
+blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'AULC')
+
+blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'X', covariate = 'AULC')
+blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'AULC')
+
+
+
+
+blarg(day = 'D7')
+blarg(day = 'D14')
+blarg(day = 'D21') ### CANT DO THIS BECAUSE TISSUES ###
+
+### NEED TO ADD IN TISSUE DATA SO CAN MODEL log_sal in tissue vs tissue associated counts
+# THiS has to be done up in metadata section....
+
+#### WRAPPING THIS IN FUCNTION ###
+
+# D14 doesnt work here because all RCS pigs have exactly the same shedding level at D14
+FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day == 'D21' & FS12b@sam_data$tissue =='C')
+
+
+FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
+
+FS12b.glom@sam_data$log_sal
+
+# FS12b.glom@sam_data$log_sal
+
+FS12b.de <- phyloseq_to_deseq2(FS12b.glom, ~treatment * log_sal)
+FS12b.de <- DESeq(FS12b.de, test = 'Wald', fitType = 'parametric')
+
+resultsNames(FS12b.de)
+
+# res <- results(FS12b.de, cooksCutoff = FALSE, name = 'log_sal')
+res <- lfcShrink(FS12b.de, coef = 'treatmentRPS.log_sal', type = 'apeglm')
+
+# resultsNames(FS12b.de)
+
+res <- res[!is.na(res$padj),]
+res <- res[res$padj < 0.05,]
+sigtab <- res[abs(res$log2FoldChange) > .1 ,]
+sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(FS12b.glom)[rownames(sigtab), ], "matrix"))
+sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = TRUE)
+# sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, paste('down',treat, sep = '_'))
+sigtab$OTU <- rownames(sigtab)
+sigtab$salm <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
+sigtab <- sigtab[order(sigtab$log2FoldChange),]
+sigtab$OTU <- factor(sigtab$OTU, levels = sigtab$OTU)
+
+
+sigtab %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=salm)) +
+  geom_col(color='black') + coord_flip() + geom_text(aes(label=Genus, y=0))
+
+### END WRAP ###
+
+
+
+# sigtab$tissue <- tissue
+# sigtab$day <- day
+# sigtab$comp <- comp
+# finres[[resind]] <- sigtab
+
+# merge(FS12b@sam_data, sum_sal, by='pignum')
 
 
 
