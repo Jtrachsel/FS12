@@ -10,6 +10,8 @@ shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
 
+
+
 # This was to get the tissue salmonella matched up with the tissue 16S
 # tis$tissue <- as.character(tis$tissue)
 # 
@@ -29,11 +31,11 @@ shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 # 
 # meta2 <- tis %>% select(pig_tis_day, log_sal) %>%
 #   right_join(meta, by = 'pig_tis_day') %>%
-#   mutate(log_sal=ifelse(is.na(log_sal.x), log_sal.y, log_sal.x)) %>% 
+#   mutate(log_sal=ifelse(is.na(log_sal.x), log_sal.y, log_sal.x)) %>%
 #   select(-log_sal.x, -log_sal.y)
 # 
-# write_csv(x = meta, path = './data/FS12_final_meta.csv')
-# 
+# write_csv(x = meta2, path = './data/FS12_final_meta.csv')
+
 
 # I did this to get the salmonella shedding data in with the metadata
 # meta <- sum_sal %>% select(pignum, AULC) %>% right_join(meta, by = 'pignum')
@@ -461,17 +463,17 @@ tocontf.otu %>% filter(day !='D0') %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=
 
 #### genera for each treatment at D23 feces
 
-tocontf.genus %>% filter(day =='D23' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-  geom_text(aes(label=Genus, y=0))
-
-tocontf.genus %>% filter(day =='D23' & grepl('RCS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-  geom_text(aes(label=Genus, y=0))
-
-tocontf.genus %>% filter(day =='D23' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-  geom_text(aes(label=Genus, y=0))
+# tocontf.genus %>% filter(day =='D23' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
+#   geom_text(aes(label=Genus, y=0))
+# 
+# tocontf.genus %>% filter(day =='D23' & grepl('RCS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
+#   geom_text(aes(label=Genus, y=0))
+# 
+# tocontf.genus %>% filter(day =='D23' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
+#   geom_text(aes(label=Genus, y=0))
 
 tocontf.genus %>% filter(day =='D23' & grepl('Malto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
@@ -485,9 +487,9 @@ tocontf.genus %>% filter(day =='D23' & grepl('Pos_control', Treatment))%>% ggplo
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
   geom_text(aes(label=Genus, y=0))
 
-tocontf.genus %>% filter(day =='D23' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-  geom_text(aes(label=Genus, y=0))
+# tocontf.genus %>% filter(day =='D23' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
+#   geom_text(aes(label=Genus, y=0))
 
 tocontf.genus %>% filter(day =='D23' & grepl('Phyto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
@@ -507,13 +509,13 @@ tocontf.genus %>% filter(day =='D30' & grepl('RCS', Treatment))%>% ggplot(aes(x=
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
   geom_text(aes(label=Genus, y=0))
 
-tocontf.genus %>% filter(day =='D30' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-  geom_text(aes(label=Genus, y=0))
+# tocontf.genus %>% filter(day =='D30' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
+#   geom_text(aes(label=Genus, y=0))
 # 
-tocontf.genus %>% filter(day =='D30' & grepl('Malto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-  geom_text(aes(label=Genus, y=0))
+# tocontf.genus %>% filter(day =='D30' & grepl('Malto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
+#   geom_text(aes(label=Genus, y=0))
 
 tocontf.genus %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
@@ -578,9 +580,9 @@ tocontf.otu %>% filter(day =='D23' & grepl('SBP', Treatment))%>% ggplot(aes(x=OT
 
 ####### OTUs D30
 
-tocontf.otu %>% filter(day =='D30' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-  geom_text(aes(label=Genus, y=0))
+# tocontf.otu %>% filter(day =='D30' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
+#   geom_text(aes(label=Genus, y=0))
 
 tocontf.otu %>% filter(day =='D30' & grepl('RCS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
@@ -895,167 +897,308 @@ set.seed(71)
 
 
 
-vegdist()
-resu <- list()
+# vegdist()
+# resu <- list()
+# 
+# for (x in c("manhattan", "euclidean", "canberra", "clark", "bray", "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", "mountford", "raup", "binomial", "chao", "cao")){
+#   print(x)
+#   all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = 'bray', binary = FALSE)
+#   
+#   pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
+#   # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
+#   same_day_tissue <- pwad_to_cont[grep('(.*)_(.*)_.* vs \\1_\\2_.*', pwad_to_cont$pairs),]
+#   same_day_tissue$treatment <- sub('D[0-9]+_[FX]_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
+#   
+#   same_day_tissue[same_day_tissue$treatment == 'Control',]$treatment <- sub('.*_.*_.* vs .*_.*_(.*)','\\1', same_day_tissue[same_day_tissue$treatment == 'Control',]$pairs)
+#   # sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
+#   same_day_tissue$tissue <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
+#   same_day_tissue$day <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
+#   
+#   same_day_tissue$tissue <- ifelse(same_day_tissue$tissue == 'F', 'feces', 'cecal_mucosa')
+#   
+#   # same_day_tissue$p.adjusted <- p.adjust(same_day_tissue$p.value, method = 'fdr')
+#   
+#   same_day_tissue <- same_day_tissue %>% mutate(set=paste(tissue, day, sep = '_'))
+#   same_day_tissue <- same_day_tissue %>% group_by(set) %>% mutate(p.adjusted = p.adjust(p.value, method = 'fdr'))
+#   same_day_tissue$p.plot <- ifelse(same_day_tissue$p.adjusted <= 0.05, paste('p=', round(same_day_tissue$p.adjusted, 3), sep = ''), NA)
+#   
+#   same_day_tissue$set <- factor(same_day_tissue$set, levels = c('feces_D0', 'feces_D23', 'feces_D30', 'cecal_mucosa_D30'))
+#   
+#   #### NEED TO COME UP WITH COLOR TO USE
+#   # 
+# 
+#   
+#   
+#   
+#   same_day_tissue %>%
+#     ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + 
+#     geom_col(color='black') + facet_wrap(~set) + geom_text(aes(label=p.plot), nudge_y = .2) + 
+#     ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
+#     scale_fill_brewer(palette = 'Set1')
+#   
+#   FS12b <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'Q')
+#   FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'I')
+#   FS12b_rare <- rarefy_even_depth(FS12b_rare)
+#   
+#   
+#   min(sample_sums(FS12b_rare))
+#   PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999, binary = FALSE)
+#   # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
+#   
+#   
+#   
+#   
+#   PW.ad$pairs
+#   
+#   
+#   goods <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_\\2_\\3_(.*)', PW.ad$pairs),]
+#   
+#   times <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_(.*)_\\3_\\4', PW.ad$pairs),]
+#   
+#   # length(goods[,1])
+#   
+#   # goods$p.adjusted <- p.adjust(p=goods$p.value,method = 'holm')
+#   
+#   D0 <- goods[grep('D0', goods$pairs),]
+#   D0$day <- 0
+#   
+#   D2 <- goods[grep('D2_', goods$pairs),]
+#   D2$day <- 2
+#   D7 <- goods[grep('D7', goods$pairs),]
+#   D7$day <- 7
+#   D14 <- goods[grep('D14', goods$pairs),]
+#   D14$day <- 14
+#   D21 <- goods[grep('D21', goods$pairs),]
+#   D21$day <- 21
+#   
+#   fin <- rbind(D0, D2, D7, D14, D21)
+#   
+#   fin$pairs <- gsub('X12b_', '', fin$pairs)
+#   fin$pairs <- gsub('_F_', ' feces ', fin$pairs)
+#   fin$pairs <- gsub('_C_', ' cec_cont ', fin$pairs)
+#   fin$pairs <- gsub('_X_', ' cec_muc ', fin$pairs)
+#   fin$pairs <- gsub('_I_', ' il_muc ', fin$pairs)
+#   fin$pairs <- gsub('_Q_', ' tet ', fin$pairs)
+#   
+#   
+#   # write.csv(fin, 'mothur_PERMANOVA_results.csv')
+#   
+#   
+#   to_conts <- fin[grep('Control', fin$pairs),]
+#   
+#   to_conts$tissue <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\1', to_conts$pairs)
+#   
+#   to_conts$treatment <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\2', to_conts$pairs)
+#   
+#   to_conts$treatment[to_conts$treatment == 'Control'] <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\3', to_conts[to_conts$treatment == 'Control',]$pairs)
+#   
+#   
+#   
+#   # to_conts$p.hoch <- p.adjust(to_conts$p.value, method = 'hoch')
+#   # to_conts$p.holm <- p.adjust(to_conts$p.value, method = 'holm')
+#   to_conts$p.fdr <- p.adjust(to_conts$p.value, method = 'fdr')
+#   to_conts$p.fdr <- round(to_conts$p.fdr, digits = 3)
+#   to_conts$p.fdr.lab <- ifelse(to_conts$p.fdr < 0.05, to_conts$p.fdr, NA)
+#   
+#   to_conts$treatment <- factor(to_conts$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
+#   
+#   to_conts %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
+#     geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#     geom_label(color='black') +
+#     scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#     ggtitle('Community differences compared to control group over time', subtitle = )
+#   
+#   
+#   to_conts
+#   
+#   
+#   tmp_adon <- same_day_tissue %>% filter(day %in% c('D0', 'D23'))
+#   
+#   tmp_adon <- tmp_adon[,colnames(tmp_adon) %in% colnames(to_conts)]
+#   
+#   tmp_adon2 <- to_conts[,colnames(to_conts) %in% colnames(tmp_adon)]
+#   
+#   long_adon <- rbind(tmp_adon, tmp_adon2)
+#   
+#   long_adon$day <- sub('D0',-30,long_adon$day)
+#   long_adon$day <- sub('D23',-7,long_adon$day)
+#   long_adon$day <- as.numeric(long_adon$day)
+#   
+#   long_adon$p.fdr <- p.adjust(long_adon$p.value, method = 'fdr')
+#   long_adon$p.fdr <- round(long_adon$p.fdr, digits = 3)
+#   long_adon$p.fdr.lab <- ifelse(long_adon$p.fdr < 0.05, long_adon$p.fdr, NA)
+#   
+#   long_adon$treatment <- factor(long_adon$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
+#   
+#   
+#   
+#   resu[[x]] <- long_adon %>% filter(tissue == 'feces' & treatment %in% c('RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu')) %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
+#     geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#     geom_label(color='black') +
+#     scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#     ggtitle('Community differences compared to control group over time', subtitle = )
+#   
+# }
 
-for (x in c("manhattan", "euclidean", "canberra", "clark", "bray", "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", "mountford", "raup", "binomial", "chao", "cao")){
-  print(x)
-  all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = x, binary = TRUE)
-  
-  pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
-  # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
-  same_day_tissue <- pwad_to_cont[grep('(.*)_(.*)_.* vs \\1_\\2_.*', pwad_to_cont$pairs),]
-  same_day_tissue$treatment <- sub('D[0-9]+_[FX]_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
-  
-  same_day_tissue[same_day_tissue$treatment == 'Control',]$treatment <- sub('.*_.*_.* vs .*_.*_(.*)','\\1', same_day_tissue[same_day_tissue$treatment == 'Control',]$pairs)
-  # sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
-  same_day_tissue$tissue <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
-  same_day_tissue$day <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
-  
-  same_day_tissue$tissue <- ifelse(same_day_tissue$tissue == 'F', 'feces', 'cecal_mucosa')
-  
-  # same_day_tissue$p.adjusted <- p.adjust(same_day_tissue$p.value, method = 'fdr')
-  
-  same_day_tissue <- same_day_tissue %>% mutate(set=paste(tissue, day, sep = '_'))
-  same_day_tissue <- same_day_tissue %>% group_by(set) %>% mutate(p.adjusted = p.adjust(p.value, method = 'fdr'))
-  same_day_tissue$p.plot <- ifelse(same_day_tissue$p.adjusted <= 0.05, paste('p=', round(same_day_tissue$p.adjusted, 3), sep = ''), NA)
-  
-  same_day_tissue$set <- factor(same_day_tissue$set, levels = c('feces_D0', 'feces_D23', 'feces_D30', 'cecal_mucosa_D30'))
-  
-  #### NEED TO COME UP WITH COLOR TO USE
-  # 
 
-  
-  
-  
-  same_day_tissue %>%
-    ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + 
-    geom_col(color='black') + facet_wrap(~set) + geom_text(aes(label=p.plot), nudge_y = .2) + 
-    ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
-    scale_fill_brewer(palette = 'Set1')
-  
-  FS12b <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'Q')
-  FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'I')
-  FS12b_rare <- rarefy_even_depth(FS12b_rare)
-  
-  
-  min(sample_sums(FS12b_rare))
-  PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = x, p.adjust.m = 'none', perm = 999, binary = TRUE)
-  # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
-  
-  
-  
-  
-  PW.ad$pairs
-  
-  
-  goods <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_\\2_\\3_(.*)', PW.ad$pairs),]
-  
-  times <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_(.*)_\\3_\\4', PW.ad$pairs),]
-  
-  # length(goods[,1])
-  
-  # goods$p.adjusted <- p.adjust(p=goods$p.value,method = 'holm')
-  
-  D0 <- goods[grep('D0', goods$pairs),]
-  D0$day <- 0
-  
-  D2 <- goods[grep('D2_', goods$pairs),]
-  D2$day <- 2
-  D7 <- goods[grep('D7', goods$pairs),]
-  D7$day <- 7
-  D14 <- goods[grep('D14', goods$pairs),]
-  D14$day <- 14
-  D21 <- goods[grep('D21', goods$pairs),]
-  D21$day <- 21
-  
-  fin <- rbind(D0, D2, D7, D14, D21)
-  
-  fin$pairs <- gsub('X12b_', '', fin$pairs)
-  fin$pairs <- gsub('_F_', ' feces ', fin$pairs)
-  fin$pairs <- gsub('_C_', ' cec_cont ', fin$pairs)
-  fin$pairs <- gsub('_X_', ' cec_muc ', fin$pairs)
-  fin$pairs <- gsub('_I_', ' il_muc ', fin$pairs)
-  fin$pairs <- gsub('_Q_', ' tet ', fin$pairs)
-  
-  
-  # write.csv(fin, 'mothur_PERMANOVA_results.csv')
-  
-  
-  to_conts <- fin[grep('Control', fin$pairs),]
-  
-  to_conts$tissue <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\1', to_conts$pairs)
-  
-  to_conts$treatment <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\2', to_conts$pairs)
-  
-  to_conts$treatment[to_conts$treatment == 'Control'] <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\3', to_conts[to_conts$treatment == 'Control',]$pairs)
-  
-  
-  
-  # to_conts$p.hoch <- p.adjust(to_conts$p.value, method = 'hoch')
-  # to_conts$p.holm <- p.adjust(to_conts$p.value, method = 'holm')
-  to_conts$p.fdr <- p.adjust(to_conts$p.value, method = 'fdr')
-  to_conts$p.fdr <- round(to_conts$p.fdr, digits = 3)
-  to_conts$p.fdr.lab <- ifelse(to_conts$p.fdr < 0.05, to_conts$p.fdr, NA)
-  
-  to_conts$treatment <- factor(to_conts$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
-  
-  to_conts %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
-    geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-    geom_label(color='black') +
-    scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-    ggtitle('Community differences compared to control group over time', subtitle = )
-  
-  
-  to_conts
-  
-  
-  tmp_adon <- same_day_tissue %>% filter(day %in% c('D0', 'D23'))
-  
-  tmp_adon <- tmp_adon[,colnames(tmp_adon) %in% colnames(to_conts)]
-  
-  tmp_adon2 <- to_conts[,colnames(to_conts) %in% colnames(tmp_adon)]
-  
-  long_adon <- rbind(tmp_adon, tmp_adon2)
-  
-  long_adon$day <- sub('D0',-30,long_adon$day)
-  long_adon$day <- sub('D23',-7,long_adon$day)
-  long_adon$day <- as.numeric(long_adon$day)
-  
-  long_adon$p.fdr <- p.adjust(long_adon$p.value, method = 'fdr')
-  long_adon$p.fdr <- round(long_adon$p.fdr, digits = 3)
-  long_adon$p.fdr.lab <- ifelse(long_adon$p.fdr < 0.05, long_adon$p.fdr, NA)
-  
-  long_adon$treatment <- factor(long_adon$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
-  
-  
-  
-  resu[[x]] <- long_adon %>% filter(tissue == 'feces' & treatment %in% c('RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu')) %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
-    geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-    geom_label(color='black') +
-    scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-    ggtitle('Community differences compared to control group over time', subtitle = )
-  
-}
+all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = 'bray', binary = FALSE)
 
-resu2 <- resu
+pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
+# same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
+same_day_tissue <- pwad_to_cont[grep('(.*)_(.*)_.* vs \\1_\\2_.*', pwad_to_cont$pairs),]
+same_day_tissue$treatment <- sub('D[0-9]+_[FX]_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
 
-resu$manhattan
-resu$euclidean
-resu$canberra
-resu$clark
-resu$bray
-resu$kulczynski
-resu$jaccard
-resu$gower
-resu$altGower
-# resu$morisita
-resu$horn
-resu$mountford
-resu$raup
-resu$binomial
-resu$chao
-resu$cao
+same_day_tissue[same_day_tissue$treatment == 'Control',]$treatment <- sub('.*_.*_.* vs .*_.*_(.*)','\\1', same_day_tissue[same_day_tissue$treatment == 'Control',]$pairs)
+# sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
+same_day_tissue$tissue <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
+same_day_tissue$day <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
+
+same_day_tissue$tissue <- ifelse(same_day_tissue$tissue == 'F', 'feces', 'cecal_mucosa')
+
+# same_day_tissue$p.adjusted <- p.adjust(same_day_tissue$p.value, method = 'fdr')
+
+same_day_tissue <- same_day_tissue %>% mutate(set=paste(tissue, day, sep = '_'))
+same_day_tissue <- same_day_tissue %>% group_by(set) %>% mutate(p.adjusted = p.adjust(p.value, method = 'fdr'))
+same_day_tissue$p.plot <- ifelse(same_day_tissue$p.adjusted <= 0.05, paste('p=', round(same_day_tissue$p.adjusted, 3), sep = ''), NA)
+
+same_day_tissue$set <- factor(same_day_tissue$set, levels = c('feces_D0', 'feces_D23', 'feces_D30', 'cecal_mucosa_D30'))
+
+#### NEED TO COME UP WITH COLOR TO USE
+# 
+
+
+
+
+same_day_tissue %>%
+  ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + 
+  geom_col(color='black') + facet_wrap(~set) + geom_text(aes(label=p.plot), nudge_y = .2) + 
+  ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
+  scale_fill_brewer(palette = 'Set1')
+
+FS12b <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'Q')
+FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'I')
+FS12b_rare <- rarefy_even_depth(FS12b_rare)
+
+
+min(sample_sums(FS12b_rare))
+PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999, binary = FALSE)
+# PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
+
+
+
+
+PW.ad$pairs
+
+
+goods <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_\\2_\\3_(.*)', PW.ad$pairs),]
+
+times <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_(.*)_\\3_\\4', PW.ad$pairs),]
+
+# length(goods[,1])
+
+# goods$p.adjusted <- p.adjust(p=goods$p.value,method = 'holm')
+
+D0 <- goods[grep('D0', goods$pairs),]
+D0$day <- 0
+
+D2 <- goods[grep('D2_', goods$pairs),]
+D2$day <- 2
+D7 <- goods[grep('D7', goods$pairs),]
+D7$day <- 7
+D14 <- goods[grep('D14', goods$pairs),]
+D14$day <- 14
+D21 <- goods[grep('D21', goods$pairs),]
+D21$day <- 21
+
+fin <- rbind(D0, D2, D7, D14, D21)
+
+fin$pairs <- gsub('X12b_', '', fin$pairs)
+fin$pairs <- gsub('_F_', ' feces ', fin$pairs)
+fin$pairs <- gsub('_C_', ' cec_cont ', fin$pairs)
+fin$pairs <- gsub('_X_', ' cec_muc ', fin$pairs)
+fin$pairs <- gsub('_I_', ' il_muc ', fin$pairs)
+fin$pairs <- gsub('_Q_', ' tet ', fin$pairs)
+
+
+# write.csv(fin, 'mothur_PERMANOVA_results.csv')
+
+
+to_conts <- fin[grep('Control', fin$pairs),]
+
+to_conts$tissue <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\1', to_conts$pairs)
+
+to_conts$treatment <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\2', to_conts$pairs)
+
+to_conts$treatment[to_conts$treatment == 'Control'] <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\3', to_conts[to_conts$treatment == 'Control',]$pairs)
+
+
+
+# to_conts$p.hoch <- p.adjust(to_conts$p.value, method = 'hoch')
+# to_conts$p.holm <- p.adjust(to_conts$p.value, method = 'holm')
+to_conts$p.fdr <- p.adjust(to_conts$p.value, method = 'fdr')
+to_conts$p.fdr <- round(to_conts$p.fdr, digits = 3)
+to_conts$p.fdr.lab <- ifelse(to_conts$p.fdr < 0.05, to_conts$p.fdr, NA)
+
+to_conts$treatment <- factor(to_conts$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
+
+to_conts %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
+  geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+  geom_label(color='black') +
+  scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+  ggtitle('Community differences compared to control group over time', subtitle = )
+
+
+to_conts
+
+
+tmp_adon <- same_day_tissue %>% filter(day %in% c('D0', 'D23'))
+
+tmp_adon <- tmp_adon[,colnames(tmp_adon) %in% colnames(to_conts)]
+
+tmp_adon2 <- to_conts[,colnames(to_conts) %in% colnames(tmp_adon)]
+
+long_adon <- rbind(tmp_adon, tmp_adon2)
+
+long_adon$day <- sub('D0',-30,long_adon$day)
+long_adon$day <- sub('D23',-7,long_adon$day)
+long_adon$day <- as.numeric(long_adon$day)
+
+long_adon$p.fdr <- p.adjust(long_adon$p.value, method = 'fdr')
+long_adon$p.fdr <- round(long_adon$p.fdr, digits = 3)
+long_adon$p.fdr.lab <- ifelse(long_adon$p.fdr < 0.05, long_adon$p.fdr, NA)
+
+long_adon$treatment <- factor(long_adon$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
+
+
+long_adon %>% filter(tissue == 'feces' & treatment %in% c('RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu')) %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
+  geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+  geom_label(color='black') +
+  scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+  ggtitle('Community differences compared to control group over time', subtitle = )
+
+
+
+
+# 
+# 
+# resu2 <- resu
+# 
+# resu$manhattan
+# resu$euclidean
+# resu$canberra
+# resu$clark
+# resu$bray
+# resu$kulczynski
+# resu$jaccard
+# resu$gower
+# resu$altGower
+# # resu$morisita
+# resu$horn
+# resu$mountford
+# resu$raup
+# resu$binomial
+# resu$chao
+# resu$cao
 # resu$mahalanobis
 
 
@@ -1632,6 +1775,7 @@ D21X_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 
+
 ##### tissue C
 
 
@@ -1866,19 +2010,20 @@ biguns <- tocontf %>% group_by(OTU) %>% summarise(tot=sum(log2FoldChange)) %>% f
 tocont %>% filter(OTU %in% biguns) %>% select(OTU,Genus) %>% unique()
 
 tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.frame()
+
 #### Ok that wasnt so bad.
 # Now, which OTUs changed at Salmonella infection?
 # I think I need to add sum_sal info at beginning....
 
-c(c('D0', 'D2'))
+# c(c('D0', 'D2'))
 
 #### log_sal as continuous covariate #### 
 formula(paste('~', 'log_sal'))
-FS12b@sam_data$day %in% c(day) & FS12b@sam_data$tissue == 'F'
+# FS12b@sam_data$day %in% c(day) & FS12b@sam_data$tissue == 'F'
 
 blarg <- function(phyloseq_obj, day, tissue, covariate){
   form <- formula(paste('~', covariate))
-  print(form)
+  # print(form)
   FS12b.glom <- phyloseq_obj %>% prune_samples(samples = phyloseq_obj@sam_data$day %in% c(day) & phyloseq_obj@sam_data$tissue == tissue)
   FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
   
@@ -1923,6 +2068,14 @@ blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'log_sal')
 blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'log_sal')
 blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'log_sal')
 
+FS12b@sam_data$log_sal
+
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'X', covariate = 'log_sal')
+blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'I', covariate = 'log_sal')
+
+# 
+
 blarg(phyloseq_obj = FS12b, day = 'D0', tissue = 'F', covariate = 'AULC')
 blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'AULC')
 blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'AULC')
@@ -1934,33 +2087,30 @@ blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'AULC')
 
 
 
-
-blarg(day = 'D7')
-blarg(day = 'D14')
-blarg(day = 'D21') ### CANT DO THIS BECAUSE TISSUES ###
+### CANT DO THIS BECAUSE TISSUES ###
 
 ### NEED TO ADD IN TISSUE DATA SO CAN MODEL log_sal in tissue vs tissue associated counts
 # THiS has to be done up in metadata section....
 
 #### WRAPPING THIS IN FUCNTION ###
-
+######### WARNIGN!!!!! CAREFUL HERE !!!!!!
 # D14 doesnt work here because all RCS pigs have exactly the same shedding level at D14
-FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day == 'D21' & FS12b@sam_data$tissue =='C')
+FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day != 'D0' & FS12b@sam_data$tissue =='F')
 
 
-FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
+FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 5, FS12b.glom)
 
 FS12b.glom@sam_data$log_sal
 
 # FS12b.glom@sam_data$log_sal
 
-FS12b.de <- phyloseq_to_deseq2(FS12b.glom, ~treatment * log_sal)
+FS12b.de <- phyloseq_to_deseq2(FS12b.glom, ~log_sal)
 FS12b.de <- DESeq(FS12b.de, test = 'Wald', fitType = 'parametric')
 
 resultsNames(FS12b.de)
 
 # res <- results(FS12b.de, cooksCutoff = FALSE, name = 'log_sal')
-res <- lfcShrink(FS12b.de, coef = 'treatmentRPS.log_sal', type = 'apeglm')
+res <- lfcShrink(FS12b.de, coef = 'log_sal', type = 'apeglm')
 
 # resultsNames(FS12b.de)
 
