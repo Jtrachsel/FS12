@@ -9,9 +9,6 @@ meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors =
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
-
-
-
 # This was to get the tissue salmonella matched up with the tissue 16S
 # tis$tissue <- as.character(tis$tissue)
 # 
@@ -311,6 +308,9 @@ FS12a@sam_data %>% group_by(day, tissue) %>% mutate(minseqs=min(num_seqs)) %>% s
 
 
 FS12a@sam_data$set <- paste(FS12a@sam_data$day, FS12a@sam_data$tissue, FS12a@sam_data$treatment, sep='_')
+
+
+
 FS12a_rare <- phyloseq::rarefy_even_depth(FS12a,sample.size =  min(phyloseq::sample_sums(FS12a)), rngseed = 742)
 
 
@@ -321,7 +321,8 @@ library(ggrepel)
 FS12a_NMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) +
   geom_point(aes(color=day), size=2)+
   geom_segment(aes(xend=centroidX, yend=centroidY, color=day)) +
-  geom_point(data=labbies,aes(x=centroidX, y=centroidY, fill=treatment, shape=tissue), size=3, inherit.aes = FALSE)+ scale_shape_manual(values = c(21, 24))
+  geom_point(data=labbies,aes(x=centroidX, y=centroidY, fill=treatment, shape=tissue), size=3, inherit.aes = FALSE)+ scale_shape_manual(values = c(21, 24)) +
+  guides(fill = guide_legend(override.aes=list(shape=21)))
   # geom_text_repel(data=labbies, aes(label=treatment, x=centroidX, y=centroidY))#+ geom_path(data = FS12a_NMDS[[2]], aes(x=NMDS1, y=NMDS2, group=group))
 
 set.seed(71)
@@ -893,153 +894,6 @@ FS12b_meta %>% filter(tissue == 'I' & day == 21) %>%
 
 set.seed(71)
 
-# FS12a_rare@otu_table
-
-
-
-# vegdist()
-# resu <- list()
-# 
-# for (x in c("manhattan", "euclidean", "canberra", "clark", "bray", "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", "mountford", "raup", "binomial", "chao", "cao")){
-#   print(x)
-#   all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = 'bray', binary = FALSE)
-#   
-#   pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
-#   # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
-#   same_day_tissue <- pwad_to_cont[grep('(.*)_(.*)_.* vs \\1_\\2_.*', pwad_to_cont$pairs),]
-#   same_day_tissue$treatment <- sub('D[0-9]+_[FX]_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
-#   
-#   same_day_tissue[same_day_tissue$treatment == 'Control',]$treatment <- sub('.*_.*_.* vs .*_.*_(.*)','\\1', same_day_tissue[same_day_tissue$treatment == 'Control',]$pairs)
-#   # sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
-#   same_day_tissue$tissue <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
-#   same_day_tissue$day <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
-#   
-#   same_day_tissue$tissue <- ifelse(same_day_tissue$tissue == 'F', 'feces', 'cecal_mucosa')
-#   
-#   # same_day_tissue$p.adjusted <- p.adjust(same_day_tissue$p.value, method = 'fdr')
-#   
-#   same_day_tissue <- same_day_tissue %>% mutate(set=paste(tissue, day, sep = '_'))
-#   same_day_tissue <- same_day_tissue %>% group_by(set) %>% mutate(p.adjusted = p.adjust(p.value, method = 'fdr'))
-#   same_day_tissue$p.plot <- ifelse(same_day_tissue$p.adjusted <= 0.05, paste('p=', round(same_day_tissue$p.adjusted, 3), sep = ''), NA)
-#   
-#   same_day_tissue$set <- factor(same_day_tissue$set, levels = c('feces_D0', 'feces_D23', 'feces_D30', 'cecal_mucosa_D30'))
-#   
-#   #### NEED TO COME UP WITH COLOR TO USE
-#   # 
-# 
-#   
-#   
-#   
-#   same_day_tissue %>%
-#     ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + 
-#     geom_col(color='black') + facet_wrap(~set) + geom_text(aes(label=p.plot), nudge_y = .2) + 
-#     ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
-#     scale_fill_brewer(palette = 'Set1')
-#   
-#   FS12b <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'Q')
-#   FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'I')
-#   FS12b_rare <- rarefy_even_depth(FS12b_rare)
-#   
-#   
-#   min(sample_sums(FS12b_rare))
-#   PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999, binary = FALSE)
-#   # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
-#   
-#   
-#   
-#   
-#   PW.ad$pairs
-#   
-#   
-#   goods <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_\\2_\\3_(.*)', PW.ad$pairs),]
-#   
-#   times <- PW.ad[grep('(.*)_(.*)_(.*)_(.*) vs (.*)_(.*)_\\3_\\4', PW.ad$pairs),]
-#   
-#   # length(goods[,1])
-#   
-#   # goods$p.adjusted <- p.adjust(p=goods$p.value,method = 'holm')
-#   
-#   D0 <- goods[grep('D0', goods$pairs),]
-#   D0$day <- 0
-#   
-#   D2 <- goods[grep('D2_', goods$pairs),]
-#   D2$day <- 2
-#   D7 <- goods[grep('D7', goods$pairs),]
-#   D7$day <- 7
-#   D14 <- goods[grep('D14', goods$pairs),]
-#   D14$day <- 14
-#   D21 <- goods[grep('D21', goods$pairs),]
-#   D21$day <- 21
-#   
-#   fin <- rbind(D0, D2, D7, D14, D21)
-#   
-#   fin$pairs <- gsub('X12b_', '', fin$pairs)
-#   fin$pairs <- gsub('_F_', ' feces ', fin$pairs)
-#   fin$pairs <- gsub('_C_', ' cec_cont ', fin$pairs)
-#   fin$pairs <- gsub('_X_', ' cec_muc ', fin$pairs)
-#   fin$pairs <- gsub('_I_', ' il_muc ', fin$pairs)
-#   fin$pairs <- gsub('_Q_', ' tet ', fin$pairs)
-#   
-#   
-#   # write.csv(fin, 'mothur_PERMANOVA_results.csv')
-#   
-#   
-#   to_conts <- fin[grep('Control', fin$pairs),]
-#   
-#   to_conts$tissue <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\1', to_conts$pairs)
-#   
-#   to_conts$treatment <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\2', to_conts$pairs)
-#   
-#   to_conts$treatment[to_conts$treatment == 'Control'] <- gsub('D[0-9]+ ([A-Za-z_]+) ([A-Za-z]+) vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\3', to_conts[to_conts$treatment == 'Control',]$pairs)
-#   
-#   
-#   
-#   # to_conts$p.hoch <- p.adjust(to_conts$p.value, method = 'hoch')
-#   # to_conts$p.holm <- p.adjust(to_conts$p.value, method = 'holm')
-#   to_conts$p.fdr <- p.adjust(to_conts$p.value, method = 'fdr')
-#   to_conts$p.fdr <- round(to_conts$p.fdr, digits = 3)
-#   to_conts$p.fdr.lab <- ifelse(to_conts$p.fdr < 0.05, to_conts$p.fdr, NA)
-#   
-#   to_conts$treatment <- factor(to_conts$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
-#   
-#   to_conts %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
-#     geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-#     geom_label(color='black') +
-#     scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-#     ggtitle('Community differences compared to control group over time', subtitle = )
-#   
-#   
-#   to_conts
-#   
-#   
-#   tmp_adon <- same_day_tissue %>% filter(day %in% c('D0', 'D23'))
-#   
-#   tmp_adon <- tmp_adon[,colnames(tmp_adon) %in% colnames(to_conts)]
-#   
-#   tmp_adon2 <- to_conts[,colnames(to_conts) %in% colnames(tmp_adon)]
-#   
-#   long_adon <- rbind(tmp_adon, tmp_adon2)
-#   
-#   long_adon$day <- sub('D0',-30,long_adon$day)
-#   long_adon$day <- sub('D23',-7,long_adon$day)
-#   long_adon$day <- as.numeric(long_adon$day)
-#   
-#   long_adon$p.fdr <- p.adjust(long_adon$p.value, method = 'fdr')
-#   long_adon$p.fdr <- round(long_adon$p.fdr, digits = 3)
-#   long_adon$p.fdr.lab <- ifelse(long_adon$p.fdr < 0.05, long_adon$p.fdr, NA)
-#   
-#   long_adon$treatment <- factor(long_adon$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
-#   
-#   
-#   
-#   resu[[x]] <- long_adon %>% filter(tissue == 'feces' & treatment %in% c('RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu')) %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
-#     geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-#     geom_label(color='black') +
-#     scale_fill_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-#     ggtitle('Community differences compared to control group over time', subtitle = )
-#   
-# }
-
 
 all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = 'bray', binary = FALSE)
 
@@ -1178,32 +1032,6 @@ long_adon %>% filter(tissue == 'feces' & treatment %in% c('RPS', 'Acid', 'ZnCu',
 
 
 
-
-# 
-# 
-# resu2 <- resu
-# 
-# resu$manhattan
-# resu$euclidean
-# resu$canberra
-# resu$clark
-# resu$bray
-# resu$kulczynski
-# resu$jaccard
-# resu$gower
-# resu$altGower
-# # resu$morisita
-# resu$horn
-# resu$mountford
-# resu$raup
-# resu$binomial
-# resu$chao
-# resu$cao
-# resu$mahalanobis
-
-
-
-# Ok, just stick k with bray
 
 #SHOULD PLOT DIVERSITY AND RICHNESS AT SAME TIMEPOINTS HERE
 
@@ -1935,51 +1763,51 @@ tax$OTU <- rownames(tax)
 # unique(FS12b@sam_data$pignum)
 # 
 # FS12b@sam_data$treatment
+# DESeq
 
-
-DESeq_difabund <- function(phyloseq, day, tissue, scientific = TRUE, shrink_type='normal', 
-                           alpha=0.1, cooks_cut=FALSE, pAdjustMethod='BH'){
-  
-  # FS12b.glom <- tax_glom(FS12b, taxrank = 'Genus')
-  FS12b.glom <- prune_samples(x = phyloseq, samples = phyloseq@sam_data$day == day & phyloseq@sam_data$tissue == tissue)
-  FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-  FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~treatment)
-  FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-  
-  finres <- list()
-  resind <- 1
-  for (i in 2:length(resultsNames(FS12.de))){
-    print(resultsNames(FS12.de)[i])
-    treat <- sub('treatment_(.*)_vs_Control','\\1',resultsNames(FS12.de)[i])
-    comp <- sub('treatment_', '', resultsNames(FS12.de)[i])
-    
-    # i dont think these two strategies for results calc are compatible....
-    res <- results(object = FS12.de, name = resultsNames(FS12.de)[i], alpha=alpha, cooksCutoff = cooks_cut, pAdjustMethod = pAdjustMethod)
-    res <- lfcShrink(FS12.de, coef = resultsNames(FS12.de)[i], type = shrink_type)
-    sigtab = res[which(res$padj < alpha), ]
-    
-    if (nrow(sigtab) != 0){
-      # browser()
-      sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(FS12b.glom)[rownames(sigtab), ], "matrix"))
-      sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = scientific)
-      sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, paste('down',treat, sep = '_'))
-      sigtab$OTU <- rownames(sigtab)
-      sigtab$tissue <- tissue
-      sigtab$day <- day
-      sigtab$comp <- comp
-      finres[[resind]] <- sigtab
-      
-      resind <- resind + 1
-    }
-    
-    
-    
-  }
-  
-  finres <- bind_rows(finres)
-  return(finres)
-  
-}
+# DESeq_difabund <- function(phyloseq, day, tissue, scientific = TRUE, shrink_type='normal', 
+#                            alpha=0.1, cooks_cut=FALSE, pAdjustMethod='BH'){
+#   
+#   # FS12b.glom <- tax_glom(FS12b, taxrank = 'Genus')
+#   FS12b.glom <- prune_samples(x = phyloseq, samples = phyloseq@sam_data$day == day & phyloseq@sam_data$tissue == tissue)
+#   FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
+#   FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~treatment)
+#   FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
+#   
+#   finres <- list()
+#   resind <- 1
+#   for (i in 2:length(resultsNames(FS12.de))){
+#     print(resultsNames(FS12.de)[i])
+#     treat <- sub('treatment_(.*)_vs_Control','\\1',resultsNames(FS12.de)[i])
+#     comp <- sub('treatment_', '', resultsNames(FS12.de)[i])
+#     
+#     # i dont think these two strategies for results calc are compatible....
+#     res <- results(object = FS12.de, name = resultsNames(FS12.de)[i], alpha=alpha, cooksCutoff = cooks_cut, pAdjustMethod = pAdjustMethod)
+#     res <- lfcShrink(FS12.de, coef = resultsNames(FS12.de)[i], type = shrink_type)
+#     sigtab = res[which(res$padj < alpha), ]
+#     
+#     if (nrow(sigtab) != 0){
+#       # browser()
+#       sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(FS12b.glom)[rownames(sigtab), ], "matrix"))
+#       sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = scientific)
+#       sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, paste('down',treat, sep = '_'))
+#       sigtab$OTU <- rownames(sigtab)
+#       sigtab$tissue <- tissue
+#       sigtab$day <- day
+#       sigtab$comp <- comp
+#       finres[[resind]] <- sigtab
+#       
+#       resind <- resind + 1
+#     }
+#     
+#     
+#     
+#   }
+#   
+#   finres <- bind_rows(finres)
+#   return(finres)
+#   
+# }
 
 # something is afoot......
 # apparently I removed the Q tissues.....
@@ -2009,7 +1837,10 @@ biguns <- tocontf %>% group_by(OTU) %>% summarise(tot=sum(log2FoldChange)) %>% f
 
 tocont %>% filter(OTU %in% biguns) %>% select(OTU,Genus) %>% unique()
 
-tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.frame()
+tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>2) %>% as.data.frame()
+
+
+
 
 #### Ok that wasnt so bad.
 # Now, which OTUs changed at Salmonella infection?
@@ -2021,7 +1852,7 @@ tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.fra
 formula(paste('~', 'log_sal'))
 # FS12b@sam_data$day %in% c(day) & FS12b@sam_data$tissue == 'F'
 
-blarg <- function(phyloseq_obj, day, tissue, covariate){
+blarg <- function(phyloseq_obj, day, tissue, covariate, shrink_type='apeglm'){
   form <- formula(paste('~', covariate))
   # print(form)
   FS12b.glom <- phyloseq_obj %>% prune_samples(samples = phyloseq_obj@sam_data$day %in% c(day) & phyloseq_obj@sam_data$tissue == tissue)
@@ -2034,7 +1865,7 @@ blarg <- function(phyloseq_obj, day, tissue, covariate){
   
   # these are not both possible.  Right now only lfcshrink is doing anytihng
   res <- results(FS12b.de, cooksCutoff = FALSE, name = covariate)
-  res <- lfcShrink(FS12b.de, coef = covariate, type = 'apeglm')
+  res <- lfcShrink(FS12b.de, coef = covariate, type = shrink_type)
   
   # resultsNames(FS12b.de)
   
@@ -2048,6 +1879,8 @@ blarg <- function(phyloseq_obj, day, tissue, covariate){
   sigtab$salm <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
   sigtab <- sigtab[order(sigtab$log2FoldChange),]
   sigtab$OTU <- factor(sigtab$OTU, levels = sigtab$OTU)
+  sigtab$day <- day
+  sigtab$tissue <- tissue
   
   
   p <- sigtab %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=salm)) +
@@ -2058,24 +1891,70 @@ blarg <- function(phyloseq_obj, day, tissue, covariate){
   
 }
 
-
+blarg()
 # across all treatments
 
 # blarg(phyloseq_obj = FS12b, day = c('D2', 'D7', 'D14', 'D21'), tissue = 'F', covariate = 'log_sal')
 
-blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'log_sal')
-blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'log_sal')
-blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'log_sal')
-blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'log_sal')
+# THESE ARE THE ONES AT DAY 2 THAT HAVE A LINEAR RELATIONSHIP WITH SALMONELLA
+# LOG2FOLD CHANGE HERE MEANS whut?
 
-FS12b@sam_data$log_sal
 
-# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'X', covariate = 'log_sal')
-blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'log_sal')
-# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'I', covariate = 'log_sal')
+# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 2, FS12b.glom)
 
+# FS12b %>% subset_samples(treatment =='RPS') %>% prune_taxa(taxa_sums() > 2)
+
+
+
+global_sal_OTUs <- list(blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'log_sal')[[2]], 
+                        blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'log_sal')[[2]],
+                        blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'log_sal')[[2]],
+                        blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'log_sal')[[2]],
+                        blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'log_sal')[[2]])
+
+global_sal_OTUs <- bind_rows(global_sal_OTUs)
+
+
+## this is the filtered OTUs that differ by treatment
+tocontf
+
+# These are the OTUs with some kind of linear relationship with log_sal in their tissue/timepoint
+
+increase <- global_sal_OTUs %>% filter(log2FoldChange > 0) # OTUs associated with more salmonella
+decrease <- global_sal_OTUs %>% filter(log2FoldChange < 0) # OTUs associated with less salmonella
+
+tocontf[tocontf$OTU %in% increase$OTU,] # these are the OTUs that are associated with a treatment and also increased sal
+tocontf[tocontf$OTU %in% decrease$OTU,] # these are the OTUs that are associated with a treatment and also decreased sal
+
+
+global_sal_OTUs[!(global_sal_OTUs$OTU %in% tocontf$OTU),] # these are the OTUs that are not associated with a treatment but have an association with log_sal at some timepoint/tissue
+
+
+tocontf[tocontf$OTU %in% increase$OTU,]
+
+
+global_sal_OTUs %>% ggplot(aes(x=OTU, y=log2FoldChange, color))
+
+increase %>% group_by(OTU) %>% tally() %>% filter(n>1)
+decrease %>% group_by(OTU) %>% tally() %>% filter(n>1)
+
+
+
+# blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'log_sal')[[2]]
+# # LOOK FOR OTUs associated with treatment that seem to help salmonella status and OTUS associated with treatment that do not 
+# blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'log_sal')
 # 
+# FS12b@sam_data$log_sal
+# 
+# # blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'X', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'log_sal')
+# # blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'I', covariate = 'log_sal')
+# 
+# # 
 
+# these make less sense.  THey look at linear relationships between OTUs and AULC
 blarg(phyloseq_obj = FS12b, day = 'D0', tissue = 'F', covariate = 'AULC')
 blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'AULC')
 blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'AULC')
@@ -2084,15 +1963,17 @@ blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'AULC')
 
 blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'X', covariate = 'AULC')
 blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'AULC')
+blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'I', covariate = 'AULC')
+
+###
 
 
+FS12b.glom  = transform_sample_counts(FS12b, function(x) x / sum(x) )
+FS12b.glom = filter_taxa(FS12b.glom, function(x) mean(x) > 1e-5, TRUE)
 
-### CANT DO THIS BECAUSE TISSUES ###
+taxa_names(FS12b.glom) %in% 
+prune_taxa()
 
-### NEED TO ADD IN TISSUE DATA SO CAN MODEL log_sal in tissue vs tissue associated counts
-# THiS has to be done up in metadata section....
-
-#### WRAPPING THIS IN FUCNTION ###
 ######### WARNIGN!!!!! CAREFUL HERE !!!!!!
 # D14 doesnt work here because all RCS pigs have exactly the same shedding level at D14
 FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day != 'D0' & FS12b@sam_data$tissue =='F')
