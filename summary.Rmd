@@ -1,0 +1,44 @@
+---
+title: "FS12a"
+author: "Julian Trachsel"
+date: "3/28/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## FS12a/ Alternatives to ABX (nursery)
+
+Two main cohorts presented here. 
+ 1) NADC - Salmonella infection - 
+     * 16S rRNA gene amplicon data at D0, D23
+     * 1 pig per pen from all treatments
+     * Then Xfered to NADC for Salmonella challenge
+         * only Control, RPS, Acid, Zn+Cu, RCS, Bglu transfered
+ 2) Nursery Necropsy cohort
+     * 
+
+```{r }
+
+FS12a_NMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) +
+  geom_point(aes(color=day), size=2)+
+  geom_segment(aes(xend=centroidX, yend=centroidY, color=day)) +
+  geom_point(data=labbies,aes(x=centroidX, y=centroidY, fill=treatment, shape=tissue), size=3, inherit.aes = FALSE)+     scale_shape_manual(values = c(21, 24)) +
+  guides(fill = guide_legend(override.aes=list(shape=21)))
+
+
+global_adon
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
