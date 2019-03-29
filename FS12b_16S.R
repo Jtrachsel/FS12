@@ -9,6 +9,32 @@ meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors =
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
+# added FS12a weight data
+# weight <- read_csv('data/October_12_13_Necropsy_List_full_info.csv')
+# 
+# 
+# colnames(weight) <- c('pen', 'treatment', 'pignum', 'gender', 'weight', 'where')
+# 
+# weight$experiment <- 'X12a'
+# weight$day <- 'D30'
+# weight <- weight %>% select(pignum, pen, experiment, day, weight)
+# 
+# weight$pig_time <- paste(weight$pignum, weight$day, sep = '_')
+# 
+# weight[!(weight$pig_time %in% meta$pig_time),]
+# 
+# meta$experiment
+# 
+# meta[meta$pignum == 469 & meta$day == 'D30',]$pignum <- 468
+# meta$pig_time <- paste(meta$pignum, meta$day, sep = '_')
+# 
+# meta$pig_pen
+# 
+# meta <- weight %>% select(pig_time, weight) %>% right_join(meta, by = 'pig_time')
+# 
+# meta %>% select(sample_ID, pignum, experiment, pen, day, tissue, num_seqs, treatment, set, log_sal, AULC, weight)
+# write_csv(x = meta, path = './data/FS12_final_meta.csv')
+
 # This was to get the tissue salmonella matched up with the tissue 16S
 # tis$tissue <- as.character(tis$tissue)
 # 
@@ -136,7 +162,7 @@ ABcomp <- ABcomp %>% subset_samples(treatment != 'Pos_control')
 # 1) all together
 # 
 set.seed(357)
-ABcomp_rare <- phyloseq::rarefy_even_depth(ABcomp,sample.size =  min(phyloseq::sample_sums(ABcomp)))
+ABcomp_rare <- phyloseq::rarefy_even_depth(ABcomp,sample.size =  min(phyloseq::sample_sums(ABcomp)), rngseed = 753)
 
 
 ABNMDS <- NMDS_ellipse(ABcomp_rare@sam_data, OTU_table = ABcomp_rare@otu_table, grouping_set = 'treatment', distance_method = 'bray',MDS_trymax = 100)
@@ -171,17 +197,18 @@ split_pwad$pairs
 within_treats <- split_pwad[grep('.*_.*_.*_(.*) vs .*_.*_.*_\\1', split_pwad$pairs),]
 
 within_treats$treatment <- sub('.*_.*_.*_(.*) vs .*_.*_.*_.*', '\\1', within_treats$pairs)
+within_treats$p.adjusted <- p.adjust(within_treats$p.value, method='bonferroni')
+
+# p.adjust.methods
 
 within_treats %>%
   ggplot(aes(x=treatment, y=F.Model, fill=treatment)) +
   geom_col() + geom_text(aes(label=p.adjusted), nudge_y = -.2) +
-  ggtitle('Differences between FS12a and FS12b groups at end of nursery')
+  ggtitle('Differences between FS12a and FS12b groups at end of nursery', 'D0 FS12b pigs vs D30 FS12a ')
 
 
 #### Some DEseq2 stuff
 library(DESeq2)
-
-
 
 results_list <- list()
 for (treatment in c('Control', 'RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu')){
@@ -272,17 +299,19 @@ changed <- FS12@sam_data %>% filter(pignum %in% inBnotA) %>% select(pignum, trea
 
 FS12a <- FS12 %>% subset_samples(experiment == 'X12a')
 
+FS12a@sam_data$treatment
 
-FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control', 
-                                                                        'RPS',
-                                                                        'Acid', 
-                                                                        'ZnCu', 
-                                                                        'RCS', 
-                                                                        'Bglu', 
-                                                                        'Pos_control', 
-                                                                        'Phyto', 
-                                                                        'Malto', 
-                                                                        'SBP'))
+# 
+# FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control', 
+#                                                                         'RPS',
+#                                                                         'Acid', 
+#                                                                         'ZnCu', 
+#                                                                         'RCS', 
+#                                                                         'Bglu', 
+#                                                                         'Pos_control', 
+#                                                                         'Phyto', 
+#                                                                         'Malto', 
+#                                                                         'SBP'))
 
 hist(sample_sums(FS12a), breaks = 50)
 
@@ -325,7 +354,7 @@ FS12a_rare <- phyloseq::rarefy_even_depth(FS12a,sample.size =  min(phyloseq::sam
 FS12a_NMDS <- NMDS_ellipse(FS12a_rare@sam_data, OTU_table = FS12a_rare@otu_table, grouping_set = 'set', distance_method = 'bray', MDS_trymax = 150)
 
 labbies <- FS12a_NMDS[[1]] %>% select(tissue, treatment, day, set, centroidX, centroidY) %>% unique()
-library(ggrepel)
+# library(ggrepel)
 
 #####
 library(RColorBrewer)
@@ -334,9 +363,13 @@ getPalette = colorRampPalette(brewer.pal(9, "Set1"))
 
 fills <- c('black', getPalette(9))
 
+unique(FS12a_NMDS[[1]]$treatment)
 
-getPal
 
+FS12a_NMDS[[1]]$treatment <- factor(FS12a_NMDS[[1]]$treatment, levels = c('Control', 'Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
+# getPal
+
+labbies$treatment <- factor(labbies$treatment, levels =c('Control', 'Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
 ### THIS IS A GOOD ONE. SHOW WITH GLOBAL ADONIS TEST
 
 FS12a_NMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) +
@@ -388,9 +421,11 @@ global_adon <- adonis(FS12a_rare@otu_table~day + treatment + tissue,
 
 
 # put this with ordination fig
-global_adon
+write <- global_adon$aov.tab
+write$variable <- rownames(write)
 
-
+write <- write %>% select(variable, everything())
+write_csv(write, 'GLOB_ADON')
 #### Deseq comparisons
 # D23 each diet vs control
 # D23 each diet vs pos_control
@@ -410,6 +445,8 @@ global_adon
 #                                                                         'Phyto', 
 #                                                                         'Malto', 
 #                                                                         'SBP'))
+FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control', 'Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
+
 
 unique(FS12a@sam_data$treatment)
 
@@ -427,18 +464,18 @@ tocont.otu <- list(DESeq_difabund(phyloseq = FS12a, day = 'D0', tissue = 'F', sc
                DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'normal',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
 
 ###
-
-tocont.genus.ape <- list(DESeq_difabund(phyloseq = FS12a.glom, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-                     DESeq_difabund(phyloseq = FS12a.glom, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-                     DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-                     DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
-
-
-tocont.otu.ape <- list(DESeq_difabund(phyloseq = FS12a, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-                   DESeq_difabund(phyloseq = FS12a, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-                   DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-                   DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
-
+# 
+# tocont.genus.ape <- list(DESeq_difabund(phyloseq = FS12a.glom, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
+#                      DESeq_difabund(phyloseq = FS12a.glom, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
+#                      DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
+#                      DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
+# 
+# 
+# tocont.otu.ape <- list(DESeq_difabund(phyloseq = FS12a, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
+#                    DESeq_difabund(phyloseq = FS12a, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
+#                    DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
+#                    DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
+# 
 
 
 
@@ -447,17 +484,17 @@ tocont.otu <- bind_rows(tocont.otu)
 tocont.genus <- bind_rows(tocont.genus)
 
 
-tocont.otu.ape <- bind_rows(tocont.otu.ape)
-tocont.genus.ape <- bind_rows(tocont.genus.ape)
+# tocont.otu.ape <- bind_rows(tocont.otu.ape)
+# tocont.genus.ape <- bind_rows(tocont.genus.ape)
 
 
 
 tocontf.otu <- tocont.otu[abs(tocont.otu$log2FoldChange) > .5,]
 tocontf.genus <- tocont.genus[abs(tocont.genus$log2FoldChange) > .5,]
 
-
-tocontf.otu.ape <- tocont.otu.ape[abs(tocont.otu.ape$log2FoldChange) > .5,]
-tocontf.genus.ape <- tocont.genus.ape[abs(tocont.genus.ape$log2FoldChange) > .5,]
+# 
+# tocontf.otu.ape <- tocont.otu.ape[abs(tocont.otu.ape$log2FoldChange) > .5,]
+# tocontf.genus.ape <- tocont.genus.ape[abs(tocont.genus.ape$log2FoldChange) > .5,]
 
 # 
 # tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.frame()
@@ -532,17 +569,17 @@ tocontf.otu %>% filter(day !='D0') %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=
 #   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
 #   geom_text(aes(label=Genus, y=0))
 
-tocontf.genus %>% filter(day =='D23' & grepl('Malto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
+tocontf.genus %>% filter(day =='D23' & grepl('Malto', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0))
+  geom_text(aes(label=Genus, y=0)) + theme(axis.text.y = element_blank())
 
-tocontf.genus %>% filter(day =='D23' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
+tocontf.genus %>% filter(day =='D23' & grepl('RPS', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0)) 
+  geom_text(aes(label=Genus, y=0)) + theme(axis.text.y = element_blank())
 
-tocontf.genus %>% filter(day =='D23' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
+tocontf.genus %>% filter(day =='D23' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0))
+  geom_text(aes(label=Genus, y=0))+ theme(axis.text.y = element_blank()) + ggtitle('D23 Pos_control')
 
 # tocontf.genus %>% filter(day =='D23' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
 #   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
@@ -574,13 +611,13 @@ tocontf.genus %>% filter(day =='D30' & grepl('RCS', Treatment))%>% ggplot(aes(x=
 #   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
 #   geom_text(aes(label=Genus, y=0))
 
-tocontf.genus %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
+tocontf.genus %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=tissue)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0)) + ylim(-10,20)
+  geom_text(aes(label=Genus, y=0)) + ylim(-5,15)+ theme(axis.text.y = element_blank()) + ggtitle('D30 RPS')
 
 tocontf.genus %>% filter(day =='D30' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0))
+  geom_text(aes(label=Genus, y=0))+ theme(axis.text.y = element_blank()) + ggtitle('D30 Pos_control')
 
 tocontf.genus %>% filter(day =='D30' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
@@ -617,11 +654,11 @@ tocontf.otu %>% filter(day =='D23' & grepl('Malto', Treatment))%>% ggplot(aes(x=
 
 tocontf.otu %>% filter(day =='D23' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0)) + ylim(-6,7)
+  geom_text(aes(label=Genus, y=0)) + ylim(-6,7) + ggtitle('D23 RPS')
 
 tocontf.otu %>% filter(day =='D23' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0))
+  geom_text(aes(label=Genus, y=0))  + ggtitle('D23 Pos_control')
 
 tocontf.otu %>% filter(day =='D23' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
@@ -655,7 +692,7 @@ tocontf.otu %>% filter(day =='D30' & grepl('Bglu', Treatment))%>% ggplot(aes(x=O
 
 tocontf.otu %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=tissue)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-  geom_text(aes(label=Genus, y=0)) + ylim(-10,30)
+  geom_text(aes(label=Genus, y=0)) + ylim(-10,30) + ggtitle('D30 RPS')
 
 tocontf.otu %>% filter(day =='D30' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
@@ -673,21 +710,26 @@ tocontf.otu %>% filter(day =='D30' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=O
 #   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
 #   geom_text(aes(label=Genus, y=0))
 
+tocontf.genus <- tocontf.genus%>% mutate(comp2=sub('(.*)_vs_Control','\\1',comp))
+tocontf.otu <- tocontf.otu %>%  mutate(comp2=sub('(.*)_vs_Control','\\1',comp))
 
-tocontf.genus %>% filter(day != 'D0') %>% group_by(comp, day, tissue) %>% summarise(num_diff_genera=n()) %>% 
-  mutate(comp2=sub('(.*)_vs_Control','\\1',comp)) %>% 
+tocontf.genus$comp2 <- factor(tocontf.genus$comp2, levels = c('Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
+tocontf.otu$comp2 <- factor(tocontf.otu$comp2, levels = c('Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
+
+
+tocontf.genus %>% filter(day != 'D0') %>% group_by(comp2, day, tissue) %>% summarise(num_diff_genera=n()) %>% 
   ggplot(aes(x=comp2, y=num_diff_genera)) + geom_col(aes(fill=comp2),color='black') + facet_wrap(~day) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 1)) + scale_fill_brewer(palette = 'Set1')
+  theme(axis.text.x = element_text(angle = 90, vjust = 1)) + scale_fill_brewer(palette = 'Set1', drop=FALSE) + scale_x_discrete(drop=FALSE)
 
 
 
-tocontf.otu %>% filter(day != 'D0') %>% group_by(comp, day, tissue) %>% summarise(num_diff_otus=n()) %>% 
-  mutate(comp2=sub('(.*)_vs_Control','\\1',comp)) %>% 
+tocontf.otu %>% filter(day != 'D0') %>% group_by(comp2, day, tissue) %>% summarise(num_diff_otus=n()) %>% 
   ggplot(aes(x=comp2, y=num_diff_otus)) + geom_col(aes(fill=comp2),color='black') + facet_wrap(~day) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 1)) + scale_fill_brewer(palette = 'Set1')
+  theme(axis.text.x = element_text(angle = 90, vjust = 1)) + scale_fill_brewer(palette = 'Set1', drop=FALSE) + scale_x_discrete(drop=FALSE)
 
 
-
+tocontf.genus %>% write_csv('Diff_abund_genera_all.csv')
+tocontf.otu %>% write_csv('Diff_abund_OTUs_all.csv')
 
 FS12a@sam_data %>% group_by(day, tissue, treatment) %>% tally()
 
@@ -751,10 +793,14 @@ FS12a_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=FS12a_dispers
   # scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + ggtitle('Fecal community dispersion over time')+ geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)#+ geom_text(aes(label=pignum))
 
 
+#### FS12a weight here ####
 
 
 
+weight_assoc_X <- blarg(phyloseq_obj = FS12a, day = 'D30', tissue = 'X', covariate = 'weight')
 
+
+weight_assoc_F <- blarg(phyloseq_obj = FS12a, day = 'D30', tissue = 'F', covariate = 'weight')
 
 
 
