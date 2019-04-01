@@ -9,6 +9,20 @@ meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors =
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
+
+
+KW <- read_csv('./data/weights_Kerr.csv')
+
+colnames(KW) <- c('pignum', 'Pen', 'Diet', 'Gender', 'weight_9_12', 'weight_10_9', 'nurse_gain')
+
+meta <- KW %>% select(pignum, Gender, weight_9_12, weight_10_9) %>% right_join(meta, by = 'pignum')
+
+
+colnames(meta)
+
+meta <- meta %>% select(sample_ID, pignum, everything(), -pig_time, -pig_tis_day, -pig_pen)
+
+write_csv(x = meta, path = './data/FS12_final_meta.csv')
 # added FS12a weight data
 # weight <- read_csv('data/October_12_13_Necropsy_List_full_info.csv')
 # 
@@ -146,8 +160,11 @@ colSums(mocks)
 rownames(mocks)
 mock_tax <- taxa[taxa$OTU %in% colnames(mocks),]
 
+# this is to send to Kerr and Gabler to get weight data on these pigs #
+# this should be removed when i can fold in the weight data
 
-
+sort(unique(FS12@sam_data$pignum))
+write_lines(sort(unique(FS12@sam_data$pignum)), path = 'Need_weights_on_these_pigs.txt')
 
 
 ############### FS12a CLUSTERFUCK HERE #############
