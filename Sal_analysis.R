@@ -277,11 +277,30 @@ library(lmerTest)
 sal_data2 <- sal_data %>% filter(pignum != 101 & time_point != 0)
 sal_data2$pignum <- factor(sal_data2$pignum)
 
-fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
+sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) + geom_point() + geom_smooth(method = 'lm', fill=NA)
+
+sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) +  geom_smooth(method = 'lm', fill=NA)
+
+
+fit <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)
+fit2 <- lmer(log_sal ~ 1 + time_point * treatment + (1|pignum) , data=sal_data2)
+fit3 <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)
+
+# fit <- lmer(log_sal ~ treatment + (1|pignum) + (1|time_point) , data=sal_data2)
+
+summary(fit)
+summary(fit2)
 
 plot(fit)
 
 summ <- summary(fit)
+fit3 <- lm(data=sum_sal, AULC~treatment)
+
+conf_ints <- confint(fit3)
+fit3
+residuals.lm(fit3)
+
+summary(fit3)
 
 # I'm going to need some help interpreting this...
 summ
