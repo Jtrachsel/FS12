@@ -277,24 +277,47 @@ library(lmerTest)
 sal_data2 <- sal_data %>% filter(pignum != 101 & time_point != 0)
 sal_data2$pignum <- factor(sal_data2$pignum)
 
-sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) + geom_point() + geom_smooth(method = 'lm', fill=NA)
+sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) + geom_point(alpha=.2) + geom_smooth(method = 'lm', fill=NA)
 
 sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) +  geom_smooth(method = 'lm', fill=NA)
 
+# this is dum
+# sal_data2 %>% group_by(treatment, time_point) %>% summarise(tmean=mean(log_sal)) %>% mutate(dif_c=tmean[1]-tmean) %>% summarise(gmean=mean(tmean)) %>% mutate(dc=gmean-gmean[1])
+
+
 
 fit <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)
-fit2 <- lmer(log_sal ~ 1 + time_point * treatment + (1|pignum) , data=sal_data2)
-fit3 <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)
+
+# LRT test???
+
+shedding.null <- lme4::lmer(log_sal ~ time_point + (1|pignum) , data=sal_data2, REML = FALSE)
+shedding.model <- lme4::lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2, REML = FALSE)
+
+
+anova(shedding.model, shedding.null)
+# fit2 <- lmer(log_sal ~ 1 + time_point * treatment + (1|pignum) , data=sal_data2)
+# fit2 <- lmer(log_sal ~ time_point * treatment + (time_point|pignum) , data=sal_data2)
 
 # fit <- lmer(log_sal ~ treatment + (1|pignum) + (1|time_point) , data=sal_data2)
+
+
+
+13*7
 
 summary(fit)
 summary(fit2)
 
-plot(fit)
+plot(fit3)
 
 summ <- summary(fit)
 fit3 <- lm(data=sum_sal, AULC~treatment)
+
+summary(fit3)
+
+sum_sal %>% filter(pignum != 101) %>%  group_by(treatment) %>% summarise(tmean=mean(AULC)) %>% 
+  mutate(d_cont=tmean-tmean[1])
+
+
 
 conf_ints <- confint(fit3)
 fit3
