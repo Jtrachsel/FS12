@@ -9,6 +9,18 @@ meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors =
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
+####
+vfas_for_cor$tissue <- 'C'
+
+vfas <- vfas_for_cor %>%mutate(day=paste('D', day, sep = '')) %>%  mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>%
+  select(pig_day_tissue, ends_with('ate'))
+
+meta <- meta %>% mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>% left_join(vfas)
+
+vfas$pig_day_tissue
+meta$pig_day_tissue
+
+
 # meta2 <- read_csv('data/FS12_all_treatments.csv') %>% select(pignum, pen) %>% right_join(meta, by = 'pignum') %>% 
 #   mutate(pen=pen.x) %>% select(-pen.y, -pen.x)
 # 
@@ -176,6 +188,7 @@ FS12b <- subset_samples(FS12b, treatment %in% c('Control', 'RPS', 'Acid', 'RCS')
 # making sure factors are set correctly
 
 FS12b@sam_data$treatment <- factor(FS12b@sam_data$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))
+
 
 FS12b@sam_data$set
 
@@ -1018,7 +1031,7 @@ tmpres[tmpres$padj < 0.1,]
 
 
 D0_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-                phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                 name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 ### D0 Q
@@ -1051,7 +1064,7 @@ resultsNames(FS12.de)
 
 
 D2_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
-                             phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                             phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                              name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 #### D7
@@ -1067,7 +1080,7 @@ resultsNames(FS12.de)
 
 
 D7_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
-                             phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                             phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                              name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 
@@ -1085,7 +1098,7 @@ resultsNames(FS12.de)
 
 
 D14_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-                               phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                               phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 ##### D21 F
@@ -1102,7 +1115,7 @@ resultsNames(FS12.de)
 
 
 D21F_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-                                phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                                phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                                 name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 #### Tissue X
@@ -1120,7 +1133,7 @@ resultsNames(FS12.de)
 
 
 D21X_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
-                               phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                               phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 
@@ -1141,7 +1154,7 @@ resultsNames(FS12.de)
 
 
 D21C_highlow <-Deseq.quickplot(DeSeq.object = FS12.de,
-                               phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                               phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 ##### tissue I
@@ -1158,7 +1171,7 @@ resultsNames(FS12.de)
 
 
 D21I_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-                                phyloseq.object = FS12b.glom, pvalue = .05, alpha = 0.05,
+                                phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                                 name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 
@@ -1228,6 +1241,14 @@ p <- RPS_split_master %>%
   scale_fill_brewer(palette = 'Pastel1') + ylab('occurences') + ggtitle('Number of times OTUs are significantly enriched (p<0.05)\n in either shedding phenotype') + 
   theme(axis.text.x = element_text(angle = 90, vjust = .4)) + xlab('')
 
+
+RPS_split_master %>%
+  group_by(OTU, Treatment) %>%
+  tally() %>%
+  ggplot(aes(x=OTU, y=n, fill=Treatment)) + geom_col() +
+  scale_fill_brewer(palette = 'Pastel1') + ylab('occurences') + ggtitle('Number of times OTUs are significantly enriched (p<0.05)\n in either shedding phenotype') + 
+  theme(axis.text.x = element_text(angle = 90, vjust = .4)) + xlab('')
+
  
 ggplot2::ggplot_build(p)
 
@@ -1284,9 +1305,10 @@ D7_f_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', cova
 # blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'log_sal')
 # blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'F', covariate = 'log_sal')
 
+# blarg(phyloseq_obj = FS12_RPS, day = 'D0',tissue = 'F', covariate = 'AULC')
 # blarg(phyloseq_obj = FS12_RPS, day = 'D2',tissue = 'F', covariate = 'AULC')
 # blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', covariate = 'AULC')
-D14_f_RPS_AULC <-  blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'AULC')
+# D14_f_RPS_AULC <-  blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'AULC')
 D21_f_RPS_AULC <- blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'F', covariate = 'AULC')
 
 D21_x_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'log_sal') # interesting....
@@ -1297,6 +1319,13 @@ blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'AULC')
 blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'AULC')
 blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='I', covariate = 'AULC')
 
+
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'butyrate')
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'valerate')
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'caproate')
+
+
+meta$butyrate
 #############################################
 
 # should make a function for this....
@@ -1527,7 +1556,7 @@ blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'I', covariate = 'AULC')
 FS12b.glom  = transform_sample_counts(FS12b, function(x) x / sum(x) )
 FS12b.glom = filter_taxa(FS12b.glom, function(x) mean(x) > 1e-5, TRUE)
 
-taxa_names(FS12b.glom) %in% 
+# PSMELT AND BOXPLOTS HERE!!!!!!!!!
 prune_taxa()
 
 ######### WARNIGN!!!!! CAREFUL HERE !!!!!!
