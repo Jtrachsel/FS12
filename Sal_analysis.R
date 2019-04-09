@@ -228,7 +228,20 @@ filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'Wilcoxon vs control: RPS p=0.013, Acid p=0.10, Bglu p=0.043')
 
+filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
+  geom_text(aes(label=pignum)) + #geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + 
+  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+  ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'Wilcoxon vs control: RPS p=0.013, Acid p=0.10, Bglu p=0.043')
 
+
+
+filter(sum_sal, pignum !=101) %>% select(pignum, AULC, treatment)
+
+low_conts <- c(345,77,191,458,87,160)
+high_conts <- c(337,122,224,419)
+
+# Control and RPS AULC variance not sig dif
+# var.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'RPS' & sum_sal$pignum !=101])
 
 # filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
 #   geom_boxplot(outlier.alpha = 0) + geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + #geom_text(aes(label=pignum)) +
@@ -268,8 +281,8 @@ t.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatm
 
 #### Trying a little mixed model stuff....
 
-library(lmerTest)
-
+# library(lmerTest)
+library(lme4)
 # lmer(y ~ time * tx + (1 | subjects), data=data)
 # lmer(y ~ time * tx + (time | subjects), data=data)
 
@@ -285,32 +298,93 @@ sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) +  geom_smoo
 # sal_data2 %>% group_by(treatment, time_point) %>% summarise(tmean=mean(log_sal)) %>% mutate(dif_c=tmean[1]-tmean) %>% summarise(gmean=mean(tmean)) %>% mutate(dc=gmean-gmean[1])
 
 
-
-fit <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)
+###
 
 # LRT test???
-
+# Are these two models equivalent?
 shedding.null <- lme4::lmer(log_sal ~ time_point + (1|pignum) , data=sal_data2, REML = FALSE)
 shedding.model <- lme4::lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2, REML = FALSE)
 
-
 anova(shedding.model, shedding.null)
-# fit2 <- lmer(log_sal ~ 1 + time_point * treatment + (1|pignum) , data=sal_data2)
-# fit2 <- lmer(log_sal ~ time_point * treatment + (time_point|pignum) , data=sal_data2)
+anova(shedding.null, shedding.model)
+# No, two models are not equivalent, adding treatment factor helps explain more variance in the data
+# so now extract coeficcients for treatments?  what do these mean?  Are they the difference in intercept between reference group (control) and other groups?
+# intercepts would be shedding at time_point 0?
 
-# fit <- lmer(log_sal ~ treatment + (1|pignum) + (1|time_point) , data=sal_data2)
+###
+
+fit <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)
+
+lme4::confint.merMod(fit)
+lme4::fixef(fit)
+whatsTHIS <- lme4::fortify.merMod(fit)
+#hmmm...... interesteting
+whatsTHIS %>% group_by(treatment, time_point) %>% summarise(avg=mean(log_sal))
+whatsTHIS %>% ggplot(aes(x=time_point, y=.fitted)) +
+  geom_point(aes(x=time_point, y=log_sal), color='red', alpha=.2) + geom_line(aes(x=time_point, y=log_sal, group=pignum), color='red', alpha=.2)+
+  geom_point() +
+  geom_line(aes(group=pignum)) +
+  facet_wrap(~treatment) + ggtitle('fitted values in black, real values in red')
+
+# each pig has different intercetp, but slopes are the same within treatments
 
 
+lme4::getL(fit)
+lme4::getME(object = fit,name='X')
+lme4::getME(object = fit,name='Z')
+lme4::getME(object = fit,name='mmList')
+lme4::getME(object = fit,name='y')
+lme4::getME(object = fit,name='mu')
+lme4::getME(object = fit,name='u')
+lme4::getME(object = fit,name='b')
+lme4::getME(object = fit,name='Gp')
+lme4::getME(object = fit,name='Tp')
+lme4::getME(object = fit,name='L')
+lme4::getME(object = fit,name='RX')
+lme4::getME(object = fit,name='RZX')
+lme4::getME(object = fit,name='sigma')
+sigma(fit)
+lme4::getME(object = fit,name='flist')
+lme4::getME(object = fit,name='fixef')
+lme4::getME(object = fit,name='beta')
+lme4::getME(object = fit,name='theta')
+lme4::getME(object = fit,name='ST')
+lme4::getME(object = fit,name='n_rtrms')
+lme4::getME(object = fit,name='n_rfacs')
+lme4::getME(object = fit,name='N')
+lme4::getME(object = fit,name='n')
+lme4::getME(object = fit,name='p')
+lme4::getME(object = fit,name='p_i')
+lme4::getME(object = fit,name='l_i')
+lme4::getME(object = fit,name='q_i')
+lme4::getME(object = fit,name='k')
+lme4::getME(object = fit,name='m_i')
+lme4::getME(object = fit,name='m')
+lme4::getME(object = fit,name='devcomp')
+lme4::getME(object = fit,name='lower')
 
+lme4::ranef(fit)
+lme4::show(fit)
+lme4::VarCorr(fit)
+plot(fit)
 13*7
 
 summary(fit)
-summary(fit2)
+# summary(fit2)
+# with lmerTest, fixed effects get pvalues, without, no pvalues.
+# what do pvalues for fixed effects mean?
 
-plot(fit3)
+# how do you evaluate the quality of the model?
+# is there an R2 thingy like for lm()?
 
+library(lmerTest)
 summ <- summary(fit)
 fit3 <- lm(data=sum_sal, AULC~treatment)
+plot(fit3)
+
+
+
+
 
 summary(fit3)
 
