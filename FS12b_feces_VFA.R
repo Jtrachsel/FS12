@@ -16,9 +16,8 @@ library(tidyverse)
 
 # write_csv(res.all, 'FS12b_fecal_vfas.csv')
 
-read_csv('./data/FS12b_fecal_vfas.csv')
+res.all <- read_csv('./data/FS12b_fecal_vfas.csv')
 tests <- filter(res.all, time == 0) %>% do(pwilx=pairwise.wilcox.test(.$butyrate, .$treatment, p.adjust.method = 'none'))
-#pairwise.wilcox.test(p.adjust.method = )
 tests[[1]]
 
 
@@ -160,4 +159,10 @@ res.sum %>% ggplot(aes(x=time, y=mean, group=treat_var, color=treatment)) +
 # 
 # 
 
+ifelse(FS12b_HL@sam_data$pignum %in% c(373,321,181,392,97), 'low', 
+       ifelse(FS12b_HL@sam_data$pignum %in% c(50, 93,355, 244), 'high', 'Control'))
 
+
+res.all$day <- paste('D',res.all$time, sep = '')
+res.all$pig_day_tissue <- paste(res.all$pignum, res.all$day, 'F', sep = '_')
+mergeme <- res.all %>% select(pig_day_tissue, ends_with('ate'))

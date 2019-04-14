@@ -9,16 +9,27 @@ meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors =
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 
 
-####
-vfas_for_cor$tissue <- 'C'
-
-vfas <- vfas_for_cor %>%mutate(day=paste('D', day, sep = '')) %>%  mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>%
-  select(pig_day_tissue, ends_with('ate'))
-
-meta <- meta %>% mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>% left_join(vfas)
-
-vfas$pig_day_tissue
-meta$pig_day_tissue
+###
+# vfas_for_cor$tissue <- 'C'
+# 
+# vfas <- vfas_for_cor %>%mutate(day=paste('D', day, sep = '')) %>%  mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>%
+#   select(pig_day_tissue, ends_with('ate'))
+# 
+# 
+# vfas2 <- vfas
+# vfas2$pig_day_tissue <- sub('C','X',vfas2$pig_day_tissue)
+# vfas <- rbind(vfas, vfas2)
+# # meta <- meta %>% mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>% left_join(mergeme)
+# 
+# allvfa <- rbind(vfas[,colnames(vfas) %in% colnames(mergeme)],mergeme[,colnames(mergeme) %in% colnames(vfas)])
+# 
+# meta <- meta %>% mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>% left_join(allvfa)
+# write_csv(x = meta, path = './data/FS12_final_meta.csv')
+# meta %>% filter(pignum != 101)
+# 
+# 
+# vfas$pig_day_tissue
+# meta$pig_day_tissue
 
 
 # meta2 <- read_csv('data/FS12_all_treatments.csv') %>% select(pignum, pen) %>% right_join(meta, by = 'pignum') %>% 
@@ -187,18 +198,18 @@ FS12b <- subset_samples(FS12b, treatment %in% c('Control', 'RPS', 'Acid', 'RCS')
 
 # making sure factors are set correctly
 
-FS12b@sam_data$treatment <- factor(FS12b@sam_data$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))
-
+# FS12b@sam_data$treatment <- factor(FS12b@sam_data$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))
+FS12b@sam_data$treatment <- factor(FS12b@sam_data$treatment, levels = c('Control', 'RPS', 'Acid','RCS'))
 
 FS12b@sam_data$set
 
 library(vegan)
 library(funfuns)
 library(tidyverse)
+FS12b <- prune_samples(!is.na(FS12b@sam_data$treatment) & FS12b@sam_data$tissue != 'Q', FS12b)
 
 FS12b <- prune_taxa(taxa_sums(FS12b) > 2, FS12b) # removes singletons
 
-FS12b <- prune_samples(!is.na(FS12b@sam_data$treatment), FS12b)
 
 min(sample_sums(FS12b))
 
@@ -239,7 +250,9 @@ FS12b_meta$day <- as.numeric(gsub('D', '', FS12b_meta$day))
 FS12b_meta$dayfact <- factor(FS12b_meta$day)
 
 
-FS12b_meta$treatment <- factor(FS12b_meta$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))
+# FS12b_meta$treatment <- factor(FS12b_meta$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))
+FS12b_meta$treatment <- factor(FS12b_meta$treatment, levels = c('Control', 'RPS', 'Acid', 'RCS'))
+
 
 FS12b_meta$shan <- diversity(rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))))
 
@@ -463,7 +476,7 @@ set.seed(71)
 #   ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
 #   scale_fill_brewer(palette = 'Set1')
 
-FS12b <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'Q')
+# FS12b <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'Q')
 FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'I')
 FS12b_rare <- rarefy_even_depth(FS12b_rare)
 
@@ -1032,7 +1045,7 @@ tmpres[tmpres$padj < 0.1,]
 
 D0_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                 phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
-                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
+                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
 
 ### D0 Q
 # 
