@@ -442,7 +442,9 @@ FS12b_meta %>% filter(tissue == 'I' & day == 21) %>%
 set.seed(71)
 
 # 
+
 # all_pwad <- pairwise.adonis(data.frame(FS12a_rare@otu_table), FS12a_rare@sam_data$set, perm = 999, sim.method = 'bray', binary = FALSE)
+
 # 
 # pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
 # # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
@@ -485,7 +487,19 @@ min(sample_sums(FS12b_rare))
 PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999, binary = FALSE)
 # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
 
+### MAYBE LOOK INTO ONLY PERMUTING WITHIN TIMEPOINT???? ###
 
+# testss <- pairwise.adonis2(data.frame(FS12b_rare@otu_table)~treatment/day,data =data.frame(FS12b_rare@sam_data), strata = 'day'  )
+
+###### prob doesnt matter... #####
+
+# report this with beginning diffs in beta div
+adonis(data.frame(FS12b_rare@otu_table) ~ tissue + day + treatment, data = data.frame(FS12b_rare@sam_data))
+
+
+
+
+#######
 
 
 PW.ad$pairs
@@ -1045,7 +1059,7 @@ tmpres[tmpres$padj < 0.1,]
 
 D0_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                 phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
-                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'apeglm', cookscut = FALSE)
+                name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
 ### D0 Q
 # 
@@ -1290,7 +1304,7 @@ RPS_split_master %>% group_by(OTU, group) %>% tally() %>%
   scale_fill_manual(values = c("#E41A1C", "#FBB4AE", "#377EB8", "#B3CDE3")) +
   ylab('occurences') +
   ggtitle('Number of times OTUs are enriched \n in either RPS shedding phenotype') + 
-  theme(axis.text.x = element_text(angle = 90, vjust = .4)) + xlab('')
+  theme(axis.text.x = element_text(angle = 90, vjust = .4)) + xlab('') + coord_flip()
 
 
 
@@ -1305,40 +1319,7 @@ tax$OTU <- rownames(tax)
 
 
 
-#####
-### THIS SECTION CALCULATES ALL THE OTUs IN THE RPS GROUP THAT HAVE A LINEAR ASSOCIATION WITH salmonella
-# NEEDS blarg function defined below...
 
-# in the case of the log_sal covariate these are matched 16S and salmonella culturing samples
-    # that is the log_sal is measured from the exact same tissue that the 16S data comes from
-# in the case of AULC, the 16S samples are related back to the one AULC fecal shedding value calculated for each pig
-
-D2_f_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D2',tissue = 'F', covariate = 'log_sal')
-D7_f_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', covariate = 'log_sal')
-# blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'log_sal')
-# blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'F', covariate = 'log_sal')
-
-# blarg(phyloseq_obj = FS12_RPS, day = 'D0',tissue = 'F', covariate = 'AULC')
-# blarg(phyloseq_obj = FS12_RPS, day = 'D2',tissue = 'F', covariate = 'AULC')
-# blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', covariate = 'AULC')
-# D14_f_RPS_AULC <-  blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'AULC')
-D21_f_RPS_AULC <- blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'F', covariate = 'AULC')
-
-D21_x_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'log_sal') # interesting....
-# blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'log_sal')
-# blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='I', covariate = 'log_sal')
-
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'AULC')
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'AULC')
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='I', covariate = 'AULC')
-
-
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'butyrate')
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'valerate')
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'caproate')
-
-
-meta$butyrate
 #############################################
 
 # should make a function for this....
@@ -1426,6 +1407,8 @@ tocont %>% filter(OTU %in% biguns) %>% select(OTU,Genus) %>% unique()
 tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>2) %>% as.data.frame()
 
 
+tocontf %>% group_by(comp) %>% tally() %>% as.data.frame() %>%
+  ggplot(aes(x=comp, y=n)) + geom_col() + ggtitle('number of differentially abundant OTUs over the entire experiment')
 
 
 #### Ok that wasnt so bad.
@@ -1463,14 +1446,15 @@ blarg <- function(phyloseq_obj, day, tissue, covariate, shrink_type='apeglm'){
   sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = TRUE)
   # sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, paste('down',treat, sep = '_'))
   sigtab$OTU <- rownames(sigtab)
-  sigtab$salm <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
+  sigtab[[covariate]] <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
+  # sigtab$salm <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
   sigtab <- sigtab[order(sigtab$log2FoldChange),]
   sigtab$OTU <- factor(sigtab$OTU, levels = sigtab$OTU)
   sigtab$day <- day
   sigtab$tissue <- tissue
   
   
-  p <- sigtab %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=salm)) +
+  p <- sigtab %>% ggplot(aes_string(x='OTU', y='log2FoldChange', fill=covariate)) +
     geom_col(color='black') + coord_flip() + geom_text(aes(label=Genus, y=0))
   
   return(list(p, sigtab))
@@ -1478,7 +1462,9 @@ blarg <- function(phyloseq_obj, day, tissue, covariate, shrink_type='apeglm'){
   
 }
 
-blarg()
+blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'log_sal')
+# nnnn[['test']] <- 'TEST'
+# blarg()
 # across all treatments
 
 # blarg(phyloseq_obj = FS12b, day = c('D2', 'D7', 'D14', 'D21'), tissue = 'F', covariate = 'log_sal')
@@ -1511,25 +1497,66 @@ increase <- global_sal_OTUs %>% filter(log2FoldChange > 0) # OTUs associated wit
 decrease <- global_sal_OTUs %>% filter(log2FoldChange < 0) # OTUs associated with less salmonella
 
 # THESE l2fc values represent enrichment relative to control
-tocontf[tocontf$OTU %in% increase$OTU,] # these are the OTUs that are associated with a treatment and also increased sal
-tocontf[tocontf$OTU %in% decrease$OTU,] # these are the OTUs that are associated with a treatment and also decreased sal
+treat_n_sal_increase <- tocontf[tocontf$OTU %in% increase$OTU,] # these are the OTUs that are associated with a treatment and also increased sal
+treat_n_sal_decrease <- tocontf[tocontf$OTU %in% decrease$OTU,] # these are the OTUs that are associated with a treatment and also decreased sal
+
+
+# 
+# treat_n_sal_increase <- treat_n_sal_increase %>% mutate(OTU_day_tis=paste(OTU,day, tissue, sep = '_'))
+# treat_n_sal_decrease <- treat_n_sal_decrease %>% mutate(OTU_day_tis=paste(OTU,day, tissue, sep = '_'))
+# ## THIS GETS TRICKY BECAUSE THE SPECIFIC DAY/TISSUE COMBINATION THESE OTUs ARE ASSOCIATED WITH SALMONELLA DONT NECESSARILY LINE UP WITH 
+# WHEN THEY ARE ENRICHED IN TREATMENTS....
 
 # THESE l2fc values represent relationship with salmonella
-increase[increase$OTU %in% tocontf$OTU,] # these are the OTUs that are associated with an increase in sal and also a treatment
-decrease[decrease$OTU %in% tocontf$OTU,]
+
+
+# THESE  TWO BLOCKS ONLY SHOW WHEN GLOBAL ASSOCIATION WITH SAL AND TREATMENT ENRICHMENT MATCH UP AT SAME TIMEPOINT/TISSUE
+global_increase_treat_match <- increase[increase$OTU %in% tocontf$OTU,] %>%
+  select(OTU, log2FoldChange, day, tissue) %>%
+  mutate(OTU_day_tis=paste(OTU, day, tissue, sep='_'), 
+         sal_rel=log2FoldChange) %>%
+  select(-log2FoldChange) %>% 
+  right_join(treat_n_sal_increase) %>% na.omit()# these are the OTUs that are associated with an increase in sal and also a treatment
+
+
+
+global_decrease_treat_match <- decrease[decrease$OTU %in% tocontf$OTU,] %>%
+  select(OTU, log2FoldChange, day, tissue) %>%
+  mutate(OTU_day_tis=paste(OTU, day, tissue, sep='_'), 
+         sal_rel=log2FoldChange) %>%
+  select(-log2FoldChange) %>% 
+  right_join(treat_n_sal_decrease) %>% na.omit()
+
+big_glob_decrease_treatmatch <- global_decrease_treat_match %>% group_by(OTU) %>% tally() %>% filter(n>1) %>% select(OTU) %>% unlist()
+
+rbind(global_increase_treat_match, global_decrease_treat_match) %>% 
+  ggplot(aes(x=OTU, y=sal_rel, fill=Treatment, color=day)) +
+  geom_col() +
+  coord_flip() +
+  geom_text(aes(y=0, x=OTU, label=Genus), color='black') + 
+  ylim(-7, 7) + ggtitle('OTUs with a linear relationship to log_sal \n and enriched in any one treatment')
+
+
+################ 
+
+decrease[decrease$OTU %in% tocontf$OTU,] %>% select(OTU, log2FoldChange, day, tissue)
 
 
 global_sal_OTUs[!(global_sal_OTUs$OTU %in% tocontf$OTU),] # these are the OTUs that are not associated with a treatment but have an association with log_sal at some timepoint/tissue
 big_globs <- global_sal_OTUs[!(global_sal_OTUs$OTU %in% tocontf$OTU),] %>% group_by(OTU) %>% tally() %>% filter(n>1) %>% select(OTU) %>% unlist()
 
 global_sal_OTUs$day <- factor(global_sal_OTUs$day, levels = c('D2', 'D7', 'D14', 'D21'))
+
+# THIS ONE IS OTUS THAT HAVE SIG LIN RELATIONSHIP WITH LOG_SAL at more than 1 time
+# no enrich in any treatment relative to control
 # THIS ONE!
 global_sal_OTUs %>% filter(OTU %in% big_globs) %>%
   ggplot(aes(x=OTU, y=log2FoldChange, fill=day)) +
   geom_hline(yintercept = 0) +
   geom_col(position = position_dodge2(preserve='single')) +
   geom_text_sciname(aes(x = OTU, y=0, sci=Genus), alpha=.5, size=5) +
-  coord_flip() + ylim(-3,3) + ggtitle('OTUs with significant linear relationships with log_sal not associated with any treatment')
+  coord_flip() + ylim(-3,3) + ggtitle('OTUs with significant linear relationships with log_sal at more than 1 timepoint\n but not associated with any treatment', 
+                                      'Log2FoldChange is magnitude of association with salmonella')
 
 # global_sal_OTUs %>% ggplot(aes(x=OTU, y=log2FoldChange, color))
 
@@ -1553,17 +1580,167 @@ decrease %>% group_by(OTU) %>% tally() %>% filter(n>1)
 # # 
 
 # these make less sense.  THey look at linear relationships between OTUs and AULC
-blarg(phyloseq_obj = FS12b, day = 'D0', tissue = 'F', covariate = 'AULC')
-blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'AULC')
-blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'AULC')
-blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'AULC')
-blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12b, day = 'D0', tissue = 'F', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12b, day = 'D2', tissue = 'F', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12b, day = 'D7', tissue = 'F', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12b, day = 'D14', tissue = 'F', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'F', covariate = 'AULC')
+# 
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'X', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'I', covariate = 'AULC')
+# 
+# 
 
-blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'X', covariate = 'AULC')
-blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'AULC')
-blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'I', covariate = 'AULC')
+#### global VFA
+# blarg(phyloseq_obj = FS12b, day = 'D21', tissue = 'C', covariate = 'butyrate')
+# FS12b_vfa_prune <- prune_samples(x = FS12b , samples = !(FS12b@sam_data$pignum %in% c(6, 265,453, 458, 461, 469, 472)))
+# blarg(phyloseq_obj = FS12b_vfa_prune, day = 'D21', tissue = 'C', covariate = 'butyrate')
+# blarg(phyloseq_obj = FS12b_vfa_prune, day = 'D21', tissue = 'C', covariate = 'caproate')
+# blarg(phyloseq_obj = FS12b_vfa_prune, day = 'D21', tissue = 'C', covariate = 'valerate')
+# 
+# blarg(phyloseq_obj = FS12b_vfa_prune, day = 'D21', tissue = 'X', covariate = 'butyrate')
+# blarg(phyloseq_obj = FS12b_vfa_prune, day = 'D21', tissue = 'X', covariate = 'caproate')
+# blarg(phyloseq_obj = FS12b_vfa_prune, day = 'D21', tissue = 'X', covariate = 'valerate')
+# 
+# 
+
 
 ###
+####MOVED FROM ABOVE ####
+#### RPS ONLY BLARG ####
+### BLARG BY TREATMENT ####
+FS12_RPS <- subset_samples(FS12b, treatment == 'RPS')
+FS12_control <- subset_samples(FS12b, treatment == 'Control')
+FS12_Acid <- subset_samples(FS12b, treatment == 'Acid')
+FS12_RCS <- subset_samples(FS12b, treatment == 'RCS')
+
+# FS12_RPS@sam_data$pignum
+
+### CONTROL
+# blarg(phyloseq_obj = FS12_control, day = 'D7',tissue = 'F', covariate = 'log_sal')
+control_blarg <- bind_rows(list(blarg(phyloseq_obj = FS12_control, day = 'D2',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_control, day = 'D14',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_control, day = 'D21',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_control, day = 'D21',tissue = 'X', covariate = 'log_sal')[[2]]))
+# blarg(phyloseq_obj = FS12_control, day = 'D21',tissue = 'C', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_control, day = 'D21',tissue = 'I', covariate = 'log_sal')
+control_blarg$treatment <- 'Control'
+##### RPS
+
+RPS_blarg <- bind_rows(list(blarg(phyloseq_obj = FS12_RPS, day = 'D2',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'X', covariate = 'log_sal')[[2]]))
+# blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'C', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'I', covariate = 'log_sal')
+RPS_blarg$treatment <- 'RPS'
+
+RPS_blarg
+# tocontf[tocontf[grep('RPS', tocontf$comp),]
+tocontf_RPS <- tocontf[grep('RPS', tocontf$comp),]
+
+
+##### ACID
+
+# blarg(phyloseq_obj = FS12_Acid, day = 'D2',tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_Acid, day = 'D7',tissue = 'F', covariate = 'log_sal')
+acid_blarg <- bind_rows(list(blarg(phyloseq_obj = FS12_Acid, day = 'D14',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_Acid, day = 'D21',tissue = 'X', covariate = 'log_sal')[[2]]))
+# blarg(phyloseq_obj = FS12_Acid, day = 'D21',tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_Acid, day = 'D21',tissue = 'C', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_Acid, day = 'D21',tissue = 'I', covariate = 'log_sal')
+acid_blarg$treatment <- 'Acid'
+#### RCS
+
+RCS_blarg <- bind_rows(list(blarg(phyloseq_obj = FS12_RCS, day = 'D2',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_RCS, day = 'D7',tissue = 'F', covariate = 'log_sal')[[2]],
+blarg(phyloseq_obj = FS12_RCS, day = 'D21',tissue = 'C', covariate = 'log_sal')[[2]]))
+# blarg(phyloseq_obj = FS12_RCS, day = 'D21',tissue = 'X', covariate = 'log_sal')))
+# blarg(phyloseq_obj = FS12_RCS, day = 'D14',tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_RCS, day = 'D21',tissue = 'F', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_RCS, day = 'D21',tissue = 'I', covariate = 'log_sal')
+RCS_blarg$treatment <- 'RCS'
+
+master_blarg <- rbind(control_blarg, RPS_blarg, acid_blarg, RCS_blarg)
+
+treat_blarg_bigs <- master_blarg %>% group_by(OTU) %>% tally() %>% filter(n>1) %>% select(OTU) %>% unlist()
+
+master_blarg %>% filter(OTU %in% treat_blarg_bigs & abs(log2FoldChange) > .25 & tissue == 'F') %>%
+  ggplot(aes(x=OTU, y=log2FoldChange, fill=treatment)) +
+  geom_col(color='black') + geom_text(aes(label=Genus, y=0), color='black') + coord_flip() +
+  ggtitle('Fecal OTUs with linear relationships to Salmonella within treatment groups')
+
+master_blarg[master_blarg$OTU %in% tocontf$OTU,] %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=treatment)) +
+  geom_col(color='black') + geom_text(aes(label=Genus, y=0), color='black') + coord_flip() +
+  ggtitle('OTUs with linear relationships to Salmonella within treatment groups \n and significant enrichment in one group relative to control', 
+          'LFC values represent relationship with salmonella')
+
+tocontf[tocontf$OTU %in% master_blarg$OTU,] %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+  geom_col(color='black') + geom_text(aes(label=Genus, y=0), color='black') + coord_flip() + ylim(-20, 60) +
+  ggtitle('OTUs significantly enriched treatment groups \nthat also have a significant linear relationship with salmonella', 
+          'LFC indicates enrichment relative to control')
+
+
+p1 <- blarg(phyloseq_obj = FS12_RPS, day = 'D2',tissue = 'F', covariate = 'log_sal')[[1]]
+p2 <- blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', covariate = 'log_sal')[[1]]
+p3 <- blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'X', covariate = 'log_sal')[[1]]
+# p1 <- blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'X', covariate = 'log_sal')[[1]]
+# p1 <- blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'X', covariate = 'log_sal')[[1]]
+
+p1 + ggtitle('OTUs with linear relationship to salmonella \nRPS group, D2 Feces')
+p2 + ggtitle('OTUs with linear relationship to salmonella \nRPS group, D7 Feces')
+p3 + ggtitle('OTUs with linear relationship to salmonella \nRPS group, D21 Cecal tissue')
+
+#####
+### THIS SECTION CALCULATES ALL THE OTUs IN THE RPS GROUP THAT HAVE A LINEAR ASSOCIATION WITH salmonella
+# NEEDS blarg function defined below...
+
+# in the case of the log_sal covariate these are matched 16S and salmonella culturing samples
+# that is the log_sal is measured from the exact same tissue that the 16S data comes from
+# in the case of AULC, the 16S samples are related back to the one AULC fecal shedding value calculated for each pig
+
+D2_f_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D2',tissue = 'F', covariate = 'log_sal')
+D7_f_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', covariate = 'log_sal')
+#blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'log_sal')
+#blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'F', covariate = 'log_sal')
+
+# blarg(phyloseq_obj = FS12_RPS, day = 'D0',tissue = 'F', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D2',tissue = 'F', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D7',tissue = 'F', covariate = 'AULC')
+# D14_f_RPS_AULC <-  blarg(phyloseq_obj = FS12_RPS, day = 'D14',tissue = 'F', covariate = 'AULC')
+# D21_f_RPS_AULC <- blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'F', covariate = 'AULC')
+
+D21_x_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'log_sal') # interesting....
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'log_sal')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='I', covariate = 'log_sal')
+
+
+
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'AULC')
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'AULC')
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='I', covariate = 'AULC')
+
+
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'butyrate')
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'valerate')
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'caproate')
+
+
+meta$butyrate
+
+blarg(phyloseq_obj = FS12_RPS, day = 'D0', tissue='F', covariate = 'butyrate')
+blarg(phyloseq_obj = FS12_RPS, day = 'D0', tissue='F', covariate = 'caproate')
+blarg(phyloseq_obj = FS12_RPS, day = 'D0', tissue='F', covariate = 'valerate')
+
+blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'caproate')
+
+
+#########
+
+
+
 
 
 FS12b.glom  = transform_sample_counts(FS12b, function(x) x / sum(x) )

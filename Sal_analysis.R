@@ -432,70 +432,74 @@ fit3
 residuals.lm(fit3)
 
 summary(fit3)
-anova(fit3)
+fit3_anov <- aov(fit3)
 aov(fit3)
-TukeyHSD()
+
+
+summary(fit3_anov)
+TukeyHSD(fit3_anov, which='treatment')
+
 # I'm going to need some help interpreting this...
-summ
-
-conf_ints <- confint(fit)
-coefs <- summ$coefficients
-mains <- data.frame(cbind(coefs[3:7,], conf_ints[5:9,]))
-interacts <- data.frame(cbind(coefs[8:12,], conf_ints[10:14,]))
-
-
-colnames(mains) <- c('Estimate', 'std_err', 'df', 't_val', 'P_val', 'CI_L', 'CI_U')
-colnames(interacts) <- c('Estimate', 'std_err', 'df', 't_val', 'P_val', 'CI_L', 'CI_U')
-
-
-### THESE ARE DUM ###
-mains %>%
-  rownames_to_column(var = 'treat') %>%
-  mutate(treatment=sub('treatment', '', treat)) %>% 
-  select(treatment, everything(), -treat) %>% 
-  gather(key = param, value = val, -treatment) %>% 
-  filter(param %in% c('CI_L', 'CI_U', 'Estimate', 'std_err')) %>%
-  spread(key = param, value = val) %>% 
-  ggplot(aes(x=treatment, y=Estimate, ymin=CI_L, ymax=CI_U)) + geom_point() + geom_errorbar() + 
-  geom_errorbar(aes(ymin=Estimate-std_err, ymax=Estimate+std_err), color='green')
-
-interacts %>%
-  rownames_to_column(var = 'treat') %>%
-  mutate(treatment=sub('treatment', '', treat)) %>% 
-  select(treatment, everything(), -treat) %>% 
-  gather(key = param, value = val, -treatment) %>% 
-  filter(param %in% c('CI_L', 'CI_U', 'Estimate', 'std_err')) %>%
-  spread(key = param, value = val) %>% 
-  ggplot(aes(x=treatment, y=Estimate, ymin=CI_L, ymax=CI_U)) + geom_point() + geom_errorbar() + 
-  geom_errorbar(aes(ymin=Estimate-std_err, ymax=Estimate+std_err), color='green')
-
-### END DUM ###
-
-anova(fit)
-rePCA(fit)
-
-
-sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, group=treatment, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# summ
+# 
+# conf_ints <- confint(fit)
+# coefs <- summ$coefficients
+# mains <- data.frame(cbind(coefs[3:7,], conf_ints[5:9,]))
+# interacts <- data.frame(cbind(coefs[8:12,], conf_ints[10:14,]))
+# 
+# 
+# colnames(mains) <- c('Estimate', 'std_err', 'df', 't_val', 'P_val', 'CI_L', 'CI_U')
+# colnames(interacts) <- c('Estimate', 'std_err', 'df', 't_val', 'P_val', 'CI_L', 'CI_U')
+# 
+# 
+# ### THESE ARE DUM ###
+# mains %>%
+#   rownames_to_column(var = 'treat') %>%
+#   mutate(treatment=sub('treatment', '', treat)) %>% 
+#   select(treatment, everything(), -treat) %>% 
+#   gather(key = param, value = val, -treatment) %>% 
+#   filter(param %in% c('CI_L', 'CI_U', 'Estimate', 'std_err')) %>%
+#   spread(key = param, value = val) %>% 
+#   ggplot(aes(x=treatment, y=Estimate, ymin=CI_L, ymax=CI_U)) + geom_point() + geom_errorbar() + 
+#   geom_errorbar(aes(ymin=Estimate-std_err, ymax=Estimate+std_err), color='green')
+# 
+# interacts %>%
+#   rownames_to_column(var = 'treat') %>%
+#   mutate(treatment=sub('treatment', '', treat)) %>% 
+#   select(treatment, everything(), -treat) %>% 
+#   gather(key = param, value = val, -treatment) %>% 
+#   filter(param %in% c('CI_L', 'CI_U', 'Estimate', 'std_err')) %>%
+#   spread(key = param, value = val) %>% 
+#   ggplot(aes(x=treatment, y=Estimate, ymin=CI_L, ymax=CI_U)) + geom_point() + geom_errorbar() + 
+#   geom_errorbar(aes(ymin=Estimate-std_err, ymax=Estimate+std_err), color='green')
+# 
+# ### END DUM ###
+# 
+# anova(fit)
+# rePCA(fit)
+# 
+# 
+# sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, group=treatment, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
 
 
 
 # really dont know if this makes any sense....
 ### early shed ###
-
-sal_data2 <- sal_data %>% filter(pignum != 101 & time_point %in% c(2, 7))
-sal_data2$pignum <- factor(sal_data2$pignum)
-fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
-plot(fit)
-summ <- summary(fit)
-summ
-
-### late shed ###
-sal_data2 <- sal_data %>% filter(pignum != 101 & time_point %in% c(14, 21))
-sal_data2$pignum <- factor(sal_data2$pignum)
-fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
-plot(fit)
-summ <- summary(fit)
-summ
+# 
+# sal_data2 <- sal_data %>% filter(pignum != 101 & time_point %in% c(2, 7))
+# sal_data2$pignum <- factor(sal_data2$pignum)
+# fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
+# plot(fit)
+# summ <- summary(fit)
+# summ
+# 
+# ### late shed ###
+# sal_data2 <- sal_data %>% filter(pignum != 101 & time_point %in% c(14, 21))
+# sal_data2$pignum <- factor(sal_data2$pignum)
+# fit <- lmer(log_sal ~ time_point * treatment + (1|pignum), data=sal_data2)
+# plot(fit)
+# summ <- summary(fit)
+# summ
 
 
 
@@ -560,6 +564,9 @@ tis$treatment <- factor(tis$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+
 pairwise.wilcox.test(tis$log_sal[tis$tissue == 'cecal_cont'], tis$treatment[tis$tissue == 'cecal_cont'], p.adjust.method = 'none')
 
 pairwise.t.test(tis$log_sal[tis$tissue == 'cecal_cont'], tis$treatment[tis$tissue == 'cecal_cont'], p.adjust.method = 'none')
+pairwise.t.test(tis$log_sal[tis$tissue == 'Cecum'], tis$treatment[tis$tissue == 'Cecum'], p.adjust.method = 'none')
+
+
 
 
 tis %>% filter(tissue=='cecal_cont') %>%
@@ -572,7 +579,7 @@ tis %>% #filter(tissue=='cecal_cont') %>%
   geom_jitter(shape=21,width = .1, size=2.25) +
   facet_wrap(~tissue) +
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  ggtitle('Cecal Contents')
+  ggtitle('Salmonella colonization at D21, tissues')
 
 
 
@@ -693,6 +700,156 @@ sal_for_cor <- merge(sal_for_cor, vfas_for_cor, by = 'pignum')
 rownames(sal_for_cor) <- sal_for_cor$pignum
 
 
+##### fecal corrs #####
+fec_cor <- res.all %>% select(-treatment) %>% full_join(sum_sal, by = 'pignum')
+fec_cor <- fec_cor[-288,]
+
+sum_sal
+
+fec_cor %>% filter(time == 0) %>% ggplot(aes(x=butyrate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')+ scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
+fec_cor %>% filter(time == 0) %>% ggplot(aes(x=caproate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')+ scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
+fec_cor %>% filter(time == 0) %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')+ scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
+
+
+fec_cor %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')+ scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + facet_wrap(~time)
+fec_cor %>% ggplot(aes(x=caproate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')+ scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + facet_wrap(~time)
+
+
+
+fec_cor %>% filter(time == 0) %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')+ scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
+
+meta %>% filter(experiment == 'X12b') %>% ggplot(aes(x=caproate, y=log_sal)) + geom_point() + geom_smooth(method = 'lm') + facet_wrap(~day)
+
+meta_for_corr <- meta %>% mutate(day_fact=factor(day, levels = c('D0', 'D2', 'D7', 'D14', 'D21'))) %>% filter(experiment == 'X12b')
+
+meta_for_corr %>% filter(tissue =='F' & day != 'D0') %>% ggplot(aes(x=caproate, y=log_sal)) + geom_point() + geom_smooth(method = 'lm') + facet_wrap(~day_fact)
+meta_for_corr %>% filter(tissue =='F' & day != 'D0') %>% ggplot(aes(x=valerate, y=log_sal)) + geom_point() + geom_smooth(method = 'lm') + facet_wrap(~day_fact)
+meta_for_corr %>% filter(tissue =='F' & day != 'D0') %>% ggplot(aes(x=butyrate, y=log_sal)) + geom_point() + geom_smooth(method = 'lm') + facet_wrap(~day_fact)
+
+# meta_for_corr$treatment
+sal_vfa_cor <- meta_for_corr %>% select(pignum,day, tissue, treatment, log_sal, AULC, ends_with('ate')) %>%
+  filter(pignum!=101 & tissue != 'Q' & treatment %in% c('Control', 'RPS', 'Acid', 'RCS')) %>% na.omit()
+
+sal_vfa_cor <- sal_vfa_cor %>% mutate(total=rowSums(.[grep("ate", names(.))]))
+
+
+globa_log_sal_VFA_corrs <- sal_vfa_cor %>% group_by(day, tissue) %>% 
+                                          summarise(ace_corP=cor.test(log_sal, acetate)$p.value, 
+                                                    pro_corP=cor.test(log_sal, propionate)$p.value, 
+                                                    but_corP=cor.test(log_sal, butyrate)$p.value, 
+                                                    val_corP=cor.test(log_sal, valerate)$p.value, 
+                                                    cap_corP=cor.test(log_sal, caproate)$p.value, 
+                                                    isob_corP=cor.test(log_sal, isobutyrate)$p.value, 
+                                                    isov_corP=cor.test(log_sal, isovalerate)$p.value, 
+                                                    tot_corP=cor.test(log_sal, total)$p.value)%>% na.omit() %>%
+  gather(-(day:tissue), key = 'vfa', value = 'pval') %>% filter(pval < 0.05)
+
+
+
+globa_AULC_VFA_corrs <- sal_vfa_cor %>% group_by(day, tissue) %>% 
+  summarise(ace_corP=cor.test(AULC, acetate, method = 'spearman')$p.value, 
+            pro_corP=cor.test(AULC, propionate, method = 'spearman')$p.value, 
+            but_corP=cor.test(AULC, butyrate, method = 'spearman')$p.value, 
+            val_corP=cor.test(AULC, valerate, method = 'spearman')$p.value, 
+            cap_corP=cor.test(AULC, caproate, method = 'spearman')$p.value, 
+            isob_corP=cor.test(AULC, isobutyrate, method = 'spearman')$p.value, 
+            isov_corP=cor.test(AULC, isovalerate, method = 'spearman')$p.value, 
+            tot_corP=cor.test(AULC, total)$p.value, method = 'spearman')%>% na.omit() %>%
+  gather(-(day:tissue), key = 'vfa', value = 'pval') %>% filter(pval < 0.05)
+
+ c('acetate', 'propionate', 'valerate', 'caproate', 'total')
+ 
+globa_AULC_VFA_corrs %>% filter(day =='D0')
+globa_AULC_VFA_corrs %>% filter(day =='D2')
+
+
+treat_log_sal_VFA_corrs <- sal_vfa_cor %>% group_by(day, tissue, treatment) %>% 
+                                          summarise(ace_corP=cor.test(log_sal, acetate, method = 'spearman')$p.value, 
+                                                    pro_corP=cor.test(log_sal, propionate, method = 'spearman')$p.value, 
+                                                    but_corP=cor.test(log_sal, butyrate, method = 'spearman')$p.value, 
+                                                    val_corP=cor.test(log_sal, valerate, method = 'spearman')$p.value, 
+                                                    cap_corP=cor.test(log_sal, caproate, method = 'spearman')$p.value, 
+                                                    isob_corP=cor.test(log_sal, isobutyrate, method = 'spearman')$p.value, 
+                                                    isov_corP=cor.test(log_sal, isovalerate, method = 'spearman')$p.value, 
+                                                    tot_corP=cor.test(log_sal, total, method = 'spearman')$p.value) %>% na.omit() %>%
+  gather(-(day:treatment), key = 'vfa', value = 'pval') #%>% filter(pval < 0.15)
+
+
+treat_AULC_VFA_corrs <- sal_vfa_cor %>% group_by(day, tissue, treatment) %>% 
+  summarise(ace_corP=cor.test(AULC, acetate, method = 'spearman')$p.value, 
+            pro_corP=cor.test(AULC, propionate, method = 'spearman')$p.value, 
+            but_corP=cor.test(AULC, butyrate, method = 'spearman')$p.value, 
+            val_corP=cor.test(AULC, valerate, method = 'spearman')$p.value, 
+            cap_corP=cor.test(AULC, caproate, method = 'spearman')$p.value, 
+            isob_corP=cor.test(AULC, isobutyrate, method = 'spearman')$p.value, 
+            isov_corP=cor.test(AULC, isovalerate, method = 'spearman')$p.value, 
+            tot_corP=cor.test(AULC, total, method = 'spearman')$p.value) %>% na.omit() %>%
+  gather(-(day:treatment), key = 'vfa', value = 'pval') #%>% filter(pval < 0.15)
+
+##### schemezone #####
+globa_AULC_VFA_corrs %>% filter(pval < 0.05 & day == 'D0')
+treat_AULC_VFA_corrs %>% filter(pval < 0.15 & day == 'D0')
+
+globa_AULC_VFA_corrs %>% filter(pval < 0.05 & day=='D21') %>% print(n=40)
+treat_AULC_VFA_corrs %>% filter(pval < 0.15 & day=='D21') %>% print(n=40)
+
+treat_log_sal_VFA_corrs %>%filter(pval <0.1) %>%  print(n = 40)
+globa_log_sal_VFA_corrs
+
+#### AULC CORRELATIONS PLOTS #####
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D0') %>% 
+  ggplot(aes(x=mM, y=AULC)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +geom_point(aes(color=treatment), alpha=.5)+
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D0 fecal VFAs correlate with final AULC')
+
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D21' & tissue =='C') %>% 
+  ggplot(aes(x=mM, y=AULC)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +geom_point(aes(color=treatment), alpha=.5)+
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D21 cecal VFAs correlate with final AULC')
+
+#### LOG SAL CORRELATIONS PLOTS #########
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D2') %>% 
+  ggplot(aes(x=mM, y=log_sal)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D2 fecal VFAs correlate with log_sal')
+
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D7') %>% 
+  ggplot(aes(x=mM, y=log_sal)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D7 fecal VFAs correlate with log_sal')
+
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D14') %>% 
+  ggplot(aes(x=mM, y=log_sal)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D14 fecal VFAs correlate with log_sal')
+
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D21' & tissue =='F') %>% 
+  ggplot(aes(x=mM, y=log_sal)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D21 fecal VFAs correlate with log_sal')
+
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D21' & tissue =='X') %>% 
+  ggplot(aes(x=mM, y=log_sal)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D21 cecal VFAs correlate with cecal_tissue log_sal')
+
+sal_vfa_cor %>% gather(-(pignum:AULC), key=VFA, value=mM) %>% filter(day == 'D21' & tissue =='C') %>% 
+  ggplot(aes(x=mM, y=log_sal)) +
+  geom_smooth(color='black', method = 'lm', fill=NA) +
+  geom_smooth(aes(color=treatment), method = 'lm', fill=NA)+
+  facet_wrap(~VFA, scales = 'free') + ggtitle('D21 cecal VFAs correlate with cecal log_sal')
+
+
+
+########
+treat_log_sal_VFA_corrs %>% na.omit()
 
 ggplot(sal_for_cor, aes(x=butyrate, y=AULC)) +
   geom_point(aes(color=treatment)) + geom_smooth(method = 'lm') + scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +

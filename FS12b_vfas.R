@@ -3,7 +3,7 @@ library(tidyverse)
 
 
 vfas <- read_csv('./data/FS12b_vfas.csv')
-
+vfas <- vfas %>% filter(treatment %in% c('control', 'RPS', 'Acid','RCS'))
 vfas$treatment <- factor(vfas$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
 
 vfas.gather <- vfas %>% gather(key = VFA, value = mM, -(pignum:hour))
@@ -11,8 +11,11 @@ vfas.gather <- vfas %>% gather(key = VFA, value = mM, -(pignum:hour))
 vfas.gather$set <- paste(vfas.gather$hour, vfas.gather$treatment)
 
 # initial peek #
+vfas %>% filter(pignum %in% c(458, 461, 469, 472))
 
-filter(vfas.gather, hour == 0) %>% ggplot(aes(x=treatment, y=mM, group=set, fill=treatment)) +
+
+filter(vfas.gather, hour == 0 & VFA %in% c('acetate', 'butyrate', 'propionate', 'valerate', 'caproate', 'total')) %>%
+  ggplot(aes(x=treatment, y=mM, group=set, fill=treatment)) +
   geom_boxplot(outlier.alpha = 0) +geom_jitter(shape=21, size=1.5, stroke=1, alpha=.75, width = .25)+
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
   facet_wrap(~VFA, scales = 'free') + ggtitle("Cecal SCFAs 21 days post challenge, no incubation")
