@@ -1,124 +1,15 @@
-# setwd('~/Documents/FS12/final/')
-getwd()
 library(phyloseq)
 library(tidyverse)
 library(funfuns)
 library(pairwiseAdonis)
+library(DESeq2)
+library(vegan)
+library(funfuns)
+library(tidyverse)
 
 meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
-
-
-###
-# vfas_for_cor$tissue <- 'C'
-# 
-# vfas <- vfas_for_cor %>%mutate(day=paste('D', day, sep = '')) %>%  mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>%
-#   select(pig_day_tissue, ends_with('ate'))
-# 
-# 
-# vfas2 <- vfas
-# vfas2$pig_day_tissue <- sub('C','X',vfas2$pig_day_tissue)
-# vfas <- rbind(vfas, vfas2)
-# # meta <- meta %>% mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>% left_join(mergeme)
-# 
-# allvfa <- rbind(vfas[,colnames(vfas) %in% colnames(mergeme)],mergeme[,colnames(mergeme) %in% colnames(vfas)])
-# 
-# meta <- meta %>% mutate(pig_day_tissue=paste(pignum, day, tissue, sep = '_')) %>% left_join(allvfa)
-# write_csv(x = meta, path = './data/FS12_final_meta.csv')
-# meta %>% filter(pignum != 101)
-# 
-# 
-# vfas$pig_day_tissue
-# meta$pig_day_tissue
-
-
-# meta2 <- read_csv('data/FS12_all_treatments.csv') %>% select(pignum, pen) %>% right_join(meta, by = 'pignum') %>% 
-#   mutate(pen=pen.x) %>% select(-pen.y, -pen.x)
-# 
-# write_csv(x = meta2, path = './data/FS12_final_meta.csv')
-# meta$nurse_gain <- meta$weight_10_9 - meta$weight_9_12
-# hist(meta$nurse_gain)
-
-# 
-# KW <- read_csv('./data/weights_Kerr.csv')
-# 
-# colnames(KW) <- c('pignum', 'Pen', 'Diet', 'Gender', 'weight_9_12', 'weight_10_9', 'nurse_gain')
-# 
-# meta <- KW %>% select(pignum, Gender, weight_9_12, weight_10_9) %>% right_join(meta, by = 'pignum')
-# 
-# 
-# colnames(meta)
-# 
-# meta <- meta %>% select(sample_ID, pignum, everything(), -pig_time, -pig_tis_day, -pig_pen)
-# 
-# write_csv(x = meta, path = './data/FS12_final_meta.csv')
-# # added FS12a weight data
-# weight <- read_csv('data/October_12_13_Necropsy_List_full_info.csv')
-# 
-# 
-# colnames(weight) <- c('pen', 'treatment', 'pignum', 'gender', 'weight', 'where')
-# 
-# weight$experiment <- 'X12a'
-# weight$day <- 'D30'
-# weight <- weight %>% select(pignum, pen, experiment, day, weight)
-# 
-# weight$pig_time <- paste(weight$pignum, weight$day, sep = '_')
-# 
-# weight[!(weight$pig_time %in% meta$pig_time),]
-# 
-# meta$experiment
-# 
-# meta[meta$pignum == 469 & meta$day == 'D30',]$pignum <- 468
-# meta$pig_time <- paste(meta$pignum, meta$day, sep = '_')
-# 
-# meta$pig_pen
-# 
-# meta <- weight %>% select(pig_time, weight) %>% right_join(meta, by = 'pig_time')
-# 
-# meta %>% select(sample_ID, pignum, experiment, pen, day, tissue, num_seqs, treatment, set, log_sal, AULC, weight)
-# write_csv(x = meta, path = './data/FS12_final_meta.csv')
-
-# This was to get the tissue salmonella matched up with the tissue 16S
-# tis$tissue <- as.character(tis$tissue)
-# 
-# tis <- tis %>% select(pignum, tissue, log_sal) %>% filter(tissue %in% c('cecal_cont', 'IPP', 'Cecum'))
-# tis$tissue <- replace(tis$tissue, tis$tissue == 'IPP', 'I')
-# tis$tissue <- replace(tis$tissue, tis$tissue == 'Cecum', 'X')
-# tis$tissue <- replace(tis$tissue, tis$tissue == 'cecal_cont', 'C')
-# tis$day <- 'D21'
-# 
-# tis$pig_tis_day <- paste(tis$pignum, tis$tissue, tis$day, sep = '_')
-# 
-# 
-# meta$pig_tis_day <- paste(meta$pignum, meta$tissue, meta$day, sep = '_')
-# 
-# 
-# meta[meta$day == 'D21' & meta$tissue != 'F',]$log_sal <- NA
-# 
-# meta2 <- tis %>% select(pig_tis_day, log_sal) %>%
-#   right_join(meta, by = 'pig_tis_day') %>%
-#   mutate(log_sal=ifelse(is.na(log_sal.x), log_sal.y, log_sal.x)) %>%
-#   select(-log_sal.x, -log_sal.y)
-# 
-# write_csv(x = meta2, path = './data/FS12_final_meta.csv')
-
-
-# I did this to get the salmonella shedding data in with the metadata
-# meta <- sum_sal %>% select(pignum, AULC) %>% right_join(meta, by = 'pignum')
-# 
-# tmp <- sal_data %>% mutate(day=paste('D', time_point, sep = '')) %>%
-#   mutate(pig_time=paste(pignum, day, sep = '_')) %>%
-#   select(pig_time, log_sal)
-# 
-# meta <- meta %>% mutate(pig_time=paste(pignum, day, sep = '_'))
-# meta <- meta %>% left_join(tmp, by = 'pig_time')
-# 
-# write_csv(x = meta, path = './data/FS12_final_meta.csv')
-
-#####
-
 taxa <- extract_mothur_tax('./data/FS12.taxonomy')
-# taxa[1:10,1:8]
 
 rownames(shared) <- shared$Group
 shared <- shared[,-c(1,2,3)]
@@ -203,12 +94,16 @@ FS12b@sam_data$treatment <- factor(FS12b@sam_data$treatment, levels = c('Control
 
 FS12b@sam_data$set
 
-library(vegan)
-library(funfuns)
-library(tidyverse)
+
 FS12b <- prune_samples(!is.na(FS12b@sam_data$treatment) & FS12b@sam_data$tissue != 'Q', FS12b)
 
-FS12b <- prune_taxa(taxa_sums(FS12b) > 2, FS12b) # removes singletons
+FS12b <- prune_taxa(taxa_sums(FS12b) > 10, FS12b) # removes sequences that occur less than 10 times globally
+
+
+
+
+
+
 
 
 min(sample_sums(FS12b))
@@ -216,12 +111,20 @@ min(sample_sums(FS12b))
 # taxa_sums(FS12b) > 2
 
 # grep('Clostridium_sensu_stricto_1', FS12b@tax_table[,6])
+FS12b_feces <- FS12b %>% prune_samples(samples = FS12b@sam_data$tissue =='F')
+
+FS12b_feces_nmds <- NMDS_ellipse(metadata = FS12b_feces@sam_data,
+                                 OTU_table = rrarefy(FS12b_feces@otu_table, min(rowSums(FS12b_feces@otu_table))),
+                                 grouping_set = 'set',distance_method = 'bray')
+
 
 FS12b_metanmds <- NMDS_ellipse(metadata = FS12b@sam_data,
                                OTU_table = rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))),
                                grouping_set = 'set',distance_method = 'bray')
 
 FS12b_metanmds
+
+
 
 nums <- FS12b_metanmds[[1]] %>% group_by(set) %>% summarise(N=n())
 
@@ -277,6 +180,32 @@ FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=rich, group=s
 #fecal dispersion
 FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot(position=position_dodge2(preserve = 'total')) + facet_wrap(~day)+
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + ggtitle('Fecal community dispersion over time')+ geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)#+ geom_text(aes(label=pignum))
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=dispers.distances, group=pignum, color=treatment)) + geom_line()
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=shan, group=pignum, color=treatment)) + geom_line()
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=dispers.distances, group=pignum, color=treatment)) +
+  geom_line() + geom_point()
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=rich, group=pignum, color=treatment)) +
+  geom_line() + geom_point()
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=MDS1, group=pignum, color=treatment)) +
+  geom_line() + geom_point()
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=MDS2, group=pignum, color=treatment)) +
+  geom_line() + geom_point()
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=even, group=pignum, color=treatment)) +
+  geom_line() + geom_point() 
 
 
 get_pairs <- function(df){
@@ -351,7 +280,17 @@ df_ell$treatment <- factor(df_ell$treatment, levels = c('Control', 'RPS', 'Acid'
 
 greys <- FS12b_meta
 
+### adding feces only coordinates ###
 
+feces_nmds <- FS12b_feces_nmds[[1]]
+
+FS12b_meta <- feces_nmds %>% select(sample_ID, MDS1, MDS2) %>%
+  mutate(fMDS1=MDS1, fMDS2=MDS2) %>%
+  select(sample_ID, fMDS1, fMDS2) %>%
+  right_join(FS12b_meta)
+
+
+###
     
 
 
@@ -787,246 +726,9 @@ T0s %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatme
 
 
 
-library(DESeq2)
-
-# up first is the high vs control and low vs control stuff
-
-# FS12_RPS <- subset_samples(FS12b, treatment %in% c('Control', 'RPS'))
-# FS12_RPS@sam_data$day <- factor(FS12_RPS@sam_data$day, levels = c('D0', 'D2','D7', 'D14', 'D21'))
-# 
-# FS12_RPS@sam_data$shed <- ifelse(FS12_RPS@sam_data$pignum %in% c(373,321,181,392,97), 'low', 
-#                                  ifelse(FS12_RPS@sam_data$pignum %in% c(50, 244, 355, 373), 'high', 'Control'))
-# FS12_RPS@sam_data$shed <- factor(FS12_RPS@sam_data$shed, levels = c('Control', 'high', 'low'))
-# 
-# # dont think i need this
-# FS12_RPS@sam_data$set <- paste(FS12_RPS@sam_data$set, FS12_RPS@sam_data$shed, sep = '_')
-# 
-# # Keeping samples separate by day #
-# 
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D0' & tissue == 'F')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# 
-# 
-# D0_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                               phyloseq.object = FS12b.glom, pvalue = .05,
-#                               contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# 
-# D0_conthigh[[1]] + ggtitle('Control vs RPS_high Day 0') 
-# 
-# D0_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                               phyloseq.object = FS12b.glom, pvalue = .05,
-#                               contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# 
-# D0_contlow[[1]]+ ggtitle('Control vs RPS_low Day 0') 
-# 
-# ## DAY 2
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D2' & tissue == 'F')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# 
-# 
-# D2_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                phyloseq.object = FS12b.glom, pvalue = .05,
-#                                contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# 
-# D2_conthigh[[1]] + ggtitle('Control vs RPS_high D2')
-# 
-# D2_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                               phyloseq.object = FS12b.glom, pvalue = .05,
-#                               contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# 
-# D2_contlow[[1]] + ggtitle('Control vs RPS_low D2')
-# 
-# ##
-# # FS12b.glom <- FS12_RPS
-# # FS12b.glom <- subset_samples(FS12b.glom, day =='D2' & tissue == 'F')
-# # 
-# # FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# # 
-# # FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# # library(DESeq2)
-# # FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# # resultsNames(FS12.de)
-# # 
-# # 
-# # 
-# # D2_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-# #                                phyloseq.object = FS12b.glom, pvalue = .05,
-# #                                contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# # 
-# # D2_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-# #                               phyloseq.object = FS12b.glom, pvalue = .05,
-# #                               contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# # 
-# ##
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D7' & tissue == 'F')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# D7_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                phyloseq.object = FS12b.glom, pvalue = .05,
-#                                contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# 
-# D7_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                               phyloseq.object = FS12b.glom, pvalue = .05,
-#                               contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# 
-# D7_contlow[[1]] + ggtitle('Control vs RPS_low Day 7')
-# 
-# ##
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D14' & tissue == 'F')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# 
-# 
-# D14_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                phyloseq.object = FS12b.glom, pvalue = .05,
-#                                contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# 
-# D14_conthigh[[1]] + ggtitle('Control vs RPS_high Day 14')
-# 
-# D14_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                               phyloseq.object = FS12b.glom, pvalue = .05,
-#                               contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# D14_contlow[[1]] + ggtitle('Control vs RPS_low Day 14')
-# 
-# ##
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D21' & tissue == 'F')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# 
-# 
-# D21_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                phyloseq.object = FS12b.glom, pvalue = .05,
-#                                contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# D21_conthigh[[1]] + ggtitle('Control vs RPS_high Day 21 feces')
-# 
-# 
-# D21_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                               phyloseq.object = FS12b.glom, pvalue = .05,
-#                               contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# 
-# D21_contlow[[1]] + ggtitle('Control vs RPS_low Day 21 feces')
-# 
-# #### tissue C ###
-# 
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D21' & tissue == 'C')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# 
-# 
-# D21_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                 phyloseq.object = FS12b.glom, pvalue = .05,
-#                                 contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# D21_conthigh[[1]] + ggtitle('Control vs RPS_high Day 21 cec_cont')
-# 
-# 
-# D21_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                phyloseq.object = FS12b.glom, pvalue = .05,
-#                                contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# 
-# D21_contlow[[1]] + ggtitle('Control vs RPS_low Day 21 cec_cont')
-# 
-# ## tissue X
-# 
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D21' & tissue == 'X')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# 
-# 
-# D21_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                 phyloseq.object = FS12b.glom, pvalue = .05,
-#                                 contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# D21_conthigh[[1]] + ggtitle('Control vs RPS_high Day 21 cec_muc')
-# 
-# 
-# D21_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                phyloseq.object = FS12b.glom, pvalue = .05,
-#                                contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# 
-# D21_contlow[[1]] + ggtitle('Control vs RPS_low Day 21 cec_muc')
-# 
-# ## tissue I
-# 
-# FS12b.glom <- FS12_RPS
-# FS12b.glom <- subset_samples(FS12b.glom, day =='D21' & tissue == 'I')
-# 
-# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
-# 
-# FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
-# library(DESeq2)
-# FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-# resultsNames(FS12.de)
-# 
-# 
-# 
-# D21_conthigh <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                 phyloseq.object = FS12b.glom, pvalue = .05,
-#                                 contrast.vector = c('shed', 'high', 'Control') ,taxlabel = 'Genus')
-# D21_conthigh[[1]] + ggtitle('Control vs RPS_high Day 21 cec_muc')
-# 
-# 
-# D21_contlow <- Deseq.quickplot(DeSeq.object = FS12.de,
-#                                phyloseq.object = FS12b.glom, pvalue = .05,
-#                                contrast.vector = c('shed', 'low', 'Control') ,taxlabel = 'Genus')
-# 
-# D21_contlow[[1]] + ggtitle('Control vs RPS_low Day 21 il_muc')
-# 
 
 
 
-
-
-##
 
 ################################ RPS SPLIT #########################
 FS12b@sam_data$pignum
