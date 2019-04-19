@@ -127,6 +127,17 @@ FS12b_metanmds
 
 
 nums <- FS12b_metanmds[[1]] %>% group_by(set) %>% summarise(N=n())
+FS12b_metanmds[[1]]
+FS12b_metanmds[[3]]
+
+
+x <- envfit(ord=FS12b_feces_nmds[[3]], env=FS12b_feces_nmds[[1]]$AULC)
+# envfit(ord=FS12b_metanmds[[3]], env=FS12b_metanmds[[1]]$log_sal)
+plot(FS12b_feces_nmds[[3]])
+plot(x)
+
+
+FS12b_feces_nmds[[1]] %>%  ggplot(aes(x=MDS1, y=MDS2, color=treatment))+geom_point() + geom_text(aes(label=pignum))
 
 ###
 
@@ -195,12 +206,33 @@ FS12b_meta %>% filter(tissue == 'F') %>%
   ggplot(aes(x=day, y=rich, group=pignum, color=treatment)) +
   geom_line() + geom_point()
 
+
+### This is interesting... What does this mean?? ####
+# need to move this whole section down below merge #
 FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=MDS1, group=pignum, color=treatment)) +
+  group_by(day, treatment) %>% 
+  summarise(fMDS1=mean(fMDS1),
+            fMDS2=mean(fMDS2)) %>% 
+  ggplot(aes(x=day, y=fMDS1, group=treatment, color=treatment)) +
+  geom_line() + geom_point()
+
+
+##### #####
+FS12b_meta %>% ggplot(aes(pen, fill=treatment))+geom_histogram(binwidth = 1)
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  group_by(day, treatment) %>% 
+  summarise(fMDS1=mean(fMDS1),
+            fMDS2=mean(fMDS2)) %>% 
+  ggplot(aes(x=day, y=fMDS2, group=treatment, color=treatment)) +
   geom_line() + geom_point()
 
 FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=MDS2, group=pignum, color=treatment)) +
+  ggplot(aes(x=day, y=fMDS1, group=pignum)) +
+  geom_line() + geom_point(aes(color=pen))
+
+FS12b_meta %>% filter(tissue == 'F') %>%
+  ggplot(aes(x=day, y=fMDS2, group=pignum, color=treatment)) +
   geom_line() + geom_point()
 
 FS12b_meta %>% filter(tissue == 'F') %>%
