@@ -325,94 +325,10 @@ tmpres$Order
 # should write out each df individually instead of combining....
 bind_rows(tmpres)
 
-# FS12a_D23@sam_data$treatment <- factor(FS12a_D23@sam_data$treatment, levels = c('Control', 'Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
-
-
-# checkme <- phyloseq_to_deseq2(FS12a_D23, ~ treatment)
-# checkme$treatment
-# checkme@colData$treatment
-# test <- DESeq(checkme, test = 'Wald', fitType = 'parametric')
-# resultsNames(test)
-# DESeq_difabund(phyloseq = FS12a, day = 'D23', tissue = 'F')
-
-# 
-# tocont.genus <- list(DESeq_difabund(phyloseq = FS12a.glom, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'normal',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                DESeq_difabund(phyloseq = FS12a.glom, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'normal',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'normal',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'normal',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
-
-
 tocont.otu <- list(DESeq_difabund(phyloseq = FS12a, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'normal',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
                    DESeq_difabund(phyloseq = FS12a, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'normal',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
 
 tmpres$OTU <- bind_rows(tocont.otu)
-###
-# 
-# tocont.genus.ape <- list(DESeq_difabund(phyloseq = FS12a.glom, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                      DESeq_difabund(phyloseq = FS12a.glom, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                      DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                      DESeq_difabund(phyloseq = FS12a.glom, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
-# 
-# 
-# tocont.otu.ape <- list(DESeq_difabund(phyloseq = FS12a, day = 'D0', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                    DESeq_difabund(phyloseq = FS12a, day = 'D23', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                    DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'F', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'),
-#                    DESeq_difabund(phyloseq = FS12a, day = 'D30', tissue = 'X', scientific = TRUE, shrink_type = 'apeglm',alpha = 0.05, cooks_cut = FALSE, pAdjustMethod = 'BH'))
-# 
-
-# 
-# 
-# 
-# tocont.otu <- bind_rows(tocont.otu)
-# tocont.genus <- bind_rows(tocont.genus)
-
-
-# tocont.otu.ape <- bind_rows(tocont.otu.ape)
-# tocont.genus.ape <- bind_rows(tocont.genus.ape)
-
-# 
-# 
-# tocontf.otu <- tocont.otu[abs(tocont.otu$log2FoldChange) > .5,]
-# tocontf.genus <- tocont.genus[abs(tocont.genus$log2FoldChange) > .5,]
-
-# 
-# tocontf.otu.ape <- tocont.otu.ape[abs(tocont.otu.ape$log2FoldChange) > .5,]
-# tocontf.genus.ape <- tocont.genus.ape[abs(tocont.genus.ape$log2FoldChange) > .5,]
-
-# 
-# tocontf %>% group_by(OTU, Treatment) %>% tally() %>% filter(n>3) %>% as.data.frame()
-# 
-# taxa[taxa$OTU=='Otu00141',]
-# taxa[taxa$OTU=='Otu00154',]
-# taxa[taxa$OTU=='Otu00168',]
-
-
-# Meh, not happy with this really...
-
-# tocontf$Treatment <- factor(tocontf$Treatment, levels = c('RPS',
-#                                                           'Acid', 
-#                                                           'ZnCu', 
-#                                                           'RCS', 
-#                                                           'Bglu', 
-#                                                           'Pos_control', 
-#                                                           'Phyto', 
-#                                                           'Malto', 
-#                                                           'SBP', 
-#                                                           'down_RPS',
-#                                                           'down_Acid', 
-#                                                           'down_ZnCu', 
-#                                                           'down_RCS', 
-#                                                           'down_Bglu', 
-#                                                           'down_Pos_control', 
-#                                                           'down_Phyto', 
-#                                                           'down_Malto', 
-#                                                           'down_SBP'))
-# 
-# 
-# col_set1 <- RColorBrewer::brewer.pal(9, 'Set1')
-# col_set2 <- sapply(col_set1, lighten)
-# 
-# fin_colset <- c(col_set1, col_set2)
 
 levs <- c('RPS','Acid', 'ZnCu', 'RCS', 'Bglu', 'Pos_control', 'Phyto', 
           'Malto', 'SBP', 'down_RPS','down_Acid', 'down_ZnCu', 'down_RCS', 
@@ -428,18 +344,7 @@ names(my_pal) <- levs
 
 
 
-# lighten(pal)
-# names(fin_colset) <- levs
 
-# D23 and D30 all tissues all treats
-# tocontf.genus %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day !='D0') %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
 # 
 ### I THINK THIS ONE IS GOOD!
 nrow(tmpres$OTU)
@@ -486,189 +391,6 @@ tmpres$Family %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fi
 tmpres$Order %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
   geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) +
   geom_text(aes(label=Order, y=0))
-# 
-# tocontf.otu %>% filter(day !='D0') %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# 
-
-
-#### genera for each treatment at D23 feces
-
-# tocontf.genus %>% filter(day =='D23' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.genus %>% filter(day =='D23' & grepl('RCS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.genus %>% filter(day =='D23' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.genus %>% filter(day =='D23' & grepl('Malto', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0)) + theme(axis.text.y = element_blank())
-# 
-# tocontf.genus %>% filter(day =='D23' & grepl('RPS', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0)) + theme(axis.text.y = element_blank())
-# 
-# tocontf.genus %>% filter(day =='D23' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))+ theme(axis.text.y = element_blank()) + ggtitle('D23 Pos_control')
-
-# tocontf.genus %>% filter(day =='D23' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.genus %>% filter(day =='D23' & grepl('Phyto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0)) + ylim(-3,3)
-# 
-# tocontf.genus %>% filter(day =='D23' & grepl('SBP', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-
-####### Genera D30
-
-# tocontf.genus %>% filter(day =='D30' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.genus %>% filter(day =='D30' & grepl('RCS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.genus %>% filter(day =='D30' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.genus %>% filter(day =='D30' & grepl('Malto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.genus %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=Genus, y=log2FoldChange, fill=tissue)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0)) + ylim(-5,15)+ theme(axis.text.y = element_blank()) + ggtitle('D30 RPS')
-# 
-# tocontf.genus %>% filter(day =='D30' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))+ theme(axis.text.y = element_blank()) + ggtitle('D30 Pos_control')
-# 
-# tocontf.genus %>% filter(day =='D30' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.genus %>% filter(day =='D30' & grepl('Phyto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0)) + ylim(-3,3)
-
-# tocontf.genus %>% filter(day =='D30' & grepl('SBP', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-
-
-########## Now OTUs ############
-
-#### otus for each treatment at D23 feces
-
-# tocontf.otu %>% filter(day =='D23' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('RCS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('Malto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0)) + ylim(-6,7) + ggtitle('D23 RPS')
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))  + ggtitle('D23 Pos_control')
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('Phyto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D23' & grepl('SBP', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-####### OTUs D30
-
-# tocontf.otu %>% filter(day =='D30' & grepl('Acid', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.otu %>% filter(day =='D30' & grepl('RCS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D30' & grepl('Bglu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D30' & grepl('Malto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) +
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.otu %>% filter(day =='D30' & grepl('RPS', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=tissue)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0)) + ylim(-10,30) + ggtitle('D30 RPS')
-# 
-# tocontf.otu %>% filter(day =='D30' & grepl('Pos_control', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-# 
-# tocontf.otu %>% filter(day =='D30' & grepl('ZnCu', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.otu %>% filter(day =='D30' & grepl('Phyto', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0)) + ylim(-3,3)
-
-# tocontf.otu %>% filter(day =='D30' & grepl('SBP', Treatment))%>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
-#   geom_col(color='black') + coord_flip() + #scale_fill_manual(values = fin_colset) + 
-#   geom_text(aes(label=Genus, y=0))
-
-# tocontf.genus <- tocontf.genus%>% mutate(comp2=sub('(.*)_vs_Control','\\1',comp))
-# tocontf.otu <- tocontf.otu %>%  mutate(comp2=sub('(.*)_vs_Control','\\1',comp))
-# 
-# tocontf.genus$comp2 <- factor(tocontf.genus$comp2, levels = c('Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
-# tocontf.otu$comp2 <- factor(tocontf.otu$comp2, levels = c('Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
-# 
-# 
-# tocontf.genus %>% filter(day != 'D0') %>% group_by(comp2, day, tissue) %>% summarise(num_diff_genera=n()) %>% 
-#   ggplot(aes(x=comp2, y=num_diff_genera)) + geom_col(aes(fill=comp2),color='black') + facet_wrap(~day) + 
-#   theme(axis.text.x = element_text(angle = 90, vjust = 1)) + scale_fill_brewer(palette = 'Set1', drop=FALSE) + scale_x_discrete(drop=FALSE)
-
-
-
-# tocontf.otu %>% filter(day != 'D0') %>% group_by(comp2, day, tissue) %>% summarise(num_diff_otus=n()) %>% 
-#   ggplot(aes(x=comp2, y=num_diff_otus)) + geom_col(aes(fill=comp2),color='black') + facet_wrap(~day) + 
-#   theme(axis.text.x = element_text(angle = 90, vjust = 1)) + scale_fill_brewer(palette = 'Set1', drop=FALSE) + scale_x_discrete(drop=FALSE)
-# 
-# 
-# tocontf.genus %>% write_csv('Diff_abund_genera_all.csv')
-# tocontf.otu %>% write_csv('Diff_abund_OTUs_all.csv')
 
 FS12a@sam_data %>% group_by(day, tissue, treatment) %>% tally()
 
@@ -751,7 +473,7 @@ FS12a_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=weight_10_9, 
 
 FS12a_meta$day
 tests <- FS12a_meta %>% filter(day ==23) 
-pairwise
+
 res.aov <- aov(shan ~ treatment, data = tests)
 summary.aov(res.aov)
 
@@ -844,6 +566,17 @@ SBP_weight_23[[2]]$treat <- 'SBP'
 Malto_weight_23[[2]]$treat <- 'Malto'
 
 
+all_treat_weight <- bind_rows(list(Cont_weight_23[[2]],
+                                   RPS_weight_23[[2]],
+                                   RCS_weight_23[[2]],
+                                   Acid_weight_23[[2]],
+                                   ZnCu_weight_23[[2]],
+                                   Phyto_weight_23[[2]],
+                                   Pos_control_weight_23[[2]],
+                                   SBP_weight_23[[2]], 
+                                   Malto_weight_23[[2]]))
+
+
 #####
 sig_OTUs <- tmpres$OTU
 
@@ -879,42 +612,23 @@ sigs_n_weight <- sigs_n_weight %>% filter(!map_lgl(.x = weight_data, .f = is.nul
 sigs_n_weight %>%
   mutate(good_OTUs=map2(.x = weight_data, .y = data, .f=testtt)) %>% 
   select(treat2, good_OTUs) %>% unnest() %>%
-  ggplot(aes(x=Genus, y=cont_cov_L2FC, fill=treat2))+
-  geom_col() + coord_flip() + ylab('Strength of relationship with nursery preformance') +
+  ggplot(aes(x=Genus, y=cont_cov_L2FC, fill=treat2))+ geom_hline(yintercept = 0) +
+  geom_point(shape=21, size=3) + coord_flip() + ylab('Strength of relationship with nursery preformance') +
   ggtitle('OTUs significantly associated with a treatment\n and nursery preformance in that same treatment')
 
 
 
-
-
-all_treat_weight <- bind_rows(list(Cont_weight_23[[2]],
-          RPS_weight_23[[2]],
-          RCS_weight_23[[2]],
-          Acid_weight_23[[2]],
-          ZnCu_weight_23[[2]],
-          Phyto_weight_23[[2]],
-          Pos_control_weight_23[[2]],
-          SBP_weight_23[[2]], 
-          Malto_weight_23[[2]]))
-
-all_treat_weight %>% group_by(OTU, nurse_gain) %>% tally() %>% filter(n>1)
-
-all_treat_weight %>% filter(log2FoldChange >0.25) %>% filter(treat != 'Control') %>% 
-  filter(OTU %in% sig_otus_by_treat$OTU) %>% 
-  ggplot(aes(x=OTU, y=log2FoldChange, fill=treat)) +
-  geom_col() +
-  coord_flip() +
-  geom_text(aes(label=Genus, y=0), hjust = 'left')
-
-
-
-all_treat_weight %>% filter(log2FoldChange < -0.25) %>% filter(treat != 'Control') %>% 
-  filter(OTU %in% sig_otus_by_treat$OTU) %>% 
-  ggplot(aes(x=OTU, y=log2FoldChange, fill=treat)) +
-  geom_col() +
-  coord_flip() +
-  geom_text(aes(label=Genus, y=0), hjust = 'right')
-
+# 
+# 
+# all_treat_weight <- bind_rows(list(Cont_weight_23[[2]],
+#           RPS_weight_23[[2]],
+#           RCS_weight_23[[2]],
+#           Acid_weight_23[[2]],
+#           ZnCu_weight_23[[2]],
+#           Phyto_weight_23[[2]],
+#           Pos_control_weight_23[[2]],
+#           SBP_weight_23[[2]], 
+#           Malto_weight_23[[2]]))
 
 
 
@@ -953,6 +667,32 @@ all_treat_weight %>% filter(OTU %in%  sig_otus_by_treat$OTU) %>% filter(log2Fold
   geom_col() +
   coord_flip() +
   geom_text(aes(label=Genus, y=0), hjust = 'right')
+
+
+
+all_treat_weight %>% group_by(OTU, nurse_gain) %>% tally() %>% filter(n>1)
+
+all_treat_weight %>% filter(log2FoldChange >0.25) %>% filter(treat != 'Control') %>% 
+  filter(OTU %in% sig_otus_by_treat$OTU) %>% 
+  ggplot(aes(x=OTU, y=log2FoldChange, fill=treat)) +
+  geom_col() +
+  coord_flip() +
+  geom_text(aes(label=Genus, y=0), hjust = 'left')
+
+
+
+all_treat_weight %>% filter(log2FoldChange < -0.25) %>% filter(treat != 'Control') %>% 
+  filter(OTU %in% sig_otus_by_treat$OTU) %>% 
+  ggplot(aes(x=OTU, y=log2FoldChange, fill=treat)) +
+  geom_col() +
+  coord_flip() +
+  geom_text(aes(label=Genus, y=0), hjust = 'right')
+
+
+
+
+
+
 
 #### new zone #### merge?
 
@@ -1022,7 +762,7 @@ global_adon_D23 <- adonis(FS12a_D23@otu_table~treatment,
 
 adonis(Pen_rare@otu_table~pen, data = data.frame(Pen_rare@sam_data))
 
-pairwise.adonis(x = Pen_rare@otu_table, Pen_rare@sam_data$pen, binary = FALSE, p.adjust.m = 'fdr')
+pairwise.adonis(x = Pen_rare@otu_table, Pen_rare@sam_data$pen, p.adjust.m = 'fdr')
 
 # no strong detectable pen effect in terms of total community structure
 # just because penmates, doesn't suggest they will have similar fecal bacterial community structures
