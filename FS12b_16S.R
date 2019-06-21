@@ -100,9 +100,15 @@ FS12b <- prune_samples(!is.na(FS12b@sam_data$treatment) & FS12b@sam_data$tissue 
 FS12b <- prune_taxa(taxa_sums(FS12b) > 10, FS12b) # removes sequences that occur less than 10 times globally
 
 
+############ tax4fun?
+# think i need species level classification for this #
+FS12b@sam_data
 
-
-
+form <- formula('~treatment*day')
+themetagenomics::prepare_data(otu_table = data.frame(FS12b@otu_table), 
+                              metadata = data.frame(FS12b@sam_data), 
+                              tax_table = data.frame(FS12b@tax_table),
+                              rows_are_taxa = FALSE, formula = formula)
 
 
 
