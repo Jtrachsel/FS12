@@ -1,7 +1,7 @@
 library(phyloseq)
 library(tidyverse)
 library(funfuns)
-library(pairwiseAdonis)
+# library(pairwiseAdonis)
 library(DESeq2)
 library(vegan)
 library(funfuns)
@@ -102,33 +102,43 @@ FS12b <- prune_taxa(taxa_sums(FS12b) > 10, FS12b) # removes sequences that occur
 
 ############ tax4fun?
 # think i need species level classification for this #
-FS12b@sam_data
+# FS12b@sam_data
 
-form <- formula('~treatment*day')
-themetagenomics::prepare_data(otu_table = data.frame(FS12b@otu_table), 
-                              metadata = data.frame(FS12b@sam_data), 
-                              tax_table = data.frame(FS12b@tax_table),
-                              rows_are_taxa = FALSE, formula = formula)
+# form <- formula('~treatment*day')
+# themetagenomics::prepare_data(otu_table = data.frame(FS12b@otu_table), 
+#                               metadata = data.frame(FS12b@sam_data), 
+#                               tax_table = data.frame(FS12b@tax_table),
+#                               rows_are_taxa = FALSE, formula = formula)
 
 
 
-min(sample_sums(FS12b))
+# min(sample_sums(FS12b))
 
 # taxa_sums(FS12b) > 2
 
 # grep('Clostridium_sensu_stricto_1', FS12b@tax_table[,6])
+
+
+### Something here changed.... my NMDS_ellipse function doesnt work this way anymore..
+### apparently now i need to remove all phyloseqiness from the OTUtable... should probably look into this.
+
 FS12b_feces <- FS12b %>% prune_samples(samples = FS12b@sam_data$tissue =='F')
 
-FS12b_feces_nmds <- NMDS_ellipse(metadata = FS12b_feces@sam_data,
-                                 OTU_table = rrarefy(FS12b_feces@otu_table, min(rowSums(FS12b_feces@otu_table))),
+FS12b_feces_meta <- FS12b_feces@sam_data %>% data.frame()
+FS12b_feces_OTU <- rrarefy(FS12b_feces@otu_table, min(rowSums(FS12b_feces@otu_table))) %>% data.frame()
+
+
+FS12b_feces_nmds <- NMDS_ellipse(metadata = FS12b_feces_meta,
+                                 OTU_table = FS12b_feces_OTU,
                                  grouping_set = 'set',distance_method = 'bray')
 
 
 FS12b_metanmds <- NMDS_ellipse(metadata = FS12b@sam_data,
-                               OTU_table = rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))),
+                               OTU_table = data.frame(rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table)))),
                                grouping_set = 'set',distance_method = 'bray')
 
 FS12b_metanmds
+
 
 
 
@@ -146,9 +156,13 @@ plot(x)
 FS12b_feces_nmds[[1]] %>%  ggplot(aes(x=MDS1, y=MDS2, color=treatment))+geom_point() + geom_text(aes(label=pignum))
 
 ###
+sample_sums(FS12b@otu_table)
+transform_sample_counts()
+rarefy_even_depth(FS12b)@otu_table
 
-
-FS12b_jac <- vegdist(FS12b@otu_table, method = 'bray')
+# I DONT THNK THIS DIST IS FROM A RRAREFIED OTU TABLE #
+# Fixed #
+FS12b_jac <- vegdist(rarefy_even_depth(FS12b)@otu_table, method = 'bray')
 FS12b_jac
 
 attr(FS12b_jac, which = 'Labels') == FS12b@sam_data$sample_ID
@@ -197,6 +211,7 @@ FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=rich, group=s
 #fecal dispersion
 FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot(position=position_dodge2(preserve = 'total')) + facet_wrap(~day)+
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + ggtitle('Fecal community dispersion over time')+ geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)#+ geom_text(aes(label=pignum))
+
 
 FS12b_meta %>% filter(tissue == 'F') %>%
   ggplot(aes(x=day, y=dispers.distances, group=pignum, color=treatment)) + geom_line()
@@ -461,7 +476,7 @@ FS12b_rare <- rarefy_even_depth(FS12b_rare)
 
 
 min(sample_sums(FS12b_rare))
-PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999, binary = FALSE)
+PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999)
 # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
 
 ### MAYBE LOOK INTO ONLY PERMUTING WITHIN TIMEPOINT???? ###
@@ -669,8 +684,11 @@ to_conts %>% filter(!(tissue %in% c('feces', 'tet'))) %>%
 ###
 
 #HIGH LOW ORDINATE#
+### need to dephyloseqize these objects before NMDS works
+HIGH_LOW_OTU <- rarefy_even_depth(FS12b_HL)@otu_table %>% data.frame()
+HIGH_LOW_META <- FS12b_HL@sam_data %>% data.frame()
 
-HIGH_LOW_NMDS <- NMDS_ellipse(OTU_table=rrarefy(FS12b_HL@otu_table, min(rowSums(FS12b_HL@otu_table))), metadata = FS12b_HL@sam_data, grouping_set = 'set')
+HIGH_LOW_NMDS <- NMDS_ellipse(OTU_table=HIGH_LOW_OTU, metadata = HIGH_LOW_META, grouping_set = 'set')
 
 HIGH_LOW_NMDS[[1]]$shed <- factor(HIGH_LOW_NMDS[[1]]$shed, levels = c('high', 'low', 'Control'))
 
