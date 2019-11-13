@@ -743,22 +743,26 @@ glob_weight$OTU %in% all_treat_weight$OTU
 
 
 
-Pentrols <- prune_samples(FS12@sam_data$day == 'D23' & FS12@sam_data$treatment == 'Control', x = FS12)
+Pentrols <- prune_samples(FS12@sam_data$day == 'D23' & FS12@sam_data$treatment == 'Control' & FS12@sam_data$pen != 25, x = FS12)
 
 
 Pen_rare <- rarefy_even_depth(Pentrols)
-Pen_rare@sam_data$pen
+unique(Pen_rare@sam_data$pen)
+
+Pen_rare@sam_data %>% group_by(pen) %>% tally()
+
 
 penmds <- NMDS_ellipse(Pen_rare@otu_table, metadata = Pen_rare@sam_data, grouping_set = 'pen')
 
 
 
-penmds[[1]] %>% ggplot(aes(x=MDS1, y=MDS2, xend=centroidX, yend=centroidY, color=pen)) + geom_point() + geom_segment()
+penmds[[1]] %>% ggplot(aes(x=MDS1, y=MDS2, xend=centroidX, yend=centroidY, color=pen)) + geom_point(alpha=.3) + geom_segment(alpha=.3) + 
+  geom_path(data = penmds[[2]], aes(x=NMDS1, y=NMDS2, color=group), inherit.aes = FALSE)
 
 
-global_adon_D23 <- adonis(FS12a_D23@otu_table~treatment,
-                          data = data.frame(FS12a_D23@sam_data), method = 'bray')
-
+# global_adon_D23 <- adonis(FS12a_D23@otu_table~treatment,
+#                           data = data.frame(FS12a_D23@sam_data), method = 'bray')
+# 
 
 adonis(Pen_rare@otu_table~pen, data = data.frame(Pen_rare@sam_data))
 

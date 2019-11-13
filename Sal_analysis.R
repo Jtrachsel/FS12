@@ -75,6 +75,50 @@ daily_tests <- daily_tests %>% select(time_point, starts_with('control'))
 
 # PW_wilc_per_gene <- FS1.gather %>% group_by(gene) %>% nest() %>% mutate(pps = map(data,  get_pairs)) %>% select(gene, pps) %>% unnest()
 
+test <- sal_data %>% filter(time_point == 21 & treatment %in% c('control', 'Bglu')) %>% 
+  write_tsv('Sal_bglu_control_D21.tsv')
+
+test <- read_tsv('Sal_bglu_control_D21.tsv')
+AOV <- aov(data = test, formula = log_sal ~ treatment)
+summary(AOV)
+TukeyHSD(AOV)
+
+pairwise.t.test(test$log_sal, test$treatment)
+
+
+
+test2 <- sal_data %>% filter(treatment %in% c('control', 'Bglu') & time_point != 0) %>% 
+  write_tsv('Sal_bglu_control.tsv')
+
+test <- read_tsv('Sal_bglu_control_D21.tsv')
+AOV <- aov(data = test, formula = log_sal ~ treatment)
+summary(AOV)
+TukeyHSD(AOV)
+
+pairwise.t.test(test$log_sal, test$treatment)
+
+
+
+
+summary(aov(log_sal ~ treatment + Error(pignum/time_point_fact), data=test2))
+
+
+#
+
+library(lmerTest)
+library(psycho)
+test2$treatment <- factor(test2$treatment, levels = c('control', 'Bglu'))
+# install.packages('psycho')
+fit <- lmer(log_sal ~ treatment + (1|pignum), data=test2)
+anova(fit)
+
+results <- analyze(fit)
+print(results)
+
+summary(fit)
+
+
+##############
 
 
 # sal_data %>% filter(pignum != 101) %>% ggplot(aes(x=time_point, y=log_sal)) + geom_line(aes(group=pignum, color=treatment), size=1)+scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
@@ -167,6 +211,7 @@ sum_sal <- sal_data %>% group_by(pignum) %>%
 sum_sal %>% ggplot(aes(x=treatment, y=pos_samples, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
 sum_sal %>% ggplot(aes(x=treatment, y=day_max, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
 sum_sal %>% ggplot(aes(x=treatment, y=maxshed, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
+
 sum_sal %>% ggplot(aes(x=treatment, y=pos_samples, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
 
 
@@ -270,7 +315,8 @@ sum_sal$P_dry_matter7 <- filter(sal_data, time_point == 7)$percent_drymatter
 # sum_sal <- merge(sum_sal, treats, by='pignum', all=TRUE)
 sum_sal$treatment <- factor(sum_sal$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
 
-hist(sum_sal$AULC, breaks = 20)
+hist(sum_sal$AULC, breaks = 50)
+
 
 
 filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
@@ -418,8 +464,33 @@ summ <- summary(fit)
 
 
 #####
+# use this #
+
+D2_tuk <- sal_data %>% filter(time_point == 2 & !(treatment %in% c('Bglu', 'Zn+Cu')))
+sal_data$treatment
+D2_tuk$treatment
+
+D2_aov <- aov(data=D2_tuk, log_sal ~ treatment)
+
+summary(D2_aov)
+TukeyHSD(D2_aov)
 
 
+aov_AULC <- aov(data=sum_sal, AULC~treatment)
+summary(aov_AULC)
+
+TukeyHSD(aov_AULC)
+
+
+rpart::rpart()
+
+
+cut(sum_sal$AULC, breaks = 3,include.lowest = TRUE, labels = c('low','mod', 'high'))
+table(cut(sum_sal$AULC, breaks = 2,include.lowest = TRUE,  labels = c('low', 'high')))
+
+
+
+#####
 fit3 <- lm(data=sum_sal, AULC~treatment)
 fit3.null <- lm(data=sum_sal, AULC~1)
 # plot(fit3)

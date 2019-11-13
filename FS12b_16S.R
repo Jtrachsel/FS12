@@ -479,9 +479,6 @@ min(sample_sums(FS12b_rare))
 PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999)
 # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
 
-### MAYBE LOOK INTO ONLY PERMUTING WITHIN TIMEPOINT???? ###
-
-# testss <- pairwise.adonis2(data.frame(FS12b_rare@otu_table)~treatment/day,data =data.frame(FS12b_rare@sam_data), strata = 'day'  )
 
 ###### prob doesnt matter... #####
 
@@ -992,7 +989,7 @@ RPS_split_master$imp <- ifelse(RPS_split_master$padj <= 0.05, TRUE, FALSE)
 
 RPS_split_master$set <- factor(RPS_split_master$set, levels = c('D0_feces','D2_feces' ,'D7_feces', 'D14_feces', 'D21_feces', 'D21_cecal_content', 'D21_cecal_mucosa', 'D21_ileal_mucosa'))
 RPS_split_master <- RPS_split_master %>% mutate(newp2=paste0('p=', newp))
-# devtools::install_github('jtrachsel/ggscinames')
+devtools::install_github('jtrachsel/ggscinames')
 library(ggscinames)
 library(grid)
 
