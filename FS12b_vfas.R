@@ -20,6 +20,18 @@ filter(vfas.gather, hour == 0 & VFA %in% c('acetate', 'butyrate', 'propionate', 
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
   facet_wrap(~VFA, scales = 'free') + ggtitle("Cecal SCFAs 21 days post challenge, no incubation")
 
+#
+filter(vfas.gather, hour == 0 &
+         VFA %in% c('acetate', 'butyrate', 'propionate', 'valerate', 'caproate', 'total') & 
+         treatment %in% c('control', 'RPS')) %>%
+  ggplot(aes(x=treatment, y=mM, group=set, fill=treatment)) +
+  geom_boxplot(outlier.alpha = 0) +geom_jitter(shape=21, size=1.5, stroke=1, alpha=.75, width = .25)+
+  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+  facet_wrap(~VFA, scales = 'free') + ggtitle("Cecal SCFAs 21 days post challenge")
+
+
+
+
 filter(vfas.gather, hour == 24) %>% ggplot(aes(x=treatment, y=mM, group=set, fill=treatment)) +
   geom_boxplot(outlier.alpha = 0) +geom_jitter(shape=21, size=1.5, stroke=1, alpha=.75, width = .25)+
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 

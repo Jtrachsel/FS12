@@ -87,6 +87,7 @@ FS12b <- subset_samples(FS12, experiment == 'X12b' & pignum != 101)
 
 FS12b <- subset_samples(FS12b, treatment %in% c('Control', 'RPS', 'Acid', 'RCS'))
 
+# FS12b <- subset_samples(FS12b, treatment %in% c('Control', 'Bglu'))
 # making sure factors are set correctly
 
 # FS12b@sam_data$treatment <- factor(FS12b@sam_data$treatment, levels = c('Control', 'RPS', 'Acid','ZnCu', 'RCS', 'Bglu'))

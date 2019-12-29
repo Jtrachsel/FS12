@@ -1,11 +1,6 @@
-# setwd("~/FS12")
-# setwd('~/Documents/FS12/')
-
 require(pracma)
 library(tidyverse)
 library(Hmisc)
-#library(reshape2)
-#library(forcats) # dont think i use this
 library(tidyverse)
 library(cowplot)
 
@@ -75,47 +70,50 @@ daily_tests <- daily_tests %>% select(time_point, starts_with('control'))
 
 # PW_wilc_per_gene <- FS1.gather %>% group_by(gene) %>% nest() %>% mutate(pps = map(data,  get_pairs)) %>% select(gene, pps) %>% unnest()
 
-test <- sal_data %>% filter(time_point == 21 & treatment %in% c('control', 'Bglu')) %>% 
-  write_tsv('Sal_bglu_control_D21.tsv')
 
-test <- read_tsv('Sal_bglu_control_D21.tsv')
-AOV <- aov(data = test, formula = log_sal ~ treatment)
-summary(AOV)
-TukeyHSD(AOV)
+### Just Bglu stuff here ###
 
-pairwise.t.test(test$log_sal, test$treatment)
-
-
-
-test2 <- sal_data %>% filter(treatment %in% c('control', 'Bglu') & time_point != 0) %>% 
-  write_tsv('Sal_bglu_control.tsv')
-
-test <- read_tsv('Sal_bglu_control_D21.tsv')
-AOV <- aov(data = test, formula = log_sal ~ treatment)
-summary(AOV)
-TukeyHSD(AOV)
-
-pairwise.t.test(test$log_sal, test$treatment)
-
-
-
-
-summary(aov(log_sal ~ treatment + Error(pignum/time_point_fact), data=test2))
-
-
+# test <- sal_data %>% filter(time_point == 21 & treatment %in% c('control', 'Bglu')) %>% 
+#   write_tsv('Sal_bglu_control_D21.tsv')
+# 
+# test <- read_tsv('Sal_bglu_control_D21.tsv')
+# AOV <- aov(data = test, formula = log_sal ~ treatment)
+# summary(AOV)
+# TukeyHSD(AOV)
+# 
+# pairwise.t.test(test$log_sal, test$treatment)
+# 
+# 
+# 
+# test2 <- sal_data %>% filter(treatment %in% c('control', 'Bglu') & time_point != 0) %>% 
+#   write_tsv('Sal_bglu_control.tsv')
+# 
+# test <- read_tsv('Sal_bglu_control_D21.tsv')
+# AOV <- aov(data = test, formula = log_sal ~ treatment)
+# summary(AOV)
+# TukeyHSD(AOV)
+# 
+# pairwise.t.test(test$log_sal, test$treatment)
+# 
+# 
+# 
+# 
+# summary(aov(log_sal ~ treatment + Error(pignum/time_point_fact), data=test2))
+# 
+# 
 #
 
 library(lmerTest)
 library(psycho)
-test2$treatment <- factor(test2$treatment, levels = c('control', 'Bglu'))
-# install.packages('psycho')
-fit <- lmer(log_sal ~ treatment + (1|pignum), data=test2)
-anova(fit)
-
-results <- analyze(fit)
-print(results)
-
-summary(fit)
+# test2$treatment <- factor(test2$treatment, levels = c('control', 'Bglu'))
+# # install.packages('psycho')
+# fit <- lmer(log_sal ~ treatment + (1|pignum), data=test2)
+# anova(fit)
+# 
+# results <- analyze(fit)
+# print(results)
+# 
+# summary(fit)
 
 
 ##############
@@ -126,9 +124,12 @@ summary(fit)
 # sal_data %>% filter(pignum == 101 )
 
 
-sal_data %>% filter(pignum != 101 ) %>% ggplot(aes(x=time_point, y=log_sal)) +
-  geom_line(aes(group=pignum, color=treatment), size=1) + facet_wrap(~treatment) + geom_point()+ #geom_text(aes(label=pignum))+
-  scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+ theme_bw()
+sal_data %>% filter(pignum != 101 ) %>%
+  ggplot(aes(x=time_point, y=log_sal)) +
+  geom_line(aes(group=pignum, color=treatment), size=1) +
+  facet_wrap(~treatment) + geom_point()+ #geom_text(aes(label=pignum))+
+  scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+
+  theme_bw()
 
 
 
@@ -324,6 +325,16 @@ filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'Wilcoxon vs control: RPS p=0.013, Acid p=0.10')+ theme_bw()
 
+
+filter(sum_sal, pignum !=101 & treatment %in% c('control', 'RPS')) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
+  geom_boxplot(outlier.alpha = 0) + geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + #geom_text(aes(label=pignum)) +
+  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+  ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'Wilcoxon p=0.013')+ theme_bw()
+
+
+
+
+
 # filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
 #   geom_text(aes(label=pignum)) + #geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + 
 #   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
@@ -482,7 +493,7 @@ summary(aov_AULC)
 TukeyHSD(aov_AULC)
 
 
-rpart::rpart()
+# rpart::rpart()
 
 
 cut(sum_sal$AULC, breaks = 3,include.lowest = TRUE, labels = c('low','mod', 'high'))
@@ -658,6 +669,16 @@ tis %>% #filter(tissue=='cecal_cont') %>%
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   ggtitle('Salmonella colonization at D21, tissues')
 
+tis %>% filter(treatment %in% c('control', 'RPS')) %>%
+  ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) +
+  geom_boxplot(outlier.alpha = 0) +
+  geom_jitter(shape=21,width = .2, size=2.25) +
+  facet_wrap(~tissue, nrow = 1) +
+  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+  ggtitle('Salmonella colonization at D21, tissues') + theme_bw()
+
+
+
 
 
 
@@ -795,6 +816,8 @@ fec_cor %>% ggplot(aes(x=caproate, y=AULC)) + geom_point() + geom_smooth(method 
 
 fec_cor %>% filter(time == 0) %>% ggplot(aes(x=valerate, y=AULC)) + geom_point() + geom_smooth(method = 'lm')+ scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
 
+
+### is this meta from the 16S stuff?
 meta %>% filter(experiment == 'X12b') %>% ggplot(aes(x=caproate, y=log_sal)) + geom_point() + geom_smooth(method = 'lm') + facet_wrap(~day)
 
 meta_for_corr <- meta %>% mutate(day_fact=factor(day, levels = c('D0', 'D2', 'D7', 'D14', 'D21'))) %>% filter(experiment == 'X12b')
@@ -849,7 +872,7 @@ treat_log_sal_VFA_corrs <- sal_vfa_cor %>% group_by(day, tissue, treatment) %>%
                                                     isob_corP=cor.test(log_sal, isobutyrate, method = 'spearman')$p.value, 
                                                     isov_corP=cor.test(log_sal, isovalerate, method = 'spearman')$p.value, 
                                                     tot_corP=cor.test(log_sal, total, method = 'spearman')$p.value) %>% na.omit() %>%
-  gather(-(day:treatment), key = 'vfa', value = 'pval') #%>% filter(pval < 0.15)
+  gather(-(day:treatment), key = 'vfa', value = 'pval') %>% filter(pval < 0.15)
 
 
 treat_AULC_VFA_corrs <- sal_vfa_cor %>% group_by(day, tissue, treatment) %>% 
@@ -861,7 +884,7 @@ treat_AULC_VFA_corrs <- sal_vfa_cor %>% group_by(day, tissue, treatment) %>%
             isob_corP=cor.test(AULC, isobutyrate, method = 'spearman')$p.value, 
             isov_corP=cor.test(AULC, isovalerate, method = 'spearman')$p.value, 
             tot_corP=cor.test(AULC, total, method = 'spearman')$p.value) %>% na.omit() %>%
-  gather(-(day:treatment), key = 'vfa', value = 'pval') #%>% filter(pval < 0.15)
+  gather(-(day:treatment), key = 'vfa', value = 'pval') %>% filter(pval < 0.15)
 
 ##### schemezone #####
 globa_AULC_VFA_corrs %>% filter(pval < 0.05 & day == 'D0')
@@ -998,13 +1021,10 @@ ggplot(sal_for_cor, aes(x=total, y=AULC, color=treatment)) +
 
 
 
-sal_for_cor %>% filter(treatment == 'RPS') %>% ggplot(aes(x=butyrate, y=AULC)) +
+sal_for_cor %>% filter(treatment %in% c('control','RPS')) %>% ggplot(aes(x=butyrate, y=AULC)) +
   geom_smooth(method = 'lm') + geom_point(aes(fill=treatment), shape = 21, size=2) + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+
-  theme(axis.text = element_text(size=16), 
-        axis.title = element_text(size=16), 
-        legend.text = element_text(size=16),
-        legend.title = element_text(size=16)) + ggtitle('') + xlab('butyrate (mM)')
+  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple'))+
+  theme_bw()+ ggtitle('Correlation between AULC and cecal butyrate at D21') + xlab('butyrate (mM)') 
 
 
 sal_for_cor %>% filter(treatment == 'Bglu') %>% ggplot(aes(x=butyrate, y=AULC)) +
