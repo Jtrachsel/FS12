@@ -22,7 +22,7 @@ hist(rowSums(shared), breaks = 50)
 
 # rownames(shared) %in% meta$sample_ID
 meta <- meta[meta$sample_ID %in% rownames(shared),]
-mocks <- shared[(!rownames(shared) %in% meta$sample_ID),]
+# mocks <- shared[(!rownames(shared) %in% meta$sample_ID),]
 shared <- shared[rownames(shared) %in% meta$sample_ID,]
 
 rownames(shared) == meta$sample_ID
@@ -66,19 +66,19 @@ colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
 FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
 
 ### mock stuff ###
-
-rownames(mocks)
-mocks[1:5,1:5]
-mocks <- mocks[rowSums(mocks) >1000,]
-rownames(mocks)
-hist(rowSums(mocks), breaks = 50)
-
-mocks <- mocks[grep('NTC', rownames(mocks)),]
-
-mocks <- mocks[,colSums(mocks)>2]
-colSums(mocks)
-rownames(mocks)
-mock_tax <- taxa[taxa$OTU %in% colnames(mocks),]
+# 
+# rownames(mocks)
+# mocks[1:5,1:5]
+# mocks <- mocks[rowSums(mocks) >1000,]
+# rownames(mocks)
+# hist(rowSums(mocks), breaks = 50)
+# 
+# mocks <- mocks[grep('NTC', rownames(mocks)),]
+# 
+# mocks <- mocks[,colSums(mocks)>2]
+# colSums(mocks)
+# rownames(mocks)
+# mock_tax <- taxa[taxa$OTU %in% colnames(mocks),]
 
 ##### NMDS #####
 
@@ -154,12 +154,111 @@ plot(FS12b_feces_nmds[[3]])
 plot(x)
 
 
-FS12b_feces_nmds[[1]] %>%  ggplot(aes(x=MDS1, y=MDS2, color=treatment))+geom_point() + geom_text(aes(label=pignum))
+FS12b_feces_nmds[[1]] %>%
+  ggplot(aes(x=MDS1, y=MDS2, color=treatment))+
+  geom_point() +
+  geom_text(aes(label=pignum))
 
-###
-sample_sums(FS12b@otu_table)
-transform_sample_counts()
-rarefy_even_depth(FS12b)@otu_table
+
+#### IS pig 181 swapped with pig 97? ####
+#### Doesnt appear to be.... make some stacked bars...
+
+# swapp <- FS12b %>% prune_samples(samples = FS12b@sam_data$pignum %in% c('97', '181') & FS12b@sam_data$tissue == 'F')
+# 
+# swapp_meta <- swapp@sam_data %>% data.frame()
+# 
+# swapp_OTU <- rrarefy(swapp@otu_table, min(rowSums(swapp@otu_table))) %>% data.frame()
+# 
+# 
+# swapp_nmds <- NMDS_ellipse(metadata = swapp_meta,
+#                                  OTU_table = swapp_OTU,
+#                                  grouping_set = 'pignum',
+#                                  distance_method = 'bray')
+# 
+# 
+# 
+# 
+# swapp_nmds[[1]] %>%
+#   ggplot(aes(x=MDS1, y=MDS2, color=pignum))+
+#   geom_point() +
+#   geom_text(aes(label=sample_ID))
+# 
+# ##
+# 
+# 
+# 
+# swapp_melt <- swapp %>% rarefy_even_depth() %>%  psmelt()
+# 
+# 
+# swapp_melt %>% group_by(Order) %>% summarise()
+# 
+# swapp_melt %>% ggplot(aes(x=pignum, y=Abundance, fill=Order)) + geom_col() + facet_wrap(~day)
+# 
+# #
+# 
+# gooduns <- swapp_melt %>%
+#   group_by(Order) %>%
+#   summarise(tot_abund=sum(Abundance)) %>%
+#   arrange(desc(tot_abund)) %>%
+#   top_n(10) %>% select(Order) %>% unlist()
+# 
+# 
+# 
+# swapp_melt <- swapp_melt %>% mutate(Order2=case_when(
+#   as.character(Order) %in% gooduns ~  as.character(Order),
+#   TRUE               ~  'other'))
+# 
+# swapp_melt %>% ggplot(aes(x=pignum, y=Abundance, fill=Order2)) + geom_col() + facet_wrap(~day)
+# 
+# #
+# # stacked bars for control vs RPS #
+# 
+# fec_stacks <- FS12b %>%
+#   prune_samples(samples = FS12b@sam_data$treatment %in% c('Control', 'RPS') & FS12b@sam_data$tissue == 'F')
+# 
+# fec_stacks_melt <- fec_stacks %>% rarefy_even_depth() %>%  psmelt()
+# 
+# 
+# # fec_stacks_melt %>% group_by(Order) %>% summarise()
+# 
+# # fec_stacks_melt %>% ggplot(aes(x=pignum, y=Abundance, fill=Order)) + geom_col() + facet_wrap(~day)
+# 
+# #
+# 
+# gooduns <- fec_stacks_melt %>%
+#   group_by(Order) %>%
+#   summarise(tot_abund=sum(Abundance)) %>%
+#   arrange(desc(tot_abund)) %>%
+#   top_n(10) %>% select(Order) %>% unlist()
+# 
+# 
+# 
+# fec_stacks_melt <- fec_stacks_melt %>% mutate(Order2=case_when(
+#   as.character(Order) %in% gooduns ~  as.character(Order),
+#   TRUE               ~  'other'))
+# 
+# fec_stacks_melt %>%
+#   ggplot(aes(x=treatment, y=Abundance, fill=Order2)) +
+#   geom_col() +
+#   facet_wrap(~day)
+# 
+# 
+# unique(fec_stacks_melt$treatment)
+# 
+# # # this is garbage here #
+# # fec_stacks_melt %>%
+# #   group_by(treatment, day, Order2) %>%
+# #   summarise(percent_abund=Abundance/) %>% 
+# #   ggplot(aes(x=treatment, y=percent_abund, fill=Order2)) +
+# #   geom_col() +
+# #   facet_wrap(~day)
+# 
+# #
+# 
+# ###
+sample_sums(FS12b)
+# transform_sample_counts()
+# rarefy_even_depth(FS12b)@otu_table
 
 # I DONT THNK THIS DIST IS FROM A RRAREFIED OTU TABLE #
 # Fixed #
@@ -169,7 +268,8 @@ FS12b_jac
 attr(FS12b_jac, which = 'Labels') == FS12b@sam_data$sample_ID
 dispers <- betadisper(FS12b_jac, group = FS12b@sam_data$set)
 pdispers <- permutest(dispers, pairwise = TRUE)
-pdispers$pairwise$observed
+# pdispers$pairwise$observed
+
 dispersdf <- data.frame(dispers$distances)
 dispersdf$group <- rownames(dispersdf)
 FS12b@sam_data$sample_ID == dispersdf$group
@@ -196,122 +296,141 @@ FS12b_meta$even <- FS12b_meta$shan/log(FS12b_meta$rich)
 
 
 #fecal shannon
-FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot(position = position_dodge2(preserve = 'total')) + facet_wrap(~day)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Fecal Shannon Diversity (alpha) over time')  + geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)#+ geom_text(aes(label=pignum))
+
+FS12b_meta %>% 
+  filter(tissue == 'F') %>%
+  ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) +
+  geom_boxplot() +
+  facet_wrap(~day, nrow = 1)+
+  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+  ggtitle('Fecal Shannon Diversity (alpha) over time')  + 
+  geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)
 
 
 #fecal even
-FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=even, group=set, fill = treatment)) + geom_boxplot(position = position_dodge2(preserve = 'total')) + facet_wrap(~day)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Fecal evenness over time')+ geom_jitter(shape = 21, stroke=1.2, size=2, width = .2) #+ geom_text(aes(label=pignum))
+FS12b_meta %>%
+  filter(tissue == 'F') %>%
+  ggplot(aes(x=treatment, y=even, group=set, fill = treatment)) +
+  geom_boxplot() +
+  facet_wrap(~day, nrow = 1)+
+  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+  ggtitle('Fecal evenness over time')+
+  geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)
 
 #fecal rich
-FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=rich, group=set, fill = treatment)) + geom_boxplot(position = position_dodge2(preserve = 'total')) + facet_wrap(~day)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Fecal richness (num OTUs) over time')+ geom_jitter(shape = 21, stroke=1.2, size=2, width = .2) #+ geom_text(aes(label=pignum))
+FS12b_meta %>% 
+  filter(tissue == 'F') %>% 
+  ggplot(aes(x=treatment, y=rich, group=set, fill = treatment)) +
+  geom_boxplot() +
+  facet_wrap(~day,  nrow = 1)+
+  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+  ggtitle('Fecal richness (num OTUs) over time')+
+  geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)
 
 
 #fecal dispersion
-FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot(position=position_dodge2(preserve = 'total')) + facet_wrap(~day)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + ggtitle('Fecal community dispersion over time')+ geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)#+ geom_text(aes(label=pignum))
+FS12b_meta %>% 
+  filter(tissue == 'F') %>%
+  ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + 
+  geom_boxplot() +
+  facet_wrap(~day,  nrow = 1)+
+  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + 
+  ggtitle('Fecal community dispersion over time')+
+  geom_jitter(shape = 21, stroke=1.2, size=2, width = .2)
 
 
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=dispers.distances, group=pignum, color=treatment)) + geom_line()
+# FS12b_meta %>%
+#   filter(tissue == 'F') %>%
+#   ggplot(aes(x=day, y=dispers.distances, group=pignum, color=treatment)) + 
+#   geom_line()
 
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=shan, group=pignum, color=treatment)) + geom_line()
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   ggplot(aes(x=day, y=shan, group=pignum, color=treatment)) + geom_line()
 
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=dispers.distances, group=pignum, color=treatment)) +
-  geom_line() + geom_point()
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   ggplot(aes(x=day, y=dispers.distances, group=pignum, color=treatment)) +
+#   geom_line() + geom_point()
 
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=rich, group=pignum, color=treatment)) +
-  geom_line() + geom_point()
-
-
-### This is interesting... What does this mean?? ####
-# need to move this whole section down below merge #
-FS12b_meta %>% filter(tissue == 'F') %>%
-  group_by(day, treatment) %>% 
-  summarise(fMDS1=mean(fMDS1),
-            fMDS2=mean(fMDS2)) %>% 
-  ggplot(aes(x=day, y=fMDS1, group=treatment, color=treatment)) +
-  geom_line() + geom_point()
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   ggplot(aes(x=day, y=rich, group=pignum, color=treatment)) +
+#   geom_line() + geom_point()
 
 
-##### #####
-FS12b_meta %>% ggplot(aes(pen, fill=treatment))+geom_histogram(binwidth = 1)
+#
+#### CHANGE TO ANOVA TESTS FOR ALPHA AND DISPERSION ####
+# 
+# get_pairs <- function(df){
+#   pp <- pairwise.wilcox.test(df$dispers.distances, df$treatment, p.adjust.method = 'none')
+#   ppdf <- as.data.frame(pp$p.value)
+#   ps <- data.frame(matrix(c(pp$p.value), nrow = 1))
+#   names(ps) <- paste(c(rep(names(ppdf), each = nrow(ppdf))), "_vs_", rep(rownames(ppdf), ncol(ppdf)), sep = "")
+#   ps
+#   
+# }
+library(broom)
 
-FS12b_meta %>% filter(tissue == 'F') %>%
-  group_by(day, treatment) %>% 
-  summarise(fMDS1=mean(fMDS1),
-            fMDS2=mean(fMDS2)) %>% 
-  ggplot(aes(x=day, y=fMDS2, group=treatment, color=treatment)) +
-  geom_line() + geom_point()
+disper_fecal_tests <- FS12b_meta %>%
+  filter(tissue =='F') %>%
+  group_by(day) %>% 
+  nest() %>%
+  mutate(ANOVA = map(data, ~ aov(data=., formula = dispers.distances ~ treatment)), 
+         TUK   = map(ANOVA, TukeyHSD), 
+         tid_tuk=map(TUK, tidy)) %>%
+  select(day, tid_tuk) %>% unnest(cols = c(tid_tuk))# %>% select(day, starts_with('control'))
 
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=fMDS1, group=pignum)) +
-  geom_line() + geom_point(aes(color=pen))
+# 
+# get_pairs <- function(df){
+#   pp <- pairwise.wilcox.test(df$shan, df$treatment, p.adjust.method = 'none')
+#   ppdf <- as.data.frame(pp$p.value)
+#   ps <- data.frame(matrix(c(pp$p.value), nrow = 1))
+#   names(ps) <- paste(c(rep(names(ppdf), each = nrow(ppdf))), "_vs_", rep(rownames(ppdf), ncol(ppdf)), sep = "")
+#   ps
+# 
+# }
 
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=fMDS2, group=pignum, color=treatment)) +
-  geom_line() + geom_point()
-
-FS12b_meta %>% filter(tissue == 'F') %>%
-  ggplot(aes(x=day, y=even, group=pignum, color=treatment)) +
-  geom_line() + geom_point() 
-
-
-get_pairs <- function(df){
-  pp <- pairwise.wilcox.test(df$dispers.distances, df$treatment, p.adjust.method = 'none')
-  ppdf <- as.data.frame(pp$p.value)
-  ps <- data.frame(matrix(c(pp$p.value), nrow = 1))
-  names(ps) <- paste(c(rep(names(ppdf), each = nrow(ppdf))), "_vs_", rep(rownames(ppdf), ncol(ppdf)), sep = "")
-  ps
-  
-}
-
-disper_fecal_tests <- FS12b_meta %>% filter(tissue =='F') %>% group_by(day) %>% 
-  nest() %>% mutate(pps = map(data, get_pairs)) %>%
-  select(day, pps) %>% unnest() %>% select(day, starts_with('control'))
+# 
+# shan_fecal_tests <- FS12b_meta %>% filter(tissue =='F') %>% group_by(day) %>% 
+#   nest() %>% mutate(pps = map(data, get_pairs)) %>%
+#   select(day, pps) %>% unnest() %>% select(day, starts_with('control'))
 
 
-get_pairs <- function(df){
-  pp <- pairwise.wilcox.test(df$shan, df$treatment, p.adjust.method = 'none')
-  ppdf <- as.data.frame(pp$p.value)
-  ps <- data.frame(matrix(c(pp$p.value), nrow = 1))
-  names(ps) <- paste(c(rep(names(ppdf), each = nrow(ppdf))), "_vs_", rep(rownames(ppdf), ncol(ppdf)), sep = "")
-  ps
-
-}
-
-shan_fecal_tests <- FS12b_meta %>% filter(tissue =='F') %>% group_by(day) %>% 
-  nest() %>% mutate(pps = map(data, get_pairs)) %>%
-  select(day, pps) %>% unnest() %>% select(day, starts_with('control'))
+shan_fecal_tests <- FS12b_meta %>%
+  filter(tissue =='F') %>%
+  group_by(day) %>% 
+  nest() %>%
+  mutate(ANOVA = map(data, ~ aov(data=., formula = shan ~ treatment)), 
+         TUK   = map(ANOVA, TukeyHSD), 
+         tid_tuk=map(TUK, tidy)) %>%
+  select(day, tid_tuk) %>% unnest(cols = c(tid_tuk))
 
 
 
-# dispersion tissues
-FS12b_meta %>% filter(tissue == 'X') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot() + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
-
-FS12b_meta %>% filter(tissue == 'C') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot() + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
-
-FS12b_meta %>% filter(tissue == 'I') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot() + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
-
-# shannon tissues
-FS12b_meta %>% filter(tissue == 'X') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot() + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
-
-FS12b_meta %>% filter(tissue == 'C') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot() + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
-
-FS12b_meta %>% filter(tissue == 'I') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot() + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
 
 
+
+
+# 
+# # dispersion tissues
+# FS12b_meta %>% filter(tissue == 'X') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot() + 
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
+# 
+# FS12b_meta %>% filter(tissue == 'C') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot() + 
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
+# 
+# FS12b_meta %>% filter(tissue == 'I') %>% ggplot(aes(x=treatment, y=dispers.distances, group=set, fill = treatment)) + geom_boxplot() + 
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
+# 
+# # shannon tissues
+# FS12b_meta %>% filter(tissue == 'X') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot() + 
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
+# 
+# FS12b_meta %>% filter(tissue == 'C') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot() + 
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
+# 
+# FS12b_meta %>% filter(tissue == 'I') %>% ggplot(aes(x=treatment, y=shan, group=set, fill = treatment)) + geom_boxplot() + 
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) #+ geom_text(aes(label=pignum))
+# 
+# 
 
 
 
@@ -424,6 +543,41 @@ FS12b_meta %>% filter(tissue == 'I' & day == 21) %>%
   scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + theme(panel.background = element_blank()) + 
   annotate(geom='text', label='Day 21\nIleal Mucosa', x=-0, y=.6, size = 5)
 
+####
+# INSERTED #
+
+### This is interesting... What does this mean?? ####
+# need to move this whole section down below merge #
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   group_by(day, treatment) %>% 
+#   summarise(fMDS1=mean(fMDS1),
+#             fMDS2=mean(fMDS2)) %>% 
+#   ggplot(aes(x=day, y=fMDS1, group=treatment, color=treatment)) +
+#   geom_line() + geom_point()
+
+
+##### #####
+# FS12b_meta %>% ggplot(aes(pen, fill=treatment))+geom_histogram(binwidth = 1)
+
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   group_by(day, treatment) %>% 
+#   summarise(fMDS1=mean(fMDS1),
+#             fMDS2=mean(fMDS2)) %>% 
+#   ggplot(aes(x=day, y=fMDS2, group=treatment, color=treatment)) +
+#   geom_line() + geom_point()
+
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   ggplot(aes(x=day, y=fMDS1, group=pignum)) +
+#   geom_line() + geom_point(aes(color=pen))
+
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   ggplot(aes(x=day, y=fMDS2, group=pignum, color=treatment)) +
+#   geom_line() + geom_point()
+
+# FS12b_meta %>% filter(tissue == 'F') %>%
+#   ggplot(aes(x=day, y=even, group=pignum, color=treatment)) +
+#   geom_line() + geom_point() 
+
 
 
 ######### PW ADON HERE ########
@@ -472,20 +626,25 @@ set.seed(71)
 #   scale_fill_brewer(palette = 'Set1')
 
 # FS12b <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'Q')
-FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'I')
+
+# FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue != 'I')
+# changed this to only include feces
+FS12b_rare <- FS12b %>% prune_samples(samples = sample_data(FS12b)$tissue == 'F')
 FS12b_rare <- rarefy_even_depth(FS12b_rare)
 
 
 min(sample_sums(FS12b_rare))
 PW.ad <- pairwise.adonis(x=data.frame(FS12b_rare@otu_table), factors = FS12b_rare@sam_data$set, sim.method = 'bray', p.adjust.m = 'none', perm = 999)
+
 # PW.ad <- pairwise.adonis(x=rrarefy(FS12b@otu_table, min(rowSums(FS12b@otu_table))), factors = FS12b@sam_data$set, sim.method = 'jaccard', p.adjust.m = 'none', permutations = 9999)
 
 
 ###### prob doesnt matter... #####
 
 # report this with beginning diffs in beta div
-adonis(data.frame(FS12b_rare@otu_table) ~ tissue + day + treatment, data = data.frame(FS12b_rare@sam_data))
+# adonis(data.frame(FS12b_rare@otu_table) ~ tissue + day + treatment, data = data.frame(FS12b_rare@sam_data))
 
+adonis(data.frame(FS12b_rare@otu_table) ~ day + treatment, data = data.frame(FS12b_rare@sam_data))
 
 
 
@@ -546,6 +705,8 @@ to_conts$p.fdr.lab <- ifelse(to_conts$p.fdr < 0.05, to_conts$p.fdr, NA)
 
 to_conts$treatment <- factor(to_conts$treatment, levels=c('RPS', 'Acid', 'ZnCu','RCS', 'Bglu'))
 
+
+######## FIGURE 3 ##########
 to_conts %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
   geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
   geom_label(color='black') +
@@ -734,46 +895,46 @@ p <- HIGH_LOW_NMDS[[1]] %>% filter(tissue == 'I' & day =='D21') %>%
 
 
 ggplot2::ggplot_build(p)
-########### groups compared to their D0  #######
-
-T0s <- times[grep('D0', times$pairs),]
-
-T0s$pairs <- gsub('X12b_', '', T0s$pairs)
-T0s$pairs <- gsub('_F_', ' feces ', T0s$pairs)
-
-#4DAF4A, #377EB8)
-
-#377EB8
-
-#E41A1C
-
-
-
-T0s$tissue <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\1', T0s$pairs)
-T0s$treatment <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\2', T0s$pairs)
-
-T0s$day <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs (D[0-9]+) [A-Za-z_]+ ([A-Za-z]+)', '\\2', T0s$pairs)
-
-# what's this for??
-T0s[T0s$day == "D0",]$day <- gsub('(D[0-9]+) ([A-Za-z_]+) [A-Za-z]+ vs (D[0-9]+) [A-Za-z_]+ ([A-Za-z]+)', '\\1', T0s[T0s$day == "D0",]$pairs)
-
-T0s$day <- factor(gsub('D','',T0s$day), levels = c(2,7,14,21))
-T0s$pairs
-
-T0s$p.fdr <- round(p.adjust(T0s$p.value, 'fdr'),3)
-T0s$p.fdr.lab <- ifelse(T0s$p.fdr <0.05, T0s$p.fdr, NA)
-T0s$treatment <- factor(T0s$treatment, levels = c('Control', 'RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu'))
-
-
-# this seems different.... investigate
-
-T0s %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
-  geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  geom_label(color='black') +
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+ 
-  ggtitle("Community differences compared to each group's Day 0 conformation", 
-          subtitle = 'FDR corrected pvalues shown in boxes') + xlab('Day (vs Day 0)')
-
+# ########### groups compared to their D0  #######
+# I think I'll cut this... 
+# T0s <- times[grep('D0', times$pairs),]
+# 
+# T0s$pairs <- gsub('X12b_', '', T0s$pairs)
+# T0s$pairs <- gsub('_F_', ' feces ', T0s$pairs)
+# 
+# #4DAF4A, #377EB8)
+# 
+# #377EB8
+# 
+# #E41A1C
+# 
+# 
+# 
+# T0s$tissue <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\1', T0s$pairs)
+# T0s$treatment <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs D[0-9]+ [A-Za-z_]+ ([A-Za-z]+)', '\\2', T0s$pairs)
+# 
+# T0s$day <- gsub('D[0-9]+ ([A-Za-z_]+) [A-Za-z]+ vs (D[0-9]+) [A-Za-z_]+ ([A-Za-z]+)', '\\2', T0s$pairs)
+# 
+# # what's this for??
+# T0s[T0s$day == "D0",]$day <- gsub('(D[0-9]+) ([A-Za-z_]+) [A-Za-z]+ vs (D[0-9]+) [A-Za-z_]+ ([A-Za-z]+)', '\\1', T0s[T0s$day == "D0",]$pairs)
+# 
+# T0s$day <- factor(gsub('D','',T0s$day), levels = c(2,7,14,21))
+# T0s$pairs
+# 
+# T0s$p.fdr <- round(p.adjust(T0s$p.value, 'fdr'),3)
+# T0s$p.fdr.lab <- ifelse(T0s$p.fdr <0.05, T0s$p.fdr, NA)
+# T0s$treatment <- factor(T0s$treatment, levels = c('Control', 'RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu'))
+# 
+# 
+# # this seems different.... investigate
+# 
+# T0s %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
+#   geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   geom_label(color='black') +
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+ 
+#   ggtitle("Community differences compared to each group's Day 0 conformation", 
+#           subtitle = 'FDR corrected pvalues shown in boxes') + xlab('Day (vs Day 0)')
+# 
 
 
 
@@ -806,8 +967,11 @@ FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 1, FS12b.glom)
 FS12.de <- phyloseq_to_deseq2(FS12b.glom, ~shed)
 
 FS12.de <- DESeq(FS12.de, test = 'Wald', fitType = 'parametric')
-resultsNames(FS12.de)
 
+# when is the resultsNames not returning what I expect now?
+# shed_low_vs_high is what i expect but now 'shed1' is what is returned...
+# ok now its fine, must have ran some code twice?
+resultsNames(FS12.de)
 tmpres <- results(FS12.de, name = 'shed_low_vs_high', cooksCutoff = FALSE)
 tmpres <- lfcShrink(FS12.de, res=tmpres, coef = 'shed_low_vs_high', type = 'apeglm')
 tmpres[tmpres$padj < 0.1,]
@@ -901,6 +1065,8 @@ D21F_highlow <- Deseq.quickplot(DeSeq.object = FS12.de,
                                 phyloseq.object = FS12b.glom, pvalue = .1, alpha = 0.1,
                                 name = 'shed_low_vs_high' ,taxlabel = 'Genus', shrink_type = 'normal', cookscut = FALSE)
 
+
+
 #### Tissue X
 
 
@@ -990,7 +1156,7 @@ RPS_split_master$imp <- ifelse(RPS_split_master$padj <= 0.05, TRUE, FALSE)
 
 RPS_split_master$set <- factor(RPS_split_master$set, levels = c('D0_feces','D2_feces' ,'D7_feces', 'D14_feces', 'D21_feces', 'D21_cecal_content', 'D21_cecal_mucosa', 'D21_ileal_mucosa'))
 RPS_split_master <- RPS_split_master %>% mutate(newp2=paste0('p=', newp))
-devtools::install_github('jtrachsel/ggscinames')
+# devtools::install_github('jtrachsel/ggscinames')
 library(ggscinames)
 library(grid)
 
@@ -1077,6 +1243,8 @@ tax$OTU <- rownames(tax)
 
 
 #############################################
+# regular Differential abundance 
+
 
 # should make a function for this....
 # it would take timepoint, tissue, and return the sig diff OTUs in a dataframe
@@ -1154,6 +1322,25 @@ tocontf <- tocont[abs(tocont$log2FoldChange) > .75,]
 
 tocontf %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) + 
   geom_col(color='black') + coord_flip() + geom_hline(yintercept = 20, color='red', size=3)
+
+
+#### ON TO SOMETHIGN HERE ####
+# some variation of this figure for  dif ab.
+# maybe do one panel for fecal difabund
+# one panel for tissue difabund
+tocontf %>% ggplot(aes(x=Genus, y=log2FoldChange, color=Treatment, shape=tissue)) + 
+  geom_point() + coord_flip() + geom_hline(yintercept = 0, color='black', size=1) +
+  facet_wrap(~day, scales = 'free')
+
+
+###
+tocontf %>% filter(tissue == 'F') %>% ggplot(aes(x=Genus, y=log2FoldChange, color=Treatment)) + 
+  geom_point() + coord_flip() + geom_hline(yintercept = 0, color='black', size=1) +
+  facet_wrap(~day, scales = 'free')
+
+
+
+
 
 
 biguns <- tocontf %>% group_by(OTU) %>% summarise(tot=sum(log2FoldChange)) %>% filter(tot >20) %>% select(OTU) %>% unlist()
@@ -1433,8 +1620,11 @@ master_blarg[master_blarg$OTU %in% tocontf$OTU,] %>% ggplot(aes(x=OTU, y=log2Fol
   ggtitle('OTUs with linear relationships to Salmonella within treatment groups \n and significant enrichment in one group relative to control', 
           'LFC values represent relationship with salmonella')
 
+
+# do this one except only include otus with negative lin rel to sal
+# maybe scale size to mimick abs lin rel to sal?
 tocontf[tocontf$OTU %in% master_blarg$OTU,] %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + geom_text(aes(label=Genus, y=0), color='black') + coord_flip() + ylim(-20, 60) +
+  geom_point(color='black', shape=21) + geom_text(aes(label=Genus, y=0), color='black') + coord_flip() +# ylim(-20, 60) +
   ggtitle('OTUs significantly enriched treatment groups \nthat also have a significant linear relationship with salmonella', 
           'LFC indicates enrichment relative to control')
 
@@ -1447,9 +1637,10 @@ p3 <- blarg(phyloseq_obj = FS12_RPS, day = 'D21',tissue = 'X', covariate = 'log_
 
 p1 + ggtitle('OTUs with linear relationship to salmonella \nRPS group, D2 Feces')
 p2 + ggtitle('OTUs with linear relationship to salmonella \nRPS group, D7 Feces')
+# THIS ONE IS V INTERESTING
 p3 + ggtitle('OTUs with linear relationship to salmonella \nRPS group, D21 Cecal tissue')
 
-#####
+##### I think this is now a repeat?
 ### THIS SECTION CALCULATES ALL THE OTUs IN THE RPS GROUP THAT HAVE A LINEAR ASSOCIATION WITH salmonella
 # NEEDS blarg function defined below...
 
@@ -1474,9 +1665,9 @@ D21_x_RPS_log_sal <- blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', cov
 
 
 
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'AULC')
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'AULC')
-blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='I', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'AULC')
+# blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='I', covariate = 'AULC')
 
 
 blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='C', covariate = 'butyrate')
@@ -1503,7 +1694,7 @@ FS12b.glom  = transform_sample_counts(FS12b, function(x) x / sum(x) )
 FS12b.glom = filter_taxa(FS12b.glom, function(x) mean(x) > 1e-5, TRUE)
 
 # PSMELT AND BOXPLOTS HERE!!!!!!!!!
-prune_taxa()
+# prune_taxa()
 
 ######### WARNIGN!!!!! CAREFUL HERE !!!!!!
 # D14 doesnt work here because all RCS pigs have exactly the same shedding level at D14
@@ -1609,293 +1800,293 @@ sigtab2
 
 
 
-################### pig trips ##############
-
-
-min(rowSums(FS12b@otu_table))
-
-
-test <- data.frame(FS12b@otu_table)
-rownames(test)
-rowSums(test)
-
-FS12.otu.rare <- rrarefy(test, min(rowSums(test)))
-
-
-
-bray.dist <- vegdist(FS12.otu.rare, method = 'jaccard', binary = FALSE)
-
-FS12b_meta$sample_ID == rownames(FS12.otu.rare)
-
-#FS12b_meta <- data.frame(FS12b@sam_data)
-
-
-
-#FS12b_meta$
-
-FS12b_meta$shan2 <- diversity(FS12b@otu_table, base = 2)
-# FS12b_meta$shan <- diversity(FS12b@otu_table)
-# FS12b_meta$invsimp <- diversity(FS12b@otu_table, index = 'invsimpson')
-
-#FS12b_meta$day <- factor(FS12b_meta$day, levels = c('D0', 'D2', 'D7', 'D14', 'D21'))
-#FS12b_meta$treatment <- factor(FS12b_meta$treatment, levels = c('control', 'RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu'))
-
-# FS12b_meta %>% filter(tissue == 'F') %>% 
-#   ggplot(aes(x=day, y=shan2, group=set, fill=treatment)) +
-#   geom_boxplot() + scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + geom_text(aes(label=pignum))
-
-# FS12b_meta %>% filter(tissue == 'F') %>% 
-#   ggplot(aes(x=day, y=invsimp, group=set, fill=treatment)) +
-#   geom_boxplot() + scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + geom_text(aes(label=pignum))
-# 
-
-
-
-# FS12b_meta %>% filter(day == 'D21') %>% ggplot(aes(x=tissue, y=shan2, group=set, fill=treatment)) + geom_boxplot() + geom_text(aes(label=pignum))
-
-
-# FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=day, y=shan, group=set, fill=treatment)) + geom_boxplot()
-# FS12b_meta %>% filter(day == 'D21') %>% ggplot(aes(x=tissue, y=shan, group=set, fill=treatment)) + geom_boxplot()
-
-
-
-
-#ggplot(FS12b_meta, aes(x=treatment, y=shan, group=set)) + geom_boxplot()
-
-# min(rowSums(shareds_test))
-# hist(rowSums(shareds_test))
-# sort(rowSums(shareds_test))
-
-dist.data <- as.data.frame(as.matrix(bray.dist))
-dist.data$from <- rownames(dist.data)
-
-dist.gather <- gather(data = dist.data, key = 'to', value = 'distance', -from)
-
-#
-
-
-dist.gather$fromPig <- gsub('([X12]+[ab]?)([NP]+)([0-9]+)([dWXDi]+)([0-9]+)([A-Z]?)', '\\3', dist.gather$from)
-
-#
-
-dist.gather$FT <- paste(dist.gather$from, dist.gather$to, sep = ' ')
-
-
-
-#dist.gather$TF <- paste(dist.gather$to, dist.gather$from, sep = ' ')
-
-######
-# all pig pairwise #
-
-total_ground_covered <- dist.gather[grep('X12bP([0-9]+)D[0-9]+F X12bP\\1D[0-9]+F', dist.gather$FT),] %>% group_by(fromPig) %>% summarise(allpw=sum(distance),
-                                                                                                                                         num=n())
-
-rooms <- read.csv('./data/Rooms.csv')
-total_ground_covered$treatment <- ifelse(total_ground_covered$fromPig %in% rooms$X6, 'control',
-                                         ifelse(total_ground_covered$fromPig %in% rooms$X7, 'RPS', 
-                                                ifelse(total_ground_covered$fromPig %in% rooms$X8, 'Acid', 
-                                                       ifelse(total_ground_covered$fromPig %in% rooms$X9, 'Zn+Cu',
-                                                              ifelse(total_ground_covered$fromPig %in% rooms$X10, 'RCS',
-                                                                     ifelse(total_ground_covered$fromPig %in% rooms$X11, 'Bglu', 'asdfsa'))))))
-
-
-
-
-sum_sal$fromPig <- sum_sal$pignum
-total_ground_covered$fromPig
-
-total_ground_covered <- total_ground_covered %>% filter(num == 25)
-
-boxplot(total_ground_covered$allpw~total_ground_covered$treatment)
-
-sum_sal
-total_ground_covered <- merge(total_ground_covered, sum_sal, by = 'fromPig')
-
-############### NEED TO READ IN SUM_SAL ################
-########################################################
-
-total_ground_covered$treatment.y == total_ground_covered$treatment.x
-total_ground_covered <- total_ground_covered %>% mutate(treatment=treatment.x) %>% select(-treatment.x, -treatment.y)
-
-#cor.test(total_ground_covered$allpw, total_ground_covered$AULC)
-
-
-total_ground_covered %>% group_by(treatment) %>% summarise(AULCvTRIP_P=cor.test(AULC, allpw, method = 'pearson')$p.value,
-                                                           AULCvTRIP_T=cor.test(AULC, allpw, method = 'pearson')$statistic)
-
-
-
-total_ground_covered %>% 
-  ggplot(aes(x=allpw, y=AULC, fill=treatment, color=treatment)) +
-  geom_point(size=2, shape=21) + geom_smooth(method = 'lm', se=FALSE) +
-  ggtitle('Correlation between cumulative community membership change and cumulative shedding', 
-          subtitle = 'correlation stats: RPS pval = 0.02, control pval = 0.31, Bglu pval = 0.42') +
-  xlab('Cumulative Bray-Curtis distance (presence/abscence)')
-
-
-
-
-
-#
-######
-D0_2 <- dist.gather[grep('X12bP([0-9]+)D0F X12bP\\1D2F', dist.gather$FT),]
-#colnames(D0_2)[1] <- 'sample_ID'
-colnames(D0_2)[3] <- 'D0_2'
-D0_2 <- D0_2[,c(3,4)]
-
-D2_7 <- dist.gather[grep('X12bP([0-9]+)D2F X12bP\\1D7F', dist.gather$FT),]
-#colnames(D2_7)[1] <- 'sample_ID'
-colnames(D2_7)[3] <- 'D2_7'
-D2_7 <- D2_7[,c(3,4)]
-
-D7_14 <- dist.gather[grep('X12bP([0-9]+)D7F X12bP\\1D14F', dist.gather$FT),]
-#colnames(D7_14)[1] <- 'sample_ID'
-colnames(D7_14)[3] <- 'D7_14'
-D7_14 <- D7_14[,c(3,4)]
-
-D14_21 <- dist.gather[grep('X12bP([0-9]+)D14F X12bP\\1D21F', dist.gather$FT),]
-#colnames(D14_21)[1] <- 'sample_ID'
-colnames(D14_21)[3] <- 'D14_21'
-D14_21 <- D14_21[,c(3,4)]
-
-D0_21 <- dist.gather[grep('X12bP([0-9]+)D0F X12bP\\1D21F', dist.gather$FT),]
-#colnames(D14_21)[1] <- 'sample_ID'
-colnames(D0_21)[3] <- 'D0_21'
-D0_21 <- D0_21[,c(3,4)]
-
-
-#full_join(D0_2, D2_7)
-pig_trips <- merge(D0_2, D2_7, all = TRUE, by = 'fromPig')
-pig_trips <- merge(pig_trips, D7_14, all = TRUE, by = 'fromPig')
-pig_trips <- merge(pig_trips, D14_21, all = TRUE, by = 'fromPig')
-pig_trips <- merge(pig_trips, D0_21, all = TRUE, by = 'fromPig')
-
-#rowSums(pig_trips)
-#pig_trips <- na.omit(pig_trips)
-colnames(pig_trips[,c(2:5)])
-pig_trips$trip <- rowSums(pig_trips[,c(2:5)])
-hist(pig_trips$trip, breaks = 10)
-
-
-
-rooms <- read.csv('../FS12/Rooms.csv')
-
-# add treatment data.  This probably isn't the best way to do this...
-
-#colnames(sum_sal)[1] <- 'fromPig'
-
-library(funfuns)
-
-#NMDS_ellipse(metadata = meta_test, OTU_table = shareds_test, grouping_set = 'pig_pen')
-###############################
-
-# pig_trips$treatment <- ifelse(pig_trips$fromPig %in% rooms$X6, 'control',
-#                               ifelse(pig_trips$fromPig %in% rooms$X7, 'RPS', 
-#                                      ifelse(pig_trips$fromPig %in% rooms$X8, 'Acid', 
-#                                             ifelse(pig_trips$fromPig %in% rooms$X9, 'Zn+Cu',
-#                                                    ifelse(pig_trips$fromPig %in% rooms$X10, 'RCS',
-#                                                           ifelse(pig_trips$fromPig %in% rooms$X11, 'Bglu', 'asdfsa'))))))
+# ################### pig trips ##############
 # 
 # 
-
-pig_trips <- merge(pig_trips, sum_sal, by = 'fromPig')
-
-boxplot(pig_trips$trip~pig_trips$treatment)
-boxplot(pig_trips$D0_21~pig_trips$treatment)
-
-pairwise.wilcox.test(x=pig_trips$trip, g=pig_trips$treatment, p.adjust.method = 'none')
-
-#colnames(sum_sal)[1] <- 'fromPig'
-pig_trips %>% filter(treatment == "RPS") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-
-pig_trips %>% filter(treatment == "control") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-
-pig_trips %>% 
-  ggplot(aes(x=treatment, y=trip, fill=treatment)) + 
-  geom_boxplot() +
-  geom_jitter(shape=21, color='black', stroke=1.2, size=2, width = .2) +
-  scale_fill_manual(values = c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  ggtitle('Cumulative change in each individual pigs community stucture over 21 days') + ylab("Cumulative Jaccard distance")
-
-
-
-
-pig_trips_cor <- pig_trips %>% group_by(treatment) %>% summarise(AULCvTRIP_P=cor.test(AULC, trip)$p.value,
-                                                AULCvTRIP_T=cor.test(AULC, trip)$statistic,
-                                                AULCv02_P=cor.test(AULC, D0_2)$p.value,
-                                                AULCv02_T=cor.test(AULC, D0_2)$statistic,
-                                                AULCv27_P=cor.test(AULC, D2_7)$p.value,
-                                                AULCv27_T=cor.test(AULC, D2_7)$statistic,
-                                                AULCv714_P=cor.test(AULC, D7_14)$p.value,
-                                                AULCv714_T=cor.test(AULC, D7_14)$statistic,
-                                                AULCv1421_P=cor.test(AULC, D14_21)$p.value,
-                                                AULCv1421_T=cor.test(AULC, D14_21)$statistic)
-
-
-
-# pig_trips %>% group_by(treatment) %>% summarise(AULCvTRIP_P=cor.test(AULC, D0_21)$p.value,
-#                                                 AULCvTRIP_T=cor.test(AULC, D0_21)$statistic)
-
-
-pig_trips %>% filter(treatment == "control") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-pig_trips %>% filter(treatment == "RPS") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-pig_trips %>% filter(treatment == "Bglu") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-pig_trips %>% filter(treatment == "Zn+Cu") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-
-pig_trips %>% 
-  ggplot(aes(x=trip, y=AULC, fill=treatment, color=treatment)) +
-  geom_point(size=3, shape=21, color='black') + geom_smooth(method = 'lm', se=FALSE, size=2) +
-  ggtitle('Correlation between cumulative community change and cumulative shedding', 
-          subtitle = 'correlation stats: RPS pval = 0.037, control pval = 0.09, Bglu pval = 0.08') +
-  xlab('Cumulative Jaccard distance') + scale_color_manual(values = c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  scale_fill_manual(values = c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
-
-
-c('#3399FF', 'orange', 'red', 'grey', 'purple')
-c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')
-
-#testse <- cor.test(pig_trips$trip, pig_trips$AULC)
-#testse$p.value
-#testse$statistic
-
-
-ggplot(pig_trips, aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-ggplot(pig_trips, aes(x=D0_2, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-ggplot(pig_trips, aes(x=D2_7, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-ggplot(pig_trips, aes(x=D7_14, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-ggplot(pig_trips, aes(x=D14_21, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-
-ggplot(pig_trips_test, aes(x=mean_trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm', fill = NA) + geom_text(aes(label=pignum))
-
-#ggplot(pig_trips, aes(x=sum, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
-
-pig_trips %>% group_by(treatment) %>% summarise(num=n())
-
-apply(X = pig_trips, MARGIN = 2, FUN = mean, na.rm=TRUE)
-
-mean(pig_trips$D0_2, na.rm=TRUE)
-mean(pig_trips$D2_7, na.rm=TRUE)
-mean(pig_trips$D7_14, na.rm=TRUE)
-mean(pig_trips$D14_21, na.rm=TRUE)
-
-median(pig_trips$D0_2, na.rm=TRUE)
-median(pig_trips$D2_7, na.rm=TRUE)
-median(pig_trips$D7_14, na.rm=TRUE)
-median(pig_trips$D14_21, na.rm=TRUE)
-
-
-# looking for missing samples
-
-
-sum(shared_table[grep('P50D0', rownames(shared_table)),])
-sum(shared_table[grep('P181D7F', rownames(shared_table)),])
-
-
-
-ggplot(pig_trips, aes(x=treatment, y=trip, fill=treatment)) +
-  geom_boxplot() + ylab('Cumulative bray-curtis dissimilarity (each pig)') + geom_jitter(size=2.5,width = 0.2, shape=21)+
-  ggtitle('Cumulative change in community structure through Salmonella infection')
-
+# min(rowSums(FS12b@otu_table))
+# 
+# 
+# test <- data.frame(FS12b@otu_table)
+# rownames(test)
+# rowSums(test)
+# 
+# FS12.otu.rare <- rrarefy(test, min(rowSums(test)))
+# 
+# 
+# 
+# bray.dist <- vegdist(FS12.otu.rare, method = 'jaccard', binary = FALSE)
+# 
+# FS12b_meta$sample_ID == rownames(FS12.otu.rare)
+# 
+# #FS12b_meta <- data.frame(FS12b@sam_data)
+# 
+# 
+# 
+# #FS12b_meta$
+# 
+# FS12b_meta$shan2 <- diversity(FS12b@otu_table, base = 2)
+# # FS12b_meta$shan <- diversity(FS12b@otu_table)
+# # FS12b_meta$invsimp <- diversity(FS12b@otu_table, index = 'invsimpson')
+# 
+# #FS12b_meta$day <- factor(FS12b_meta$day, levels = c('D0', 'D2', 'D7', 'D14', 'D21'))
+# #FS12b_meta$treatment <- factor(FS12b_meta$treatment, levels = c('control', 'RPS', 'Acid', 'ZnCu', 'RCS', 'Bglu'))
+# 
+# # FS12b_meta %>% filter(tissue == 'F') %>% 
+# #   ggplot(aes(x=day, y=shan2, group=set, fill=treatment)) +
+# #   geom_boxplot() + scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + geom_text(aes(label=pignum))
+# 
+# # FS12b_meta %>% filter(tissue == 'F') %>% 
+# #   ggplot(aes(x=day, y=invsimp, group=set, fill=treatment)) +
+# #   geom_boxplot() + scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))  + geom_text(aes(label=pignum))
+# # 
+# 
+# 
+# 
+# # FS12b_meta %>% filter(day == 'D21') %>% ggplot(aes(x=tissue, y=shan2, group=set, fill=treatment)) + geom_boxplot() + geom_text(aes(label=pignum))
+# 
+# 
+# # FS12b_meta %>% filter(tissue == 'F') %>% ggplot(aes(x=day, y=shan, group=set, fill=treatment)) + geom_boxplot()
+# # FS12b_meta %>% filter(day == 'D21') %>% ggplot(aes(x=tissue, y=shan, group=set, fill=treatment)) + geom_boxplot()
+# 
+# 
+# 
+# 
+# #ggplot(FS12b_meta, aes(x=treatment, y=shan, group=set)) + geom_boxplot()
+# 
+# # min(rowSums(shareds_test))
+# # hist(rowSums(shareds_test))
+# # sort(rowSums(shareds_test))
+# 
+# dist.data <- as.data.frame(as.matrix(bray.dist))
+# dist.data$from <- rownames(dist.data)
+# 
+# dist.gather <- gather(data = dist.data, key = 'to', value = 'distance', -from)
+# 
+# #
+# 
+# 
+# dist.gather$fromPig <- gsub('([X12]+[ab]?)([NP]+)([0-9]+)([dWXDi]+)([0-9]+)([A-Z]?)', '\\3', dist.gather$from)
+# 
+# #
+# 
+# dist.gather$FT <- paste(dist.gather$from, dist.gather$to, sep = ' ')
+# 
+# 
+# 
+# #dist.gather$TF <- paste(dist.gather$to, dist.gather$from, sep = ' ')
+# 
+# ######
+# # all pig pairwise #
+# 
+# total_ground_covered <- dist.gather[grep('X12bP([0-9]+)D[0-9]+F X12bP\\1D[0-9]+F', dist.gather$FT),] %>% group_by(fromPig) %>% summarise(allpw=sum(distance),
+#                                                                                                                                          num=n())
+# 
+# rooms <- read.csv('./data/Rooms.csv')
+# total_ground_covered$treatment <- ifelse(total_ground_covered$fromPig %in% rooms$X6, 'control',
+#                                          ifelse(total_ground_covered$fromPig %in% rooms$X7, 'RPS', 
+#                                                 ifelse(total_ground_covered$fromPig %in% rooms$X8, 'Acid', 
+#                                                        ifelse(total_ground_covered$fromPig %in% rooms$X9, 'Zn+Cu',
+#                                                               ifelse(total_ground_covered$fromPig %in% rooms$X10, 'RCS',
+#                                                                      ifelse(total_ground_covered$fromPig %in% rooms$X11, 'Bglu', 'asdfsa'))))))
+# 
+# 
+# 
+# 
+# sum_sal$fromPig <- sum_sal$pignum
+# total_ground_covered$fromPig
+# 
+# total_ground_covered <- total_ground_covered %>% filter(num == 25)
+# 
+# boxplot(total_ground_covered$allpw~total_ground_covered$treatment)
+# 
+# sum_sal
+# total_ground_covered <- merge(total_ground_covered, sum_sal, by = 'fromPig')
+# 
+# ############### NEED TO READ IN SUM_SAL ################
+# ########################################################
+# 
+# total_ground_covered$treatment.y == total_ground_covered$treatment.x
+# total_ground_covered <- total_ground_covered %>% mutate(treatment=treatment.x) %>% select(-treatment.x, -treatment.y)
+# 
+# #cor.test(total_ground_covered$allpw, total_ground_covered$AULC)
+# 
+# 
+# total_ground_covered %>% group_by(treatment) %>% summarise(AULCvTRIP_P=cor.test(AULC, allpw, method = 'pearson')$p.value,
+#                                                            AULCvTRIP_T=cor.test(AULC, allpw, method = 'pearson')$statistic)
+# 
+# 
+# 
+# total_ground_covered %>% 
+#   ggplot(aes(x=allpw, y=AULC, fill=treatment, color=treatment)) +
+#   geom_point(size=2, shape=21) + geom_smooth(method = 'lm', se=FALSE) +
+#   ggtitle('Correlation between cumulative community membership change and cumulative shedding', 
+#           subtitle = 'correlation stats: RPS pval = 0.02, control pval = 0.31, Bglu pval = 0.42') +
+#   xlab('Cumulative Bray-Curtis distance (presence/abscence)')
+# 
+# 
+# 
+# 
+# 
+# #
+# ######
+# D0_2 <- dist.gather[grep('X12bP([0-9]+)D0F X12bP\\1D2F', dist.gather$FT),]
+# #colnames(D0_2)[1] <- 'sample_ID'
+# colnames(D0_2)[3] <- 'D0_2'
+# D0_2 <- D0_2[,c(3,4)]
+# 
+# D2_7 <- dist.gather[grep('X12bP([0-9]+)D2F X12bP\\1D7F', dist.gather$FT),]
+# #colnames(D2_7)[1] <- 'sample_ID'
+# colnames(D2_7)[3] <- 'D2_7'
+# D2_7 <- D2_7[,c(3,4)]
+# 
+# D7_14 <- dist.gather[grep('X12bP([0-9]+)D7F X12bP\\1D14F', dist.gather$FT),]
+# #colnames(D7_14)[1] <- 'sample_ID'
+# colnames(D7_14)[3] <- 'D7_14'
+# D7_14 <- D7_14[,c(3,4)]
+# 
+# D14_21 <- dist.gather[grep('X12bP([0-9]+)D14F X12bP\\1D21F', dist.gather$FT),]
+# #colnames(D14_21)[1] <- 'sample_ID'
+# colnames(D14_21)[3] <- 'D14_21'
+# D14_21 <- D14_21[,c(3,4)]
+# 
+# D0_21 <- dist.gather[grep('X12bP([0-9]+)D0F X12bP\\1D21F', dist.gather$FT),]
+# #colnames(D14_21)[1] <- 'sample_ID'
+# colnames(D0_21)[3] <- 'D0_21'
+# D0_21 <- D0_21[,c(3,4)]
+# 
+# 
+# #full_join(D0_2, D2_7)
+# pig_trips <- merge(D0_2, D2_7, all = TRUE, by = 'fromPig')
+# pig_trips <- merge(pig_trips, D7_14, all = TRUE, by = 'fromPig')
+# pig_trips <- merge(pig_trips, D14_21, all = TRUE, by = 'fromPig')
+# pig_trips <- merge(pig_trips, D0_21, all = TRUE, by = 'fromPig')
+# 
+# #rowSums(pig_trips)
+# #pig_trips <- na.omit(pig_trips)
+# colnames(pig_trips[,c(2:5)])
+# pig_trips$trip <- rowSums(pig_trips[,c(2:5)])
+# hist(pig_trips$trip, breaks = 10)
+# 
+# 
+# 
+# rooms <- read.csv('../FS12/Rooms.csv')
+# 
+# # add treatment data.  This probably isn't the best way to do this...
+# 
+# #colnames(sum_sal)[1] <- 'fromPig'
+# 
+# library(funfuns)
+# 
+# #NMDS_ellipse(metadata = meta_test, OTU_table = shareds_test, grouping_set = 'pig_pen')
+# ###############################
+# 
+# # pig_trips$treatment <- ifelse(pig_trips$fromPig %in% rooms$X6, 'control',
+# #                               ifelse(pig_trips$fromPig %in% rooms$X7, 'RPS', 
+# #                                      ifelse(pig_trips$fromPig %in% rooms$X8, 'Acid', 
+# #                                             ifelse(pig_trips$fromPig %in% rooms$X9, 'Zn+Cu',
+# #                                                    ifelse(pig_trips$fromPig %in% rooms$X10, 'RCS',
+# #                                                           ifelse(pig_trips$fromPig %in% rooms$X11, 'Bglu', 'asdfsa'))))))
+# # 
+# # 
+# 
+# pig_trips <- merge(pig_trips, sum_sal, by = 'fromPig')
+# 
+# boxplot(pig_trips$trip~pig_trips$treatment)
+# boxplot(pig_trips$D0_21~pig_trips$treatment)
+# 
+# pairwise.wilcox.test(x=pig_trips$trip, g=pig_trips$treatment, p.adjust.method = 'none')
+# 
+# #colnames(sum_sal)[1] <- 'fromPig'
+# pig_trips %>% filter(treatment == "RPS") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# 
+# pig_trips %>% filter(treatment == "control") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# 
+# pig_trips %>% 
+#   ggplot(aes(x=treatment, y=trip, fill=treatment)) + 
+#   geom_boxplot() +
+#   geom_jitter(shape=21, color='black', stroke=1.2, size=2, width = .2) +
+#   scale_fill_manual(values = c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   ggtitle('Cumulative change in each individual pigs community stucture over 21 days') + ylab("Cumulative Jaccard distance")
+# 
+# 
+# 
+# 
+# pig_trips_cor <- pig_trips %>% group_by(treatment) %>% summarise(AULCvTRIP_P=cor.test(AULC, trip)$p.value,
+#                                                 AULCvTRIP_T=cor.test(AULC, trip)$statistic,
+#                                                 AULCv02_P=cor.test(AULC, D0_2)$p.value,
+#                                                 AULCv02_T=cor.test(AULC, D0_2)$statistic,
+#                                                 AULCv27_P=cor.test(AULC, D2_7)$p.value,
+#                                                 AULCv27_T=cor.test(AULC, D2_7)$statistic,
+#                                                 AULCv714_P=cor.test(AULC, D7_14)$p.value,
+#                                                 AULCv714_T=cor.test(AULC, D7_14)$statistic,
+#                                                 AULCv1421_P=cor.test(AULC, D14_21)$p.value,
+#                                                 AULCv1421_T=cor.test(AULC, D14_21)$statistic)
+# 
+# 
+# 
+# # pig_trips %>% group_by(treatment) %>% summarise(AULCvTRIP_P=cor.test(AULC, D0_21)$p.value,
+# #                                                 AULCvTRIP_T=cor.test(AULC, D0_21)$statistic)
+# 
+# 
+# pig_trips %>% filter(treatment == "control") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# pig_trips %>% filter(treatment == "RPS") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# pig_trips %>% filter(treatment == "Bglu") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# pig_trips %>% filter(treatment == "Zn+Cu") %>% ggplot(aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# 
+# pig_trips %>% 
+#   ggplot(aes(x=trip, y=AULC, fill=treatment, color=treatment)) +
+#   geom_point(size=3, shape=21, color='black') + geom_smooth(method = 'lm', se=FALSE, size=2) +
+#   ggtitle('Correlation between cumulative community change and cumulative shedding', 
+#           subtitle = 'correlation stats: RPS pval = 0.037, control pval = 0.09, Bglu pval = 0.08') +
+#   xlab('Cumulative Jaccard distance') + scale_color_manual(values = c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   scale_fill_manual(values = c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
+# 
+# 
+# c('#3399FF', 'orange', 'red', 'grey', 'purple')
+# c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')
+# 
+# #testse <- cor.test(pig_trips$trip, pig_trips$AULC)
+# #testse$p.value
+# #testse$statistic
+# 
+# 
+# ggplot(pig_trips, aes(x=trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# ggplot(pig_trips, aes(x=D0_2, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# ggplot(pig_trips, aes(x=D2_7, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# ggplot(pig_trips, aes(x=D7_14, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# ggplot(pig_trips, aes(x=D14_21, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# 
+# ggplot(pig_trips_test, aes(x=mean_trip, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm', fill = NA) + geom_text(aes(label=pignum))
+# 
+# #ggplot(pig_trips, aes(x=sum, y=AULC, color=treatment)) + geom_point() + geom_smooth(method = 'lm')
+# 
+# pig_trips %>% group_by(treatment) %>% summarise(num=n())
+# 
+# apply(X = pig_trips, MARGIN = 2, FUN = mean, na.rm=TRUE)
+# 
+# mean(pig_trips$D0_2, na.rm=TRUE)
+# mean(pig_trips$D2_7, na.rm=TRUE)
+# mean(pig_trips$D7_14, na.rm=TRUE)
+# mean(pig_trips$D14_21, na.rm=TRUE)
+# 
+# median(pig_trips$D0_2, na.rm=TRUE)
+# median(pig_trips$D2_7, na.rm=TRUE)
+# median(pig_trips$D7_14, na.rm=TRUE)
+# median(pig_trips$D14_21, na.rm=TRUE)
+# 
+# 
+# # looking for missing samples
+# 
+# 
+# sum(shared_table[grep('P50D0', rownames(shared_table)),])
+# sum(shared_table[grep('P181D7F', rownames(shared_table)),])
+# 
+# 
+# 
+# ggplot(pig_trips, aes(x=treatment, y=trip, fill=treatment)) +
+#   geom_boxplot() + ylab('Cumulative bray-curtis dissimilarity (each pig)') + geom_jitter(size=2.5,width = 0.2, shape=21)+
+#   ggtitle('Cumulative change in community structure through Salmonella infection')
+# 
 
 ########### cor stuff  ###########
 

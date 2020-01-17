@@ -36,12 +36,12 @@ sal_data %>% filter(time_point != 0 & pignum != 101) %>%
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   facet_wrap(~time_point_fact) + ggtitle('Daily Shedding') + theme_bw() + ylab('Log10 Salmonella CFUs / g feces')
 
-sal_data %>% #filter(time_point != 0 & pignum != 101) %>%
-  ggplot(aes(x=time_point_fact, y=log_sal, group=treatXtime, fill=treatment)) +
-  geom_boxplot(outlier.alpha = 0, position = position_dodge2(preserve = 'total')) + geom_jitter(aes(fill=treatment), width=.2,shape=21, size=2, stroke=1.1)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  facet_wrap(~treatment) + ggtitle('Daily Shedding')+ theme_bw()
-
+# sal_data %>% #filter(time_point != 0 & pignum != 101) %>%
+#   ggplot(aes(x=time_point_fact, y=log_sal, group=treatXtime, fill=treatment)) +
+#   geom_boxplot(outlier.alpha = 0, position = position_dodge2(preserve = 'total')) + geom_jitter(aes(fill=treatment), width=.2,shape=21, size=2, stroke=1.1)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+#   facet_wrap(~treatment) + ggtitle('Daily Shedding')+ theme_bw()
+# 
 # sal_data %>% #filter(time_point != 0 & pignum != 101) %>%
 #   ggplot(aes(x=time_point_fact, y=log_sal, group=treatXtime, fill=treatment)) +
 #   geom_boxplot(outlier.alpha = 0, position = position_dodge2(preserve = 'total')) + geom_jitter(aes(fill=treatment), width=.2,shape=21, size=2, stroke=1.1)+
@@ -50,29 +50,29 @@ sal_data %>% #filter(time_point != 0 & pignum != 101) %>%
 
 
 
-get_pairs <- function(df){
-  pp <- pairwise.wilcox.test(df$log_sal, df$treatment, p.adjust.method = 'none')
-  ppdf <- as.data.frame(pp$p.value)
-  ps <- data.frame(matrix(c(pp$p.value), nrow = 1))
-  names(ps) <- paste(c(rep(names(ppdf), each = nrow(ppdf))), "_vs_", rep(rownames(ppdf), ncol(ppdf)), sep = "")
-  ps
-  
-}
-
-# DAILY SHEDDING WILCOX
-
-daily_tests <- sal_data %>% filter(pignum != 101) %>%
-  group_by(time_point) %>% nest() %>% mutate(pps = map(data, get_pairs)) %>%
-  select(time_point, pps) %>% unnest()
-
-daily_tests <- daily_tests %>% select(time_point, starts_with('control'))
-# write.csv(daily_tests, file = 'Daily_shedding_wilcox.csv')
-
-# PW_wilc_per_gene <- FS1.gather %>% group_by(gene) %>% nest() %>% mutate(pps = map(data,  get_pairs)) %>% select(gene, pps) %>% unnest()
-
-
-### Just Bglu stuff here ###
-
+# get_pairs <- function(df){
+#   pp <- pairwise.wilcox.test(df$log_sal, df$treatment, p.adjust.method = 'none')
+#   ppdf <- as.data.frame(pp$p.value)
+#   ps <- data.frame(matrix(c(pp$p.value), nrow = 1))
+#   names(ps) <- paste(c(rep(names(ppdf), each = nrow(ppdf))), "_vs_", rep(rownames(ppdf), ncol(ppdf)), sep = "")
+#   ps
+#   
+# }
+# 
+# # DAILY SHEDDING WILCOX
+# 
+# daily_tests <- sal_data %>% filter(pignum != 101) %>%
+#   group_by(time_point) %>% nest() %>% mutate(pps = map(data, get_pairs)) %>%
+#   select(time_point, pps) %>% unnest()
+# 
+# daily_tests <- daily_tests %>% select(time_point, starts_with('control'))
+# # write.csv(daily_tests, file = 'Daily_shedding_wilcox.csv')
+# 
+# # PW_wilc_per_gene <- FS1.gather %>% group_by(gene) %>% nest() %>% mutate(pps = map(data,  get_pairs)) %>% select(gene, pps) %>% unnest()
+# 
+# 
+# ### Just Bglu stuff here ###
+# 
 # test <- sal_data %>% filter(time_point == 21 & treatment %in% c('control', 'Bglu')) %>% 
 #   write_tsv('Sal_bglu_control_D21.tsv')
 # 
@@ -105,38 +105,6 @@ daily_tests <- daily_tests %>% select(time_point, starts_with('control'))
 
 library(lmerTest)
 library(psycho)
-# test2$treatment <- factor(test2$treatment, levels = c('control', 'Bglu'))
-# # install.packages('psycho')
-# fit <- lmer(log_sal ~ treatment + (1|pignum), data=test2)
-# anova(fit)
-# 
-# results <- analyze(fit)
-# print(results)
-# 
-# summary(fit)
-
-
-##############
-
-
-# sal_data %>% filter(pignum != 101) %>% ggplot(aes(x=time_point, y=log_sal)) + geom_line(aes(group=pignum, color=treatment), size=1)+scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
-
-# sal_data %>% filter(pignum == 101 )
-
-
-sal_data %>% filter(pignum != 101 ) %>%
-  ggplot(aes(x=time_point, y=log_sal)) +
-  geom_line(aes(group=pignum, color=treatment), size=1) +
-  facet_wrap(~treatment) + geom_point()+ #geom_text(aes(label=pignum))+
-  scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+
-  theme_bw()
-
-
-
-
-# sal_data %>% filter(pignum != 101 & treatment %in% c('control', 'Zn+Cu')) %>% ggplot(aes(x=time_point, y=log_sal)) +
-#   geom_line(aes(group=pignum, color=treatment), size=1) + facet_wrap(~treatment) + geom_point()+ #geom_text(aes(label=pignum))+
-#   scale_color_manual(values=c('#33CC33', 'red', 'grey', 'purple'))
 
 
 all_daily <- sal_data %>% filter(pignum != 101) %>% group_by(time_point, treatment) %>%
@@ -147,21 +115,12 @@ all_daily <- sal_data %>% filter(pignum != 101) %>% group_by(time_point, treatme
 
 
 
-# Just ZnCu vs Control 
-# ZN_CONT <- sal_data %>% filter(pignum != 101 & treatment %in% c('control', 'Zn+Cu')) %>%
-#   group_by(time_point, treatment) %>% 
-#   summarise(mean_sal=mean(log_sal), sd_sal=sd(log_sal), se_sal=sd_sal/sqrt(n()))
-# 
-# 
-# ZN_CONT %>% ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +geom_line(aes(color=treatment))+ geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) + 
-#   geom_point(shape=21, size=4) +scale_color_manual(values=c('#33CC33', 'red', 'orange', 'red', 'grey', 'purple')) + 
-#   scale_fill_manual(values=c('#33CC33', 'red', 'orange', 'red', 'grey', 'purple')) + ylab('log Salmonella') + annotate(x=21, y=3, geom='text', label='p=0.06')+ xlab('Day post-challenge')
-
 
 
 
 ### option 1
-all_daily %>% filter(!(treatment %in% c('Zn+Cu', 'Bglu'))) %>%  ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +
+all_daily %>% filter(!(treatment %in% c('Zn+Cu', 'Bglu'))) %>%
+  ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +
   geom_jitter(aes(x=time_point, y=log_sal, color=treatment), data=filter(sal_data, !(treatment %in% c('Zn+Cu', 'Bglu'))& pignum !=101), alpha=.5) + 
   geom_line(aes(color=treatment), size=1.5)+
   geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) +   geom_point(shape=21, size=4) +
@@ -171,35 +130,7 @@ all_daily %>% filter(!(treatment %in% c('Zn+Cu', 'Bglu'))) %>%  ggplot(aes(x=tim
   xlab('Day post-challenge') +
   ggtitle('Daily shedding, group summary statistics')+ theme_bw()
 
-
-# option 2
-all_daily %>% filter(!(treatment %in% c('Zn+Cu', 'Bglu'))) %>%  ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +
-  geom_line(aes(color=treatment), size=1.5)+
-  geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) +   geom_point(shape=21, size=4) +
-  scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  ylab('log Salmonella') +
-  xlab('Day post-challenge') +
-  ggtitle('Daily shedding, group summary statistics')+ theme_bw()
-
-
-
-all_daily %>% filter(treatment %in% c('control', 'RPS')) %>% ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +geom_line(aes(color=treatment))+ geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) + 
-  geom_point(shape=21, size=4) +scale_color_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ylab('log Salmonella') + xlab('Day post-challenge') +
-  annotate(x=21, y=3, geom='text', label='p=0.02')+
-  annotate(x=7, y=3.25, geom='text', label='p=0.03')+
-  annotate(x=2, y=3.75, geom='text', label='p=0.06')+xlab('Day post-challenge')+ theme_bw()
-
-
-#ZN_CONT_stats <- sal_data %>% filter(pignum != 101 & treatment %in% c('control', 'Zn+Cu'))
-
-
-# ZN_CONT_stats
-
-#pairwise.t.test(ZN_CONT_stats$log_sal,ZN_CONT_stats$treatXtime, p.adjust.method = 'none', var.equal=FALSE)
-#### maybe some statistical test at each timepoint?
-
+###
 
 sum_sal <- sal_data %>% group_by(pignum) %>%
   summarise(AULC=trapz(time_point, log_sal),
@@ -208,12 +139,6 @@ sum_sal <- sal_data %>% group_by(pignum) %>%
             day_max=time_point[which.max(log_sal)], 
             pos_samples=sum(log_sal > 0), 
             treatment=unique(treatment))
-
-sum_sal %>% ggplot(aes(x=treatment, y=pos_samples, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
-sum_sal %>% ggplot(aes(x=treatment, y=day_max, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
-sum_sal %>% ggplot(aes(x=treatment, y=maxshed, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
-
-sum_sal %>% ggplot(aes(x=treatment, y=pos_samples, fill=treatment)) + geom_boxplot() + geom_jitter(shape=21, width=.2, height = .05)
 
 
 # this mess is to calculate AULC at each timepoint for each pig
@@ -231,54 +156,6 @@ AULCs <- merge(AULCs, treats, by = 'pignum', all = TRUE)
 AULCs$treatment <- factor(AULCs$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
 
 
-# AULCs_av <- AULCs %>% group_by(day, treatment) %>% summarise(mean_AULC=mean(AULC), sd=sd(AULC), n=n(), sterr=sd/sqrt(n))
-# 
-# # AULCs_av$sd[is.na(AULCs_av$sd)] <- 0
-# # AULCs_av$sterr[is.na(AULCs_av$sterr)] <- 0
-# 
-# AULCs_av$treatment <- factor(AULCs_av$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
-# 
-# AULCs_av %>% filter(treatment %in% c('control', 'RPS')) %>% ggplot(aes(x=day, y=mean_AULC, group=treatment, color=treatment, fill = treatment)) +
-#   geom_point() +
-#   geom_line() + geom_ribbon(aes(ymin=mean_AULC-sterr, ymax=mean_AULC+sterr), alpha=.5) + 
-#   scale_color_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Mean AULC over time') + 
-#   scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) 
-# 
-# 
-# AULCs_av %>% filter(treatment %in% c('control', 'RPS')) %>% ggplot(aes(x=day, y=mean_AULC, group=treatment, color=treatment, fill = treatment)) +
-#   geom_point(size=3) +
-#   geom_line(size=1.5) + geom_errorbar(aes(ymin=mean_AULC-sterr, ymax=mean_AULC+sterr), size=1,width=1) + 
-#   scale_color_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('') + 
-#   scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ylab('AULC') 
-#### for brad ####
-# 
-# AULCs_av %>% filter(treatment %in% c('control', 'Zn+Cu')) %>% ggplot(aes(x=day, y=mean_AULC, group=treatment, color=treatment, fill = treatment)) +
-#   geom_line(size=1.5) + 
-#   geom_errorbar(aes(ymin=mean_AULC-sterr, ymax=mean_AULC+sterr), color='black', size=.5,width=.5) + 
-#   geom_point(size=3, shape=21, color='black') +
-#   scale_color_manual(values=c('grey50', 'blue'), labels=c('Ctrl', 'Zn+Cu')) + ggtitle('') + 
-#   scale_fill_manual(values=c('grey50', 'blue'), labels=c('Ctrl', 'Zn+Cu')) + labs(y=expression('AULC - cumulative CFU/g feces ('*log[10]*')'), 
-#                                                                                           x='Days post-innoculation') + 
-#   theme(axis.title.y=element_text(size=11.5, family = 'bold'), 
-#         axis.title.x = element_text(size = 11.5, family= 'bold'), 
-#         legend.title = element_blank())
-#   
-# 
-# ZN_CONT %>% ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +geom_line(aes(color=treatment))+ geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.5) + 
-#   geom_point(shape=21, size=4) +scale_color_manual(values=c('grey50', 'blue'), labels=c('Ctrl', 'Zn+Cu')) + ggtitle('') + 
-#   scale_fill_manual(values=c('grey50', 'blue'), labels=c('Ctrl', 'Zn+Cu')) + labs(y=expression('CFU/g feces ('*log[10]*')'), 
-#                                                                                   x='Days post-innoculation') + 
-#   theme(axis.title.y=element_text(size=11.5, family = 'bold'), 
-#         axis.title.x = element_text(size = 11.5, family= 'bold'), 
-#         legend.title = element_blank()) + annotate(x=21, y=3, geom='text', label='p=0.06')
-# 
-# ZN_AULCs_av <- AULCs_av %>% filter(treatment %in% c('control', 'Zn+Cu'))
-# ZN_AULCs <- AULCs %>% filter(treatment %in% c('control', 'Zn+Cu'))
-# 
-# write_tsv(ZN_AULCs, 'brad_AULCs.tsv')
-# write_tsv(ZN_AULCs_av, 'brad_AULCs_sum_stats.tsv')
-
-# what's this?
 #########temp ##########
 
 # re orders sum_sal
@@ -287,97 +164,50 @@ sum_sal <- sum_sal[match(filter(sal_data, time_point==2)$pignum,sum_sal$pignum),
 
 
 #
-filter(sal_data, time_point==2)$pignum == filter(sal_data, time_point==7)$pignum
-filter(sal_data, time_point==14)$pignum == filter(sal_data, time_point==21)$pignum
-filter(sal_data, time_point==2)$pignum == filter(sal_data, time_point==21)$pignum
-sum_sal$pignum == filter(sal_data, time_point==2)$pignum
-
-# There is probably a better way to do this....
-sum_sal$d2_shed <- filter(sal_data, time_point==2)$log_sal
-sum_sal$d7_shed <- filter(sal_data, time_point==7)$log_sal
-sum_sal$d14_shed <- filter(sal_data, time_point==14)$log_sal
-sum_sal$d21_shed <- filter(sal_data, time_point==21)$log_sal
-sum_sal$d0_temp <- filter(sal_data, time_point==0)$temp
-sum_sal$d2_temp <- filter(sal_data, time_point==2)$temp
-sum_sal$d7_temp <- filter(sal_data, time_point==7)$temp
-sum_sal$d2_Dtemp <- filter(sal_data, time_point==2)$temp - filter(sal_data, time_point==0)$temp
-sum_sal$d7_Dtemp <- filter(sal_data, time_point==7)$temp - filter(sal_data, time_point==0)$temp
-gain <- filter(sal_data, time_point == 21)$pig_weight - filter(sal_data, time_point == 0)$pig_weight
-
-sum_sal$ADG <- gain/21
-sum_sal$init_weight <- filter(sal_data, time_point == 0)$pig_weight
-sum_sal$final_weight <- filter(sal_data, time_point == 21)$pig_weight
-sum_sal$P_init_gain <- (gain/sum_sal$init_weight)*100
-sum_sal$P_dry_matter0 <- filter(sal_data, time_point == 0)$percent_drymatter
-sum_sal$P_dry_matter2 <- filter(sal_data, time_point == 2)$percent_drymatter
-sum_sal$P_dry_matter7 <- filter(sal_data, time_point == 7)$percent_drymatter
-
-
+# filter(sal_data, time_point==2)$pignum == filter(sal_data, time_point==7)$pignum
+# filter(sal_data, time_point==14)$pignum == filter(sal_data, time_point==21)$pignum
+# filter(sal_data, time_point==2)$pignum == filter(sal_data, time_point==21)$pignum
+# sum_sal$pignum == filter(sal_data, time_point==2)$pignum
+# 
+# # There is probably a better way to do this....
+# sum_sal$d2_shed <- filter(sal_data, time_point==2)$log_sal
+# sum_sal$d7_shed <- filter(sal_data, time_point==7)$log_sal
+# sum_sal$d14_shed <- filter(sal_data, time_point==14)$log_sal
+# sum_sal$d21_shed <- filter(sal_data, time_point==21)$log_sal
+# sum_sal$d0_temp <- filter(sal_data, time_point==0)$temp
+# sum_sal$d2_temp <- filter(sal_data, time_point==2)$temp
+# sum_sal$d7_temp <- filter(sal_data, time_point==7)$temp
+# sum_sal$d2_Dtemp <- filter(sal_data, time_point==2)$temp - filter(sal_data, time_point==0)$temp
+# sum_sal$d7_Dtemp <- filter(sal_data, time_point==7)$temp - filter(sal_data, time_point==0)$temp
+# gain <- filter(sal_data, time_point == 21)$pig_weight - filter(sal_data, time_point == 0)$pig_weight
+# 
+# sum_sal$ADG <- gain/21
+# sum_sal$init_weight <- filter(sal_data, time_point == 0)$pig_weight
+# sum_sal$final_weight <- filter(sal_data, time_point == 21)$pig_weight
+# sum_sal$P_init_gain <- (gain/sum_sal$init_weight)*100
+# sum_sal$P_dry_matter0 <- filter(sal_data, time_point == 0)$percent_drymatter
+# sum_sal$P_dry_matter2 <- filter(sal_data, time_point == 2)$percent_drymatter
+# sum_sal$P_dry_matter7 <- filter(sal_data, time_point == 7)$percent_drymatter
+# 
+# 
 # sum_sal <- merge(sum_sal, treats, by='pignum', all=TRUE)
 sum_sal$treatment <- factor(sum_sal$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
 
-hist(sum_sal$AULC, breaks = 50)
+# hist(sum_sal$AULC, breaks = 50)
 
 
 
 filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
   geom_boxplot(outlier.alpha = 0) + geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + #geom_text(aes(label=pignum)) +
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'Wilcoxon vs control: RPS p=0.013, Acid p=0.10')+ theme_bw()
-
-
-filter(sum_sal, pignum !=101 & treatment %in% c('control', 'RPS')) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
-  geom_boxplot(outlier.alpha = 0) + geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + #geom_text(aes(label=pignum)) +
-  scale_fill_manual(values=c('red', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'Wilcoxon p=0.013')+ theme_bw()
+  ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'TUKEY RES HERE')+ theme_bw()
 
 
 
-
-
-# filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
-#   geom_text(aes(label=pignum)) + #geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + 
-#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-#   ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'Wilcoxon vs control: RPS p=0.013, Acid p=0.10, Bglu p=0.043')
-
-
-
-# filter(sum_sal, pignum !=101) %>% select(pignum, AULC, treatment)
-
+# High low controls? #
 low_conts <- c(345,77,191,458,87,160)
 high_conts <- c(337,122,224,419)
 
-# sum_sal.filter <- filter(sum_sal, pignum !=101)
-
-####### FOr keystone poster #######
-# sum_sal.poster <- filter(sum_sal, pignum !=101 & treatment %in% c('control', 'RPS'))
-# 
-# sum_sal.poster %>% ggplot(aes(x=treatment, y=AULC, fill=treatment)) +
-#   geom_boxplot() + geom_jitter(width = .2, shape=21, size=2, stroke=1) +
-#   scale_fill_brewer(palette = 'Dark2') + ggtitle('Cumulative Salmonella shedding over 21 days', subtitle = 'Wilcox pvalue=0.013')
-
-
-
-
-sum_sal_sum <- sum_sal %>% group_by(treatment) %>%
-  summarise(mean_AULC=mean(AULC), sd=sd(AULC), num_obs=n(), se=sd/sqrt(n()))
-
-# not this one.  Need boxplots because highlight low vs high shedders later
-
-# ggplot(sum_sal_sum, aes(x=treatment, y=mean_AULC)) + geom_col(aes(fill=treatment)) +
-#   geom_errorbar(aes(ymin=mean_AULC - se, ymax=mean_AULC + se), size=.5, width=.5) +
-#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-#   ggtitle('Mean AULC', subtitle = 'Error bars represent +/- 1 standard error from the mean')
-
-
-wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'RPS'])
-t.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'RPS'])
-
-wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Acid'])
-t.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Acid'])
-
-# wilcox.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Bglu'])
-# t.test(sum_sal$AULC[sum_sal$treatment == 'control'], sum_sal$AULC[sum_sal$treatment == 'Bglu'])
 
 #### Trying a little mixed model stuff....
 
@@ -414,6 +244,11 @@ anova(shedding.null, shedding.model)
 sal_data2$time_point_fact
 # fit <- lmer(log_sal ~ time_point_fact * treatment + (1|pignum) , data=sal_data2) # time is factor
 fit <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)      # time is continuous
+summary(fit)
+# interactions aren't sig, so remove?
+
+fit2 <- lmer(log_sal ~ time_point + treatment + (1|pignum) , data=sal_data2)      # time is continuous
+summary(fit)
 
 
 
@@ -476,6 +311,7 @@ summ <- summary(fit)
 
 #####
 # use this #
+# nest and do an anova at each timepoint
 
 D2_tuk <- sal_data %>% filter(time_point == 2 & !(treatment %in% c('Bglu', 'Zn+Cu')))
 sal_data$treatment
@@ -486,7 +322,7 @@ D2_aov <- aov(data=D2_tuk, log_sal ~ treatment)
 summary(D2_aov)
 TukeyHSD(D2_aov)
 
-
+### USE THIS FOR AULC STAT TEST ###
 aov_AULC <- aov(data=sum_sal, AULC~treatment)
 summary(aov_AULC)
 
@@ -617,9 +453,9 @@ TukeyHSD(fit3_anov, which='treatment')
 #   ggtitle('weight gain over the 1st two weeks', subtitle = 'Pig 101 shown in black') + ylim(0,32)
 # 
 
-sal_data %>% filter(pignum !=101) %>% ggplot(aes(x=time_point_fact, y=pig_weight, fill=treatment, group=treatXtime)) +
-  geom_boxplot() +scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+
-  ggtitle('Weight') #+ geom_text(aes(label=pignum))
+# sal_data %>% filter(pignum !=101) %>% ggplot(aes(x=time_point_fact, y=pig_weight, fill=treatment, group=treatXtime)) +
+#   geom_boxplot() +scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))+
+#   ggtitle('Weight') #+ geom_text(aes(label=pignum))
 
 
 # sal_data %>% filter(pignum !=101 & treatment %in% c('control', 'Bglu')) %>% ggplot(aes(x=time_point_fact, y=pig_weight, fill=treatment, group=treatXtime)) +
@@ -627,13 +463,13 @@ sal_data %>% filter(pignum !=101) %>% ggplot(aes(x=time_point_fact, y=pig_weight
 #   ggtitle('Weight') #+ geom_text(aes(label=pignum))
 # 
 # some sum_sal figs #
+# 
+# sum_sal %>% ggplot(aes(x=treatment, y=ADG, group=treatment, fill=treatment)) +
+#   geom_boxplot() +scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
 
-sum_sal %>% ggplot(aes(x=treatment, y=ADG, group=treatment, fill=treatment)) +
-  geom_boxplot() +scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
 
-
-sum_sal %>% ggplot(aes(x=treatment, y=P_init_gain, group=treatment, fill=treatment)) +
-  geom_boxplot() +scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Percent Initial gain')
+# sum_sal %>% ggplot(aes(x=treatment, y=P_init_gain, group=treatment, fill=treatment)) +
+#   geom_boxplot() +scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Percent Initial gain')
 
 ################################
 # setwd("~/FS12")
@@ -648,10 +484,10 @@ tis <- tis %>% filter(!treatment %in% c('Zn+Cu', 'Bglu'))
 tis$treatment <- factor(tis$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
 
 
-pairwise.wilcox.test(tis$log_sal[tis$tissue == 'cecal_cont'], tis$treatment[tis$tissue == 'cecal_cont'], p.adjust.method = 'none')
-
-pairwise.t.test(tis$log_sal[tis$tissue == 'cecal_cont'], tis$treatment[tis$tissue == 'cecal_cont'], p.adjust.method = 'none')
-pairwise.t.test(tis$log_sal[tis$tissue == 'Cecum'], tis$treatment[tis$tissue == 'Cecum'], p.adjust.method = 'none')
+# pairwise.wilcox.test(tis$log_sal[tis$tissue == 'cecal_cont'], tis$treatment[tis$tissue == 'cecal_cont'], p.adjust.method = 'none')
+# 
+# pairwise.t.test(tis$log_sal[tis$tissue == 'cecal_cont'], tis$treatment[tis$tissue == 'cecal_cont'], p.adjust.method = 'none')
+# pairwise.t.test(tis$log_sal[tis$tissue == 'Cecum'], tis$treatment[tis$tissue == 'Cecum'], p.adjust.method = 'none')
 
 
 
@@ -705,76 +541,76 @@ sum_sal_RPS %>% ggplot(aes(x=shed, y=AULC, group=shed, fill=shed)) +
 
 
 ###### For Shawn FSIS  ##########
-
-ytitle <- expression(paste('Log ', italic("Salmonella")))
-
-tis %>% filter(tissue=='cecal_cont') %>%
-  ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  theme(axis.text = element_text(size=16), 
-        axis.title = element_text(size=16), 
-        legend.text = element_text(size=16),
-        legend.title = element_text(size=16)) + ylab(ytitle)
-
-
-tis %>% filter(tissue=='cecal_cont') %>%
-  ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  theme_bw(base_size = 16) + ylab(ytitle)
-
-
-
-tis %>% filter(tissue=='Cecum') %>%
-  ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .2, size=2.25)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Cecum')
-
-
-tis %>% filter(tissue=='ICLN') %>%
-  ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('ICLN')
-
-tis %>% filter(tissue=='IPP') %>%
-  ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('IPP')
-
-tis %>% filter(tissue=='Tonsil') %>%
-  ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0) + geom_jitter(shape=21,width = .1, size=2.25)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Tonsil')
-
-tis$tisXtreat <- paste(tis$tissue, tis$treatment, sep = '_')
-
-tis.sum <- tis %>% group_by(tisXtreat) %>%
-  summarise(mean=mean(log_sal), sd=sd(log_sal), num_obs=n(), se=sd/sqrt(n()))
-
-tis.sum$tisXtreat
-
-tis.sum$tissue <- sub('(.*)_(.*)', '\\1', tis.sum$tisXtreat)
-tis.sum$treatment <- sub('(.*)_(.*)', '\\2', tis.sum$tisXtreat)
-
-tis.sum$treatment <- factor(tis.sum$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
-
-ggplot(tis.sum, aes(x=treatment, y=mean)) + geom_col(aes(fill=treatment)) +
-  geom_errorbar(aes(ymin=mean- se, ymax=mean + se), size=.25, width=.35, color = 'black', alpha=.85) +
-  facet_wrap(~tissue) +  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
-
-###### Shawn FSIS Fig #####
-
-ytitle <- expression(paste('Log ', italic("Salmonella")))
-
-tis.sum %>% filter(tissue == 'cecal_cont') %>% ggplot(aes(x=treatment, y=mean)) + geom_col(aes(fill=treatment)) +
-  geom_errorbar(aes(ymin=mean- se, ymax=mean + se), size=.5, width=.35, color = 'black', alpha=.85) +
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  ylab(ytitle <- expression(paste('Log ', italic("Salmonella")))) + 
-  theme_bw(base_size = 16) + ggtitle('')
-
-tis.sum %>% filter(tissue == 'cecal_cont') %>% ggplot(aes(x=treatment, y=mean)) + geom_col(aes(fill=treatment)) +
-  geom_errorbar(aes(ymin=mean- se, ymax=mean + se), size=.5, width=.35, color = 'black', alpha=.85) +
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  ylab(ytitle <- expression(paste('Log ', italic("Salmonella")))) + 
-  theme(axis.text = element_text(size=16), 
-        axis.title = element_text(size=16), 
-        legend.text = element_text(size=16),
-        legend.title = element_text(size=16)) + ggtitle('')
+# 
+# ytitle <- expression(paste('Log ', italic("Salmonella")))
+# 
+# tis %>% filter(tissue=='cecal_cont') %>%
+#   ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   theme(axis.text = element_text(size=16), 
+#         axis.title = element_text(size=16), 
+#         legend.text = element_text(size=16),
+#         legend.title = element_text(size=16)) + ylab(ytitle)
+# 
+# 
+# tis %>% filter(tissue=='cecal_cont') %>%
+#   ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   theme_bw(base_size = 16) + ylab(ytitle)
+# 
+# 
+# 
+# tis %>% filter(tissue=='Cecum') %>%
+#   ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .2, size=2.25)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Cecum')
+# 
+# 
+# tis %>% filter(tissue=='ICLN') %>%
+#   ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('ICLN')
+# 
+# tis %>% filter(tissue=='IPP') %>%
+#   ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0)+ geom_jitter(shape=21,width = .1, size=2.25)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('IPP')
+# 
+# tis %>% filter(tissue=='Tonsil') %>%
+#   ggplot(aes(x=treatment, y=log_sal, group=treatment, fill=treatment)) + geom_boxplot(outlier.alpha = 0) + geom_jitter(shape=21,width = .1, size=2.25)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + ggtitle('Tonsil')
+# 
+# tis$tisXtreat <- paste(tis$tissue, tis$treatment, sep = '_')
+# 
+# tis.sum <- tis %>% group_by(tisXtreat) %>%
+#   summarise(mean=mean(log_sal), sd=sd(log_sal), num_obs=n(), se=sd/sqrt(n()))
+# 
+# tis.sum$tisXtreat
+# 
+# tis.sum$tissue <- sub('(.*)_(.*)', '\\1', tis.sum$tisXtreat)
+# tis.sum$treatment <- sub('(.*)_(.*)', '\\2', tis.sum$tisXtreat)
+# 
+# tis.sum$treatment <- factor(tis.sum$treatment, levels = c('control', 'RPS', 'Acid', 'Zn+Cu', 'RCS', 'Bglu'))
+# 
+# ggplot(tis.sum, aes(x=treatment, y=mean)) + geom_col(aes(fill=treatment)) +
+#   geom_errorbar(aes(ymin=mean- se, ymax=mean + se), size=.25, width=.35, color = 'black', alpha=.85) +
+#   facet_wrap(~tissue) +  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
+# 
+# ###### Shawn FSIS Fig #####
+# 
+# ytitle <- expression(paste('Log ', italic("Salmonella")))
+# 
+# tis.sum %>% filter(tissue == 'cecal_cont') %>% ggplot(aes(x=treatment, y=mean)) + geom_col(aes(fill=treatment)) +
+#   geom_errorbar(aes(ymin=mean- se, ymax=mean + se), size=.5, width=.35, color = 'black', alpha=.85) +
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   ylab(ytitle <- expression(paste('Log ', italic("Salmonella")))) + 
+#   theme_bw(base_size = 16) + ggtitle('')
+# 
+# tis.sum %>% filter(tissue == 'cecal_cont') %>% ggplot(aes(x=treatment, y=mean)) + geom_col(aes(fill=treatment)) +
+#   geom_errorbar(aes(ymin=mean- se, ymax=mean + se), size=.5, width=.35, color = 'black', alpha=.85) +
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   ylab(ytitle <- expression(paste('Log ', italic("Salmonella")))) + 
+#   theme(axis.text = element_text(size=16), 
+#         axis.title = element_text(size=16), 
+#         legend.text = element_text(size=16),
+#         legend.title = element_text(size=16)) + ggtitle('')
 
 
 
