@@ -6,6 +6,7 @@ library(tidyverse)
 
 
 
+treats <- read_csv('FS12_treatments.csv')
 
 p1 <- read_csv('NN_SalN_AD_GLU.csv')
 p11 <- read_csv('Plate1_adglu_bdmalt.csv')
@@ -21,7 +22,6 @@ p11_met <- merge(p11_met, treats, by = 'pig') %>% mutate(pen=pen.y) %>% select(-
 
 
 
-treats <- read_csv('FS12_treatments.csv')
 d2t <- read_csv('FS12_diet_treat_map.csv')
 
 FS12a_meta <- read_csv('FS12a_meta.csv')

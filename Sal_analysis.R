@@ -30,11 +30,11 @@ sal_data <- sal_data %>% filter(!(treatment %in% c('Zn+Cu', 'Bglu')) & pignum !=
 
 ## this is a nice one i think.....
 
-sal_data %>% filter(time_point != 0 & pignum != 101) %>%
-  ggplot(aes(x=treatment, y=log_sal, group=treatXtime, fill=treatment)) +
-  geom_boxplot(outlier.alpha = 0, position = position_dodge2(preserve = 'total')) + geom_jitter(aes(fill=treatment), width=.2,shape=21, size=2, stroke=1.1)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  facet_wrap(~time_point_fact) + ggtitle('Daily Shedding') + theme_bw() + ylab('Log10 Salmonella CFUs / g feces')
+# sal_data %>% filter(time_point != 0 & pignum != 101) %>%
+#   ggplot(aes(x=treatment, y=log_sal, group=treatXtime, fill=treatment)) +
+#   geom_boxplot(outlier.alpha = 0, position = position_dodge2(preserve = 'total')) + geom_jitter(aes(fill=treatment), width=.2,shape=21, size=2, stroke=1.1)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+#   facet_wrap(~time_point_fact) + ggtitle('Daily Shedding') + theme_bw() + ylab('Log10 Salmonella CFUs / g feces')
 
 # sal_data %>% #filter(time_point != 0 & pignum != 101) %>%
 #   ggplot(aes(x=time_point_fact, y=log_sal, group=treatXtime, fill=treatment)) +
@@ -103,8 +103,8 @@ sal_data %>% filter(time_point != 0 & pignum != 101) %>%
 # 
 #
 
-library(lmerTest)
-library(psycho)
+# library(lmerTest)
+# library(psycho)
 
 
 all_daily <- sal_data %>% filter(pignum != 101) %>% group_by(time_point, treatment) %>%
@@ -118,19 +118,32 @@ all_daily <- sal_data %>% filter(pignum != 101) %>% group_by(time_point, treatme
 
 
 
-### option 1
-all_daily %>% filter(!(treatment %in% c('Zn+Cu', 'Bglu'))) %>%
-  ggplot(aes(x=time_point, y=mean_sal, fill=treatment, group=treatment)) +
-  geom_jitter(aes(x=time_point, y=log_sal, color=treatment), data=filter(sal_data, !(treatment %in% c('Zn+Cu', 'Bglu'))& pignum !=101), alpha=.5) + 
+### Figure 1A
+F1A <- all_daily %>% 
+  mutate(TPP=case_when(
+    treatment == 'RPS'  ~    time_point, 
+    treatment == 'Acid' ~    time_point - .15, 
+    treatment == 'RCS'  ~    time_point + .15, 
+    treatment == 'control' ~ time_point, 
+    TRUE ~ 1000000000000000000)) %>% 
+  filter(!(treatment %in% c('Zn+Cu', 'Bglu'))) %>%
+  ggplot(aes(x=TPP, y=mean_sal, fill=treatment, group=treatment)) +
+  # geom_jitter(aes(x=time_point, y=log_sal, color=treatment), data=filter(sal_data, !(treatment %in% c('Zn+Cu', 'Bglu'))& pignum !=101), alpha=.5) + 
   geom_line(aes(color=treatment), size=1.5)+
-  geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) +   geom_point(shape=21, size=4) +
+  geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) +
+  geom_point(shape=21, size=4) +
   scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   ylab('log Salmonella') +
   xlab('Day post-challenge') +
   ggtitle('Daily shedding, group summary statistics')+ theme_bw()
 
+
+F1A
 ###
+
+
+#############
 
 sum_sal <- sal_data %>% group_by(pignum) %>%
   summarise(AULC=trapz(time_point, log_sal),
@@ -197,130 +210,179 @@ sum_sal$treatment <- factor(sum_sal$treatment, levels = c('control', 'RPS', 'Aci
 
 
 
-filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
+F1C <- filter(sum_sal, pignum !=101) %>% ggplot(aes(x=treatment, y=AULC, fill=treatment))+
   geom_boxplot(outlier.alpha = 0) + geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) + #geom_text(aes(label=pignum)) +
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'TUKEY RES HERE')+ theme_bw()
 
 
+F1C
 
-# High low controls? #
-low_conts <- c(345,77,191,458,87,160)
-high_conts <- c(337,122,224,419)
 
+
+
+
+# # High low controls? #
+# low_conts <- c(345,77,191,458,87,160)
+# high_conts <- c(337,122,224,419)
+# 
 
 #### Trying a little mixed model stuff....
 
 # library(lmerTest)
-library(lme4)
+# library(lme4)
 # lmer(y ~ time * tx + (1 | subjects), data=data)
 # lmer(y ~ time * tx + (time | subjects), data=data)
 
 # filtering T0 because no pigs were shedding salmonella at t0
 # sal_data2 <- sal_data %>% filter(pignum != 101 & time_point != 0 & treatment %in% c('control', 'Zn+Cu'))
-sal_data2 <- sal_data %>% filter(time_point != 0)
-
-sal_data2$pignum <- factor(sal_data2$pignum)
-
-sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) + geom_point(alpha=.2) + geom_smooth(method = 'lm', fill=NA)
-
-sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) +  geom_smooth(method = 'lm', fill=NA)
+# sal_data2 <- sal_data %>% filter(time_point != 0)
+# 
+# sal_data2$pignum <- factor(sal_data2$pignum)
+# 
+# sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) + geom_point(alpha=.2) + geom_smooth(method = 'lm', fill=NA)
+# 
+# sal_data2 %>% ggplot(aes(x=time_point, y=log_sal, color=treatment)) +  geom_smooth(method = 'lm', fill=NA)
 
 ###
 
 # LRT test?
 # Are these two models equivalent?
-shedding.null <- lme4::lmer(log_sal ~ time_point + (1|pignum) , data=sal_data2, REML = FALSE)
-shedding.model <- lme4::lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2, REML = FALSE)
-
-anova(shedding.model, shedding.null)
-anova(shedding.null, shedding.model)
+# shedding.null <- lme4::lmer(log_sal ~ time_point + (1|pignum) , data=sal_data2, REML = FALSE)
+# shedding.model <- lme4::lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2, REML = FALSE)
+# 
+# anova(shedding.model, shedding.null)
+# anova(shedding.null, shedding.model)
 # No, two models are not equivalent, adding treatment factor helps explain more variance in the data
 # so now extract coeficcients for treatments? 
 # what do these mean?  Are they the difference in intercept between reference group (control) and other groups?
 # intercepts would be shedding at time_point 0?
 
 ###
-sal_data2$time_point_fact
-# fit <- lmer(log_sal ~ time_point_fact * treatment + (1|pignum) , data=sal_data2) # time is factor
-fit <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)      # time is continuous
-summary(fit)
-# interactions aren't sig, so remove?
-
-fit2 <- lmer(log_sal ~ time_point + treatment + (1|pignum) , data=sal_data2)      # time is continuous
-summary(fit)
-
-
-
-confints <- lme4::confint.merMod(fit)
-fixefs <- lme4::fixef(fit)
-colnames(confints) <- c('lower', 'upper')
-confints <- confints[-(1:2),]
-confints <- data.frame(confints)
-
-
-confints$fixef <- fixefs
-confints$coef <- rownames(confints)
-
-confints %>% ggplot(aes(x=coef, y=fixef)) +geom_point()
-
-
-whatsTHIS <- lme4::fortify.merMod(fit)
-#hmmm...... interesteting
-whatsTHIS %>% group_by(treatment, time_point) %>% summarise(avg=mean(log_sal))
-whatsTHIS %>% ggplot(aes(x=time_point, y=.fitted)) +
-  geom_point(aes(x=time_point, y=log_sal), color='red', alpha=.2) + geom_line(aes(x=time_point, y=log_sal, group=pignum), color='red', alpha=.2)+
-  geom_point() +
-  geom_line(aes(group=pignum)) +
-  facet_wrap(~treatment) + ggtitle('fitted values in black, real values in red') + xlim(0,25)
-
-# each pig has different intercetp, but slopes are the same within treatments
-
-
-whatsTHIS %>% ggplot(aes(x=time_point, y=.fitted)) +
-  geom_point(aes(x=time_point, y=log_sal), color='red', alpha=.2) + geom_line(aes(x=time_point, y=log_sal, group=pignum), color='red', alpha=.2)+
-  geom_point() +
-  geom_line(aes(group=pignum)) +
-  facet_wrap(~treatment) + ggtitle('fitted values in black, real values in red') + xlim(0,25) +
-  geom_hline(yintercept = 3.26) + # Intercept (y interept of control group at T=0?)
-  geom_hline(yintercept = 3.26-1.25, color='blue') + geom_vline(xintercept = 0)
-
-3.26-1.25
-
-
-
-
-lme4::ranef(fit)
-lme4::show(fit)
-lme4::VarCorr(fit)
-plot(fit)
-13*7
-
-summary(fit)
-# summary(fit2)
-# with lmerTest, fixed effects get pvalues, without, no pvalues.
-# what do pvalues for fixed effects mean?
-
-# how do you evaluate the quality of the model?
-# is there an R2 thingy like for lm()?
-
-library(lmerTest)
-summ <- summary(fit)
+# sal_data2$time_point_fact
+# # fit <- lmer(log_sal ~ time_point_fact * treatment + (1|pignum) , data=sal_data2) # time is factor
+# fit <- lmer(log_sal ~ time_point * treatment + (1|pignum) , data=sal_data2)      # time is continuous
+# summary(fit)
+# # interactions aren't sig, so remove?
+# 
+# fit2 <- lmer(log_sal ~ time_point + treatment + (1|pignum) , data=sal_data2)      # time is continuous
+# summary(fit)
+# 
+# 
+# 
+# confints <- lme4::confint.merMod(fit)
+# fixefs <- lme4::fixef(fit)
+# colnames(confints) <- c('lower', 'upper')
+# confints <- confints[-(1:2),]
+# confints <- data.frame(confints)
+# 
+# 
+# confints$fixef <- fixefs
+# confints$coef <- rownames(confints)
+# 
+# confints %>% ggplot(aes(x=coef, y=fixef)) +geom_point()
+# 
+# 
+# whatsTHIS <- lme4::fortify.merMod(fit)
+# #hmmm...... interesteting
+# whatsTHIS %>% group_by(treatment, time_point) %>% summarise(avg=mean(log_sal))
+# whatsTHIS %>% ggplot(aes(x=time_point, y=.fitted)) +
+#   geom_point(aes(x=time_point, y=log_sal), color='red', alpha=.2) + geom_line(aes(x=time_point, y=log_sal, group=pignum), color='red', alpha=.2)+
+#   geom_point() +
+#   geom_line(aes(group=pignum)) +
+#   facet_wrap(~treatment) + ggtitle('fitted values in black, real values in red') + xlim(0,25)
+# 
+# # each pig has different intercetp, but slopes are the same within treatments
+# 
+# 
+# whatsTHIS %>% ggplot(aes(x=time_point, y=.fitted)) +
+#   geom_point(aes(x=time_point, y=log_sal), color='red', alpha=.2) + geom_line(aes(x=time_point, y=log_sal, group=pignum), color='red', alpha=.2)+
+#   geom_point() +
+#   geom_line(aes(group=pignum)) +
+#   facet_wrap(~treatment) + ggtitle('fitted values in black, real values in red') + xlim(0,25) +
+#   geom_hline(yintercept = 3.26) + # Intercept (y interept of control group at T=0?)
+#   geom_hline(yintercept = 3.26-1.25, color='blue') + geom_vline(xintercept = 0)
+# 
+# 3.26-1.25
+# 
+# 
+# 
+# 
+# lme4::ranef(fit)
+# lme4::show(fit)
+# lme4::VarCorr(fit)
+# plot(fit)
+# 13*7
+# 
+# summary(fit)
+# # summary(fit2)
+# # with lmerTest, fixed effects get pvalues, without, no pvalues.
+# # what do pvalues for fixed effects mean?
+# 
+# # how do you evaluate the quality of the model?
+# # is there an R2 thingy like for lm()?
+# 
+# library(lmerTest)
+# summ <- summary(fit)
 
 
 
 #####
 # use this #
 # nest and do an anova at each timepoint
+library(broom)
+daily_tests <- sal_data %>% filter(time_point != 0) %>% group_by(time_point) %>% nest() %>% 
+  mutate(AOV=map(.x = data, ~ aov(data=.x, log_sal ~ treatment)), 
+         tid_AOV=map(AOV, tidy), 
+         TUK=map(AOV, TukeyHSD), 
+         tid_TUK=map(TUK, tidy))
 
-D2_tuk <- sal_data %>% filter(time_point == 2 & !(treatment %in% c('Bglu', 'Zn+Cu')))
-sal_data$treatment
-D2_tuk$treatment
 
-D2_aov <- aov(data=D2_tuk, log_sal ~ treatment)
+daily_tests %>% select(time_point, tid_AOV) %>% unnest(cols = tid_AOV)
 
-summary(D2_aov)
-TukeyHSD(D2_aov)
+
+
+daily_tuks <- daily_tests %>%
+  select(time_point, tid_TUK) %>% unnest(cols = tid_TUK) %>%
+  filter(grepl('control', comparison)) %>% 
+  mutate(tuk_pval=adj.p.value, 
+         fdr_pval=p.adjust(adj.p.value, method = 'fdr')) %>% 
+  select(-adj.p.value)
+
+anno <- tibble(y=c(0,0,0,0), 
+               time_point=(c(2,7,14,21)), 
+               x=c(3.4,3.4,3.4,3.4), 
+               labtext = c('ANOVA p=0.10', 
+                           'ANOVA p=0.07',
+                           'ANOVA p=0.26',
+                           'ANOVA p=0.11'))
+
+### FIG 1B
+F1B <- daily_tuks %>%
+  ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high, color=comparison)) +
+  geom_hline(yintercept = 0, color='red')+
+  geom_pointrange(size=1.2) + 
+  geom_label(data=anno, aes(x=x,y=y,label=labtext), inherit.aes = FALSE)+
+  geom_text(aes(label=round(tuk_pval, digits = 2), y=2))+
+  coord_flip() + 
+  facet_wrap(~time_point, ncol = 4) + 
+  ylim(-3,3) + 
+  theme_bw()
+
+
+F1B
+
+
+# 
+# 
+# D2_tuk <- sal_data %>% filter(time_point == 2 & !(treatment %in% c('Bglu', 'Zn+Cu')))
+# sal_data$treatment
+# D2_tuk$treatment
+# 
+# D2_aov <- aov(data=D2_tuk, log_sal ~ treatment)
+# 
+# summary(D2_aov)
+# TukeyHSD(D2_aov)
 
 ### USE THIS FOR AULC STAT TEST ###
 aov_AULC <- aov(data=sum_sal, AULC~treatment)
@@ -330,37 +392,37 @@ TukeyHSD(aov_AULC)
 
 
 # rpart::rpart()
+# 
+# 
+# cut(sum_sal$AULC, breaks = 3,include.lowest = TRUE, labels = c('low','mod', 'high'))
+# table(cut(sum_sal$AULC, breaks = 2,include.lowest = TRUE,  labels = c('low', 'high')))
 
 
-cut(sum_sal$AULC, breaks = 3,include.lowest = TRUE, labels = c('low','mod', 'high'))
-table(cut(sum_sal$AULC, breaks = 2,include.lowest = TRUE,  labels = c('low', 'high')))
-
-
-
-#####
-fit3 <- lm(data=sum_sal, AULC~treatment)
-fit3.null <- lm(data=sum_sal, AULC~1)
-# plot(fit3)
-
-summary(fit3)
-summary(fit3.null)
-anova(fit3, fit3.null)
-
-sum_sal %>% filter(pignum != 101) %>%  group_by(treatment) %>% summarise(tmean=mean(AULC)) %>% 
-  mutate(d_cont=tmean-tmean[1])
-
-
-conf_ints <- confint(fit3)
-fit3
-residuals.lm(fit3)
-
-summary(fit3)
-fit3_anov <- aov(fit3)
-aov(fit3)
-
-
-summary(fit3_anov)
-TukeyHSD(fit3_anov, which='treatment')
+# 
+# #####
+# fit3 <- lm(data=sum_sal, AULC~treatment)
+# fit3.null <- lm(data=sum_sal, AULC~1)
+# # plot(fit3)
+# 
+# summary(fit3)
+# summary(fit3.null)
+# anova(fit3, fit3.null)
+# 
+# sum_sal %>% filter(pignum != 101) %>%  group_by(treatment) %>% summarise(tmean=mean(AULC)) %>% 
+#   mutate(d_cont=tmean-tmean[1])
+# 
+# 
+# conf_ints <- confint(fit3)
+# fit3
+# residuals.lm(fit3)
+# 
+# summary(fit3)
+# fit3_anov <- aov(fit3)
+# aov(fit3)
+# 
+# 
+# summary(fit3_anov)
+# TukeyHSD(fit3_anov, which='treatment')
 
 # I'm going to need some help interpreting this...
 # summ
@@ -614,15 +676,15 @@ sum_sal_RPS %>% ggplot(aes(x=shed, y=AULC, group=shed, fill=shed)) +
 
 
 
-
-tis.sp <- tis %>% select(-tisXtreat, -Salmonella) %>% spread(key = tissue, value = log_sal)
-
-sum_sal <- sum_sal[match(tis.sp$pignum, sum_sal$pignum),]
-
-sum_sal$pignum == tis.sp$pignum
+# 
+# tis.sp <- tis %>% select(-tisXtreat, -Salmonella) %>% spread(key = tissue, value = log_sal)
+# 
+# sum_sal <- sum_sal[match(tis.sp$pignum, sum_sal$pignum),]
+# 
+# sum_sal$pignum == tis.sp$pignum
 # tis.sp <- tis.sp[,2]
-tis.sp <- tis.sp[,-2]
-sal_for_cor <- merge(sum_sal, tis.sp, by = 'pignum')
+# tis.sp <- tis.sp[,-2]
+# sal_for_cor <- merge(sum_sal, tis.sp, by = 'pignum')
 
 ### NEED CECAL VFA DATA FOR THIS NEXT SECTION ###
 

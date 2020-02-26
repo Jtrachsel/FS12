@@ -109,6 +109,11 @@ colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
 # meta$treatment  
 FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
 
+
+saveRDS(FS12, "FS12_phyloseq.rds")
+# Close and re-open R
+
+
 ### mock stuff ###
 
 rownames(mocks)
@@ -126,9 +131,7 @@ mock_tax <- taxa[taxa$OTU %in% colnames(mocks),]
 
 
 
-
-
-
+############
 FS12a <- FS12 %>% subset_samples(experiment == 'X12a')
 
 FS12a@sam_data$treatment
