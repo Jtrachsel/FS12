@@ -56,7 +56,8 @@ F1A <- all_daily %>%
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   ylab('log CFU / g feces') +
   xlab('Day post-challenge') +
-  theme(legend.position = 'none')
+  theme(legend.position = 'none', 
+        axis.title = element_text(size = 11))
   # ggtitle('Daily shedding, group summary statistics')
 
 
@@ -97,7 +98,7 @@ daily_tuks <- daily_tests %>%
 
 anno <- tibble(y=c(0,0,0,0), 
                TPP=factor(c('Day 2','Day 7','Day 14','Day 21'), levels = c('Day 2', 'Day 7', 'Day 14', 'Day 21')), 
-               x=c(3.4,3.4,3.4,3.4), 
+               x=c(3.6,3.6,3.6,3.6), 
                labtext = c('ANOVA p=0.10', 
                            'ANOVA p=0.07',
                            'ANOVA p=0.26',
@@ -107,15 +108,16 @@ anno <- tibble(y=c(0,0,0,0),
 F1B <- daily_tuks %>%
   ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high, color=comparison)) +
   geom_hline(yintercept = 0, color='grey')+
-  geom_pointrange(size=1.2) + 
+  geom_pointrange(size=.75) + 
   geom_label(data=anno, aes(x=x,y=y,label=labtext), inherit.aes = FALSE)+
   geom_text(aes(label=round(tuk_pval, digits = 2), y=2))+
-  coord_flip() + 
+  coord_flip() + scale_x_discrete(expand = expand_scale(add = c(.5,1)))+
   facet_wrap(.~TPP, ncol = 4) + 
   ylim(-3,3) + scale_color_manual(values=c('red','orange','#3399FF')) +
   theme(panel.border = element_rect(colour = "black", fill=NA, size=1), 
         legend.position = 'none', 
-        axis.title.y = element_blank())
+        axis.title.y = element_blank(), 
+        axis.title.x = element_text(size=11))
 
 
 F1B
@@ -144,7 +146,7 @@ sum_sal$treatment <- factor(sum_sal$treatment, levels = c('control', 'RPS', 'Aci
 F2A <- filter(sum_sal, pignum !=101) %>% 
   ggplot(aes(x=treatment, y=AULC, fill=treatment))+
   geom_boxplot(outlier.alpha = 0) +
-  geom_jitter(aes(fill=treatment), shape=21, size=2, stroke=1.25, width = .12) +
+  geom_jitter(aes(fill=treatment), shape=21, size=1.75, stroke=1, width = .13) +
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
   # ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'ANOVA P = 0.0123') +
   theme(legend.position = 'none', 
@@ -165,15 +167,19 @@ F2B <- AULC_tuk %>% filter(grepl('control', comparison)) %>%
   mutate(comparison=factor(comparison, levels = c('RCS-control', 'Acid-control','RPS-control'))) %>%
   ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high,color=comparison)) +
   geom_hline(yintercept = 0) +
-  geom_pointrange(size=1.25) +
-  geom_text(aes(x=comparison,y=12,
-                label=paste('P=', round(adj.p.value, 2)))) +
+  geom_pointrange(size=.75) +
+  geom_text(aes(x=comparison,y=8,
+                label=paste('P=', round(adj.p.value, 2))), 
+            hjust=0) +
   ggtitle('ANOVA P = 0.012') + 
-  scale_y_continuous(expand = expand_scale(add = c(5,8)))+
+  ylim(-32,32)+
+  # scale_y_continuous(expand = expand_scale(add = c(5,15)))+
   theme(panel.border = element_rect(color='black', fill=NA), 
         legend.position='none', 
-        axis.title.y = element_blank())+
-  coord_flip() +scale_color_manual(values=c('red','orange','#3399FF')) 
+        axis.title.y = element_blank(), 
+        axis.text = element_text(size=10))+
+  coord_flip() +
+  scale_color_manual(values=c('red','orange','#3399FF')) 
 F2B
 
 
@@ -284,11 +290,12 @@ F3A <- all_tis %>%
   geom_errorbar(aes(ymin=mean_sal-se_sal,ymax=mean_sal+se_sal), width=.2) +
   scale_color_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
-  ylab('log Salmonella') +
+  ylab('log CFU / g tissue') +
   theme(panel.border = element_rect(color = 'black', fill = NA), 
         axis.text.x = element_text(angle = -45, hjust = 0), 
         axis.title.x = element_blank(), 
-        legend.position = 'none')+
+        legend.position = 'none', 
+        axis.title.y = element_text(size = 11))+
   # ggtitle('tissue colonization') +
   facet_wrap(~tissue, ncol = 5)
 
@@ -304,8 +311,8 @@ F3B <- tissue_tuks %>%
   mutate(comparison = factor(comparison, levels=c('RCS-control', 'Acid-control','RPS-control'))) %>% 
   ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high, color=comparison)) +
   geom_hline(yintercept = 0, color='grey')+
-  geom_pointrange(size=1.2) + 
-  geom_label(data=tis_anno, aes(x=x,y=y,label=labtext), inherit.aes = FALSE, size=4)+
+  geom_pointrange(size=.75) + 
+  geom_label(data=tis_anno, aes(x=x,y=y,label=labtext), inherit.aes = FALSE, size=3)+
   geom_text(aes(label=round(tuk_pval, digits = 2), y=2))+
   coord_flip() + scale_x_discrete(expand = expand_scale(add = c(1,1.5)))+
   facet_wrap(.~tissue, ncol = 5) +
@@ -332,6 +339,13 @@ fig_1 <- ggdraw()+
 fig_1
 
 
+ggsave(fig_1,
+       filename = './output/figs/figure1.jpeg',
+       width = 180,
+       height = 150,
+       device = 'jpeg',
+       dpi = 300,
+       units = 'mm')
 
 
 # Figure 2
@@ -341,10 +355,21 @@ fig_1
 
 
 fig_2 <- ggdraw()+
-  draw_plot(F2A, 0,0,.5,1)+
-  draw_plot(F2B, .5,0,.5,1)+
-  draw_plot_label(x=c(0,.5), y=c(1,1), label = c('A', 'B'))
+  draw_plot(F2A, 0,0,.6,1)+
+  draw_plot(F2B, .6,0,.4,1)+
+  draw_plot_label(x=c(0,.6), y=c(1,1), label = c('A', 'B'))
 fig_2
+
+
+ggsave(fig_2,
+       filename = './output/figs/figure2.jpeg',
+       width = 180,
+       height = 85,
+       device = 'jpeg',
+       dpi = 300,
+       units = 'mm')
+
+
 
 # Figure 3
 
@@ -359,13 +384,13 @@ fig_3 <- ggdraw()+
 fig_3
 
 
-# ggsave(fig_3,
-#        filename = './output/new_figs/figure3.jpeg',
-#        width = 180,
-#        height = 150,
-#        device = 'jpeg',
-#        dpi = 300,
-#        units = 'mm')
+ggsave(fig_3,
+       filename = './output/figs/figure3.jpeg',
+       width = 180,
+       height = 150,
+       device = 'jpeg',
+       dpi = 300,
+       units = 'mm')
 
 
 
