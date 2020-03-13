@@ -57,7 +57,8 @@ F1A <- all_daily %>%
   ylab('log CFU / g feces') +
   xlab('Day post-challenge') +
   theme(legend.position = 'none', 
-        axis.title = element_text(size = 11))
+        axis.title = element_text(size = 11), 
+        panel.grid.major = element_line(color='grey'))
   # ggtitle('Daily shedding, group summary statistics')
 
 
@@ -108,7 +109,7 @@ anno <- tibble(y=c(0,0,0,0),
 F1B <- daily_tuks %>%
   ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high, color=comparison)) +
   geom_hline(yintercept = 0, color='grey')+
-  geom_pointrange(size=.75) + 
+  geom_pointrange(size=.5) + 
   geom_label(data=anno, aes(x=x,y=y,label=labtext), inherit.aes = FALSE)+
   geom_text(aes(label=round(tuk_pval, digits = 2), y=2))+
   coord_flip() + scale_x_discrete(expand = expand_scale(add = c(.5,1)))+
@@ -117,7 +118,8 @@ F1B <- daily_tuks %>%
   theme(panel.border = element_rect(colour = "black", fill=NA, size=1), 
         legend.position = 'none', 
         axis.title.y = element_blank(), 
-        axis.title.x = element_text(size=11))
+        axis.title.x = element_text(size=11), 
+        panel.grid.major.x = element_line(color = 'grey', size = .2))
 
 
 F1B
@@ -151,7 +153,8 @@ F2A <- filter(sum_sal, pignum !=101) %>%
   # ggtitle('Cumulative Salmonella shedding (AULC)', subtitle = 'ANOVA P = 0.0123') +
   theme(legend.position = 'none', 
         panel.border = element_rect(colour = 'black', fill=NA), 
-        axis.title.x = element_blank())
+        axis.title.x = element_blank(), 
+        panel.grid.major = element_line(color='grey'))
 
 
 F2A
@@ -166,7 +169,7 @@ AULC_tuk <- TukeyHSD(aov_AULC) %>% tidy()
 F2B <- AULC_tuk %>% filter(grepl('control', comparison)) %>% 
   mutate(comparison=factor(comparison, levels = c('RCS-control', 'Acid-control','RPS-control'))) %>%
   ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high,color=comparison)) +
-  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = 0, color='grey') +
   geom_pointrange(size=.75) +
   geom_text(aes(x=comparison,y=8,
                 label=paste('P=', round(adj.p.value, 2))), 
@@ -177,7 +180,8 @@ F2B <- AULC_tuk %>% filter(grepl('control', comparison)) %>%
   theme(panel.border = element_rect(color='black', fill=NA), 
         legend.position='none', 
         axis.title.y = element_blank(), 
-        axis.text = element_text(size=10))+
+        axis.text = element_text(size=10), 
+        panel.grid.major.x = element_line(color='grey', size=.2))+
   coord_flip() +
   scale_color_manual(values=c('red','orange','#3399FF')) 
 F2B
@@ -295,7 +299,8 @@ F3A <- all_tis %>%
         axis.text.x = element_text(angle = -45, hjust = 0), 
         axis.title.x = element_blank(), 
         legend.position = 'none', 
-        axis.title.y = element_text(size = 11))+
+        axis.title.y = element_text(size = 11), 
+        panel.grid.major = element_line(color='grey', size=.25))+
   # ggtitle('tissue colonization') +
   facet_wrap(~tissue, ncol = 5)
 
@@ -311,7 +316,7 @@ F3B <- tissue_tuks %>%
   mutate(comparison = factor(comparison, levels=c('RCS-control', 'Acid-control','RPS-control'))) %>% 
   ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high, color=comparison)) +
   geom_hline(yintercept = 0, color='grey')+
-  geom_pointrange(size=.75) + 
+  geom_pointrange(size=.5) + 
   geom_label(data=tis_anno, aes(x=x,y=y,label=labtext), inherit.aes = FALSE, size=3)+
   geom_text(aes(label=round(tuk_pval, digits = 2), y=2))+
   coord_flip() + scale_x_discrete(expand = expand_scale(add = c(1,1.5)))+
@@ -319,7 +324,8 @@ F3B <- tissue_tuks %>%
   ylim(-3.5,3.5) + scale_color_manual(values=c('red','orange','#3399FF')) +
   theme(panel.border = element_rect(colour = "black", fill=NA, size=1), 
         axis.title.y=element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.grid.major = element_line(color='grey', size=.25))
 
 
 F3B
