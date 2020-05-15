@@ -1,6 +1,7 @@
 # setwd('')
 library(tidyverse)
-
+library(cowplot)
+theme_set(theme_cowplot())
 
 vfas <- read_csv('./data/FS12b_vfas.csv')
 vfas <- vfas %>% filter(treatment %in% c('control', 'RPS', 'Acid','RCS'))
@@ -46,10 +47,10 @@ filter(vfas.gather, hour == 0 & VFA %in% c('acetate', 'butyrate', 'propionate', 
 
 
 
-filter(vfas.gather, hour == 24) %>% ggplot(aes(x=treatment, y=mM, group=set, fill=treatment)) +
-  geom_boxplot(outlier.alpha = 0) +geom_jitter(shape=21, size=1.5, stroke=1, alpha=.75, width = .25)+
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
-  facet_wrap(~VFA, scales = 'free') + ggtitle("Cecal SCFAs 21 days post challenge, with incubation")
+# filter(vfas.gather, hour == 24) %>% ggplot(aes(x=treatment, y=mM, group=set, fill=treatment)) +
+#   geom_boxplot(outlier.alpha = 0) +geom_jitter(shape=21, size=1.5, stroke=1, alpha=.75, width = .25)+
+#   scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) + 
+#   facet_wrap(~VFA, scales = 'free') + ggtitle("Cecal SCFAs 21 days post challenge, with incubation")
 
 ### propionate in 24hr incubation seems to have suffered in ZN
 
@@ -114,7 +115,7 @@ library(tidyverse)
 
 # write_csv(res.all, 'FS12b_fecal_vfas.csv')
 
-# res.all <- read_csv('./data/FS12b_fecal_vfas.csv')
+res.all <- read_csv('./data/FS12b_fecal_vfas.csv')
 # tests <- filter(res.all, time == 0) %>%
 #   do(pwilx=pairwise.wilcox.test(.$butyrate, .$treatment, p.adjust.method = 'none'))
 # #pairwise.wilcox.test(p.adjust.method = )
@@ -165,11 +166,17 @@ library(tidyverse)
 
 #######
 
-D0vfas <- filter(res.all, time == 0 & treatment %in% c('control', 'RPS', 'Acid','RCS'))
+D0vfas <- res.all %>% 
+  filter(time == 0 & treatment %in% c('control', 'RPS', 'Acid','RCS')) %>% 
+  mutate(treatment=factor(treatment, levels = c('control', 'RPS', 'Acid','RCS')))
 
+# D0vfas$treatment
 
-D21vfas <- vfas %>% filter(hour == 0)
+D21vfas <- vfas %>%
+  filter(hour == 0) %>% 
+  mutate(treatment=factor(treatment, levels = c('control', 'RPS', 'Acid','RCS')))
 
+# D21vfas$treatment
 
 D0_results <- D0vfas %>%
   select(-formate) %>%
@@ -200,6 +207,21 @@ D21_results <- D21vfas %>%
   select(-data, -ANOVA, -TUK) %>% 
   unnest(cols = tid_TUK) %>% 
   filter(grepl('control', comparison))
+
+
+
+D21_results %>% filter(VFA %in% c('butyrate', 'caproate', 'valerate')) %>% 
+  ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high, color=comparison)) + 
+  geom_hline(yintercept = 0, color='grey')+
+  geom_pointrange() + facet_wrap(~VFA, scales = 'free') + coord_flip()
+
+
+D0_results %>%# filter(VFA %in% c('butyrate', 'caproate', 'valerate')) %>% 
+  ggplot(aes(x=comparison, y=estimate, ymin=conf.low, ymax=conf.high, color=comparison)) + 
+  geom_hline(yintercept = 0, color='grey')+
+  geom_pointrange() + facet_wrap(~VFA, scales = 'free') + coord_flip()
+
+
 
 
 

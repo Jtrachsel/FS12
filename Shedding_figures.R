@@ -400,12 +400,20 @@ ggsave(fig_3,
 
 
 
-###########
+########### FOR A HIGH VS LOW SHEDDER SHED FIGURE ##########
 
-tis_RPS <- tis %>% filter(treatment =='RPS')
-sum_sal_RPS <- sum_sal %>% filter(treatment == 'RPS')
-tis_RPS$shed <- ifelse(tis_RPS$pignum %in% c(373,321,181,392,97), 'low', 'high')
-sum_sal_RPS$shed <- ifelse(sum_sal_RPS$pignum %in% c(373,321,181,392,97), 'low', 'high')
+tis_RPS <- tis %>% filter(treatment %in% c('control', 'RPS'))
+sum_sal_RPS <- sum_sal %>% filter(treatment %in% c('control', 'RPS'))
+
+controls <- sum_sal$pignum[sum_sal_RPS$treatment == 'control']
+
+
+tis_RPS$shed <- ifelse(tis_RPS$pignum %in% c(373,321,181,392,97), 'RPS_low',
+                       ifelse(tis_RPS$pignum %in% controls,'control', 'RPS_high'))
+                       
+                       
+sum_sal_RPS$shed <- ifelse(sum_sal_RPS$pignum %in% c(373,321,181,392,97), 'RPS_low',
+                           ifelse(sum_sal_RPS$pignum %in% controls,'control', 'RPS_high'))
 
 tis_RPS %>% ggplot(aes(x=shed, y=log_sal, group=shed, fill=shed)) +
   geom_boxplot(outlier.alpha = 0) +
@@ -418,10 +426,11 @@ sum_sal_RPS %>% ggplot(aes(x=shed, y=AULC, group=shed, fill=shed)) +
   geom_boxplot(outlier.alpha = 0) +
   geom_jitter(shape=21,width = .1, size=2.25) +
   #facet_wrap(~tissue) +
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+  scale_fill_manual(values=c('#33CC33', '#C8C226', '#985CF9', 'orange', 'red', 'grey', 'purple')) +
   ggtitle('AULC')
 
-
+#C8C226
+#985CF9
 
 # 
 # 

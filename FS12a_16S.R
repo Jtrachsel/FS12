@@ -5,7 +5,19 @@ library(tidyverse)
 library(funfuns)
 # library(pairwiseAdonis)
 
+theme_set(cowplot::theme_cowplot())  
 
+
+new_names <- c(NC='Control',
+               CT='Pos_control',
+               RSpo='RPS',
+               SCF='Malto',
+               SBP='SBP',
+               FAM='Acid',
+               PHY='Phyto',
+               CuZn='ZnCu',
+               RScn='RCS',
+               BG='Bglu')
 
 blarg <- function(phyloseq_obj, day, tissue, covariate, shrink_type='apeglm'){
   form <- formula(paste('~', covariate))
@@ -48,152 +60,201 @@ blarg <- function(phyloseq_obj, day, tissue, covariate, shrink_type='apeglm'){
 }
 ########
 
-
-meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
-shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
-
-taxa <- extract_mothur_tax('./data/FS12.taxonomy')
-# taxa[1:10,1:8]
-
-rownames(shared) <- shared$Group
-shared <- shared[,-c(1,2,3)]
-
-hist(rowSums(shared), breaks = 50)
-
-
-# length(colnames(shared)) # 10648 total OTUs detected (no removal mocks and NTCs and all kinds of garbage here)
-
-
-# rownames(shared) %in% meta$sample_ID
-meta <- meta[meta$sample_ID %in% rownames(shared),]
-mocks <- shared[(!rownames(shared) %in% meta$sample_ID),]
-shared <- shared[rownames(shared) %in% meta$sample_ID,]
-
-rownames(shared) == meta$sample_ID
-
-rownames(meta) <- meta$sample_ID
-
-shared <- shared[rowSums(shared) > 1250,] # remove samples with less than 1250 reads
-shared <- shared[,colSums(shared > 0) > 3] # removes otus that are detected in fewer than 4 samples globally (including timecourse data)
-shared <- shared[,colSums(shared) > 5] # at least 6 observations globally
-
-length(colnames(shared))
-hist(rowSums(shared), breaks = 50)
-
-
-meta <- meta[order(meta$sample_ID),]
-shared <- shared[order(rownames(shared)),]
-
-rownames(shared) == meta$sample_ID
-
-meta$set <- paste(meta$experiment, meta$day, meta$tissue, meta$treatment, sep = '_')
-
-nnnn <- meta %>% group_by(set) %>% summarise(N=n())
-
-
-rownames(meta) == rownames(shared)
-meta <- meta[rownames(meta) %in% rownames(shared),]
-rownames(shared) %in% rownames(meta)
-shared <- shared[match(rownames(meta), rownames(shared)),]
-
-rownames(meta) == rownames(shared)
-
-# taxa <- taxa[taxa$OTU %in% colnames(shared),]
-
-p_meta <- sample_data(meta) 
-p_taxa <- import_mothur(mothur_constaxonomy_file = './data/FS12.taxonomy')
-
-
-colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
-
-# meta$treatment  
-FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
-
-
-saveRDS(FS12, "FS12_phyloseq.rds")
-# Close and re-open R
-
-
-### mock stuff ###
-
-rownames(mocks)
-mocks[1:5,1:5]
-mocks <- mocks[rowSums(mocks) >1000,]
-rownames(mocks)
-hist(rowSums(mocks), breaks = 50)
-
-mocks <- mocks[grep('NTC', rownames(mocks)),]
-
-mocks <- mocks[,colSums(mocks)>2]
-colSums(mocks)
-rownames(mocks)
-mock_tax <- taxa[taxa$OTU %in% colnames(mocks),]
-
-
-
-############
-FS12a <- FS12 %>% subset_samples(experiment == 'X12a')
-
-FS12a@sam_data$treatment
-
+#### data_wrangling ####
+# meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
+# shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
 # 
-# FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control', 
-#                                                                         'RPS',
-#                                                                         'Acid', 
-#                                                                         'ZnCu', 
-#                                                                         'RCS', 
-#                                                                         'Bglu', 
-#                                                                         'Pos_control', 
-#                                                                         'Phyto', 
-#                                                                         'Malto', 
-#                                                                         'SBP'))
+# taxa <- extract_mothur_tax('./data/FS12.taxonomy')
+# # taxa[1:10,1:8]
+# 
+# rownames(shared) <- shared$Group
+# shared <- shared[,-c(1,2,3)]
+# 
+# # hist(rowSums(shared), breaks = 50)
+# 
+# 
+# # length(colnames(shared)) # 10648 total OTUs detected (no removal mocks and NTCs and all kinds of garbage here)
+# 
+# 
+# # rownames(shared) %in% meta$sample_ID
+# meta <- meta[meta$sample_ID %in% rownames(shared),]
+# mocks <- shared[(!rownames(shared) %in% meta$sample_ID),]
+# shared <- shared[rownames(shared) %in% meta$sample_ID,]
+# 
+# rownames(shared) == meta$sample_ID
+# 
+# rownames(meta) <- meta$sample_ID
+# 
+# shared <- shared[rowSums(shared) > 1250,] # remove samples with less than 1250 reads
+# shared <- shared[,colSums(shared > 0) > 3] # removes otus that are detected in fewer than 4 samples globally (including timecourse data)
+# shared <- shared[,colSums(shared) > 5] # at least 6 observations globally
+# 
+# length(colnames(shared))
+# hist(rowSums(shared), breaks = 50)
+# 
+# 
+# meta <- meta[order(meta$sample_ID),]
+# shared <- shared[order(rownames(shared)),]
+# 
+# rownames(shared) == meta$sample_ID
+# 
+# meta$set <- paste(meta$experiment, meta$day, meta$tissue, meta$treatment, sep = '_')
+# 
+# nnnn <- meta %>% group_by(set) %>% summarise(N=n())
+# 
+# 
+# rownames(meta) == rownames(shared)
+# meta <- meta[rownames(meta) %in% rownames(shared),]
+# rownames(shared) %in% rownames(meta)
+# shared <- shared[match(rownames(meta), rownames(shared)),]
+# 
+# rownames(meta) == rownames(shared)
+# 
+# # taxa <- taxa[taxa$OTU %in% colnames(shared),]
+# 
+# # Fix metadata group labels here:
+# meta$treatment <- factor(meta$treatment, levels = c('Control',
+#                                                     'Pos_control',
+#                                                     'RPS',
+#                                                     'Malto',
+#                                                     'SBP',
+#                                                     'Acid',
+#                                                     'Phyto',
+#                                                     'ZnCu',
+#                                                     'RCS',
+#                                                     'Bglu'))
+# 
+# new_names <- c(NC='Control',
+#                CT='Pos_control',
+#                RSpo='RPS',
+#                SCF='Malto',
+#                SBP='SBP',
+#                FAM='Acid',
+#                PHY='Phyto',
+#                CuZn='ZnCu',
+#                RScn='RCS',
+#                BG='Bglu')
+# 
+# meta <- meta %>% rownames_to_column() %>%
+#   mutate(treatment2 = fct_recode(treatment, !!!new_names)) %>%
+#   column_to_rownames()
+# 
+# meta$treatment2
+# #
+# 
+# 
+# 
+# p_meta <- sample_data(meta)
+# p_taxa <- import_mothur(mothur_constaxonomy_file = './data/FS12.taxonomy')
+# 
+# 
+# colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
+# 
+# # meta$treatment
+# FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
+# 
+# #
+# # saveRDS(FS12, "FS12_phyloseq.rds")
+# # readRDS('FS12_phyloseq.rds')# Close and re-open R
+# 
+# 
+# ### mock stuff ###
+# 
+# # rownames(mocks)
+# # mocks[1:5,1:5]
+# # mocks <- mocks[rowSums(mocks) >1000,]
+# # rownames(mocks)
+# # hist(rowSums(mocks), breaks = 50)
+# #
+# # mocks <- mocks[grep('NTC', rownames(mocks)),]
+# #
+# # mocks <- mocks[,colSums(mocks)>2]
+# # colSums(mocks)
+# # rownames(mocks)
+# # mock_tax <- taxa[taxa$OTU %in% colnames(mocks),]
+# #
+# #
+# 
+#
+# FS12a <- FS12 %>% subset_samples(experiment == 'X12a')
+# 
+# 
+# 
+# 
+# FS12a@sam_data$treatment
+# 
+# #
+# # FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control',
+# #                                                                         'RPS',
+# #                                                                         'Acid',
+# #                                                                         'ZnCu',
+# #                                                                         'RCS',
+# #                                                                         'Bglu',
+# #                                                                         'Pos_control',
+# #                                                                         'Phyto',
+# #                                                                         'Malto',
+# #                                                                         'SBP'))
+# 
+# hist(sample_sums(FS12a), breaks = 50)
+# 
+# 
+# # FS12a@sam_data %>% filter(day == 'D30' & treatment == 'Phyto')
+# 
+# # FS12a <- FS12a %>% subset_samples(day %in% c('D0', 'D23', 'D30'))
+# FS12a <- FS12a %>% subset_samples(day %in% c('D0', 'D23'))
+# 
+# 
+# rems <- !(FS12a@sam_data$sample_ID %in% c('X12N64WD0dup', 'X12N77WD0dup', 'X12N70XD30'))
+# FS12a <- prune_samples(x = FS12a, rems)
+# 
+# FS12a@sam_data %>% group_by(day, treatment) %>% tally()
+# 
+# 
+# 
+# 
+# # FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control')
+# 
+# 
+# keeps_at_d23 <- FS12a@sam_data %>% filter(day == 'D0' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
+# REMOVE_THESE <- FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control') %>% filter(!(pignum %in% keeps_at_d23)) %>% select(sample_ID) %>% unlist()
+# ANDTHESE <- c('X12N16WD23', 'X12N18WD23', 'X12N32WD23', 'X12N39WD23', 'X12N45WD23', 'X12N68WD23')
+# REMOVE_THESE <- c(REMOVE_THESE, ANDTHESE)
+# 
+# FS12a <- FS12a %>% subset_samples(!(sample_ID %in% REMOVE_THESE))
+# FS12a@sam_data %>% group_by(day, treatment) %>% tally()
+# 
+# # MAKE FINAL FS12a OBJECT HERE AND SAVE SO CAN READ IN LATER
+# 
+# 
+# 
+# saveRDS(FS12a, "FS12a_phyloseq.rds")
+#### read in phyloseq ####
 
-hist(sample_sums(FS12a), breaks = 50)
+FS12a <- readRDS('FS12a_phyloseq.rds')# Close and re-open R
+
+# sample_data(FS12a)
 
 
-FS12a@sam_data %>% filter(day == 'D30' & treatment == 'Phyto')
+# PERMANOVAS VS CONTROL
 
-# FS12a <- FS12a %>% subset_samples(day %in% c('D0', 'D23', 'D30'))
-FS12a <- FS12a %>% subset_samples(day %in% c('D0', 'D23'))
-
-
-rems <- !(FS12a@sam_data$sample_ID %in% c('X12N64WD0dup', 'X12N77WD0dup', 'X12N70XD30'))
-FS12a <- prune_samples(x = FS12a, rems)
-
-FS12a@sam_data %>% group_by(day, treatment) %>% tally()
-
-
-
-
-# FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control')
-
-
-keeps_at_d23 <- FS12a@sam_data %>% filter(day == 'D0' & treatment == 'Control') %>% select(pignum) %>% unique() %>% unlist()
-REMOVE_THESE <- FS12a@sam_data %>% filter(day == 'D23' & treatment == 'Control') %>% filter(!(pignum %in% keeps_at_d23)) %>% select(sample_ID) %>% unlist()
-ANDTHESE <- c('X12N16WD23', 'X12N18WD23', 'X12N32WD23', 'X12N39WD23', 'X12N45WD23', 'X12N68WD23')
-REMOVE_THESE <- c(REMOVE_THESE, ANDTHESE)
-
-FS12a <- FS12a %>% subset_samples(!(sample_ID %in% REMOVE_THESE))
-FS12a@sam_data %>% group_by(day, treatment) %>% tally()
-
-#### PERMANOVAS VS CONTROL
-
-FS12a@sam_data %>% group_by(day, tissue) %>% mutate(minseqs=min(num_seqs)) %>% select(day, tissue, minseqs) %>% unique()
+# FS12a@sam_data %>% group_by(day, tissue) %>% mutate(minseqs=min(num_seqs)) %>% select(day, tissue, minseqs) %>% unique()
 
 
 FS12a@sam_data$set <- paste(FS12a@sam_data$day, FS12a@sam_data$tissue, FS12a@sam_data$treatment, sep='_')
 
+FS12a_rare <- phyloseq::rarefy_even_depth(FS12a,sample.size =  min(phyloseq::sample_sums(FS12a)),
+                                          rngseed = 10)
 
 
-FS12a_rare <- phyloseq::rarefy_even_depth(FS12a,sample.size =  min(phyloseq::sample_sums(FS12a)), rngseed = 7)
+FS12a_NMDS <- NMDS_ellipse(FS12a_rare@sam_data, OTU_table = FS12a_rare@otu_table, grouping_set = 'set', distance_method = 'bray', MDS_trymax = 50)
 
-
-FS12a_NMDS <- NMDS_ellipse(FS12a_rare@sam_data, OTU_table = FS12a_rare@otu_table, grouping_set = 'set', distance_method = 'bray', MDS_trymax = 150)
-
-labbies <- FS12a_NMDS[[1]] %>% select(tissue, treatment, day, set, centroidX, centroidY) %>% unique()
+labbies <- FS12a_NMDS[[1]] %>% select(tissue, treatment, day, set, centroidX, centroidY, treatment2) %>% unique()
 # library(ggrepel)
 
-#####
+#
+
+
+
 library(RColorBrewer)
 colourCount = length(unique(FS12a@sam_data$treatment))
 getPalette = colorRampPalette(brewer.pal(9, "Set1"))
@@ -203,56 +264,73 @@ fills <- c('black', getPalette(9))
 unique(FS12a_NMDS[[1]]$treatment)
 
 
+#### THIS NEEDS TO BE CHANGED ####
 FS12a_NMDS[[1]]$treatment <- factor(FS12a_NMDS[[1]]$treatment, levels = c('Control', 'Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
 # getPal
 
 labbies$treatment <- factor(labbies$treatment, levels =c('Control', 'Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
 ### THIS IS A GOOD ONE. SHOW WITH GLOBAL ADONIS TEST
-### FIGURE 1
+### FIGURE 1 ###
 FS12a_NMDS[[1]] %>% ggplot(aes(x=MDS1, y=MDS2)) +
   geom_point(aes(color=day), size=2)+
   geom_segment(aes(xend=centroidX, yend=centroidY, color=day)) +
-  geom_point(data=labbies,aes(x=centroidX, y=centroidY, fill=treatment), size=3, inherit.aes = FALSE, shape=21)+# scale_shape_manual(values = c(21, 24)) +
-  guides(fill = guide_legend(override.aes=list(shape=21))) + scale_fill_manual(values = fills)
+  geom_point(data=labbies,aes(x=centroidX, y=centroidY, fill=treatment2), size=3, inherit.aes = FALSE, shape=21)+# scale_shape_manual(values = c(21, 24)) +
+  guides(fill = guide_legend(override.aes=list(shape=21))) + scale_fill_manual(values = fills, name='Treatment')
 # geom_text_repel(data=labbies, aes(label=treatment, x=centroidX, y=centroidY))#+ geom_path(data = FS12a_NMDS[[2]], aes(x=NMDS1, y=NMDS2, group=group))
 
-set.seed(7)
+
+
+### FIGURE 2 ###
+set.seed(1)
 all_pwad <- pairwise.adonis(FS12a_rare@otu_table, FS12a_rare@sam_data$set, perm = 9999, sim.method = 'bray')
 
 pwad_to_cont <- all_pwad[grep('Control', all_pwad$pairs),]
 # same_day <- pwad_to_cont[grep('.*_(.*)_.*_.* vs .*_\\1_.*_.*', pwad_to_cont$pairs),]
 same_day_tissue <- pwad_to_cont[grep('(.*)_(.*)_.* vs \\1_\\2_.*', pwad_to_cont$pairs),]
 same_day_tissue$treatment <- sub('D[0-9]+_[FX]_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
-
+  
+  
 same_day_tissue[same_day_tissue$treatment == 'Control',]$treatment <- sub('.*_.*_.* vs .*_.*_(.*)','\\1', same_day_tissue[same_day_tissue$treatment == 'Control',]$pairs)
 # sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
 same_day_tissue$tissue <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\2',same_day_tissue$pairs)
 same_day_tissue$day <- sub('(D[0-9]+)_([FX])_([A-Za-z_]+) vs .*_.*_.*', '\\1',same_day_tissue$pairs)
-
+  
 same_day_tissue$tissue <- ifelse(same_day_tissue$tissue == 'F', 'feces', 'cecal_mucosa')
-
+  
 # same_day_tissue$p.adjusted <- p.adjust(same_day_tissue$p.value, method = 'fdr')
-
+  
 same_day_tissue <- same_day_tissue %>% mutate(set=paste(tissue, day, sep = '_'))
 same_day_tissue <- same_day_tissue %>% group_by(set) %>% mutate(p.adjusted = p.adjust(p.value, method = 'fdr'))
 same_day_tissue$p.plot <- ifelse(same_day_tissue$p.adjusted <= 0.05, paste('p=', round(same_day_tissue$p.adjusted, 3), sep = ''), NA)
-
+  
 same_day_tissue$set <- factor(same_day_tissue$set, levels = c('feces_D0', 'feces_D23', 'feces_D30', 'cecal_mucosa_D30'))
 
-#### NEED TO COME UP WITH COLOR TO USE
-# 
+same_day_tissue$treatment <- factor(same_day_tissue$treatment,
+                                      levels = c('Pos_control',
+                                                 'RPS',
+                                                 'Malto',
+                                                 'SBP',
+                                                 'Acid',
+                                                 'Phyto',
+                                                 'ZnCu',
+                                                 'RCS',
+                                                 'Bglu'))
 
-### FIGURE 2
-same_day_tissue %>% filter(set == 'feces_D23') %>% 
-  ggplot(aes(x=treatment, y=F.Model, fill=treatment)) + 
-  geom_col(color='black') + facet_wrap(~set) + geom_text(aes(label=p.plot), nudge_y = .2) + 
-  ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
-  scale_fill_brewer(palette = 'Set1') + theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
-
-
+  
+  
+same_day_tissue <- same_day_tissue %>% mutate(treatment2=fct_recode(treatment, !!!new_names))
+# fig2 #
+p <- same_day_tissue %>% filter(set == 'feces_D23') %>% 
+      ggplot(aes(x=treatment2, y=F.Model, fill=treatment2)) + 
+      geom_col(color='black') + #facet_wrap(~set) +
+      geom_text(aes(label=p.plot), nudge_y = .2) + 
+      # ggtitle('Community differences compared to controls', subtitle = 'larger F = greater difference.  pvalues shown when <0.05') + 
+      scale_fill_brewer(palette = 'Set1', name='Treatment') + xlab('Treatment')
+p  
 
 # global adonis
 
+# end figure 2 #
 
 
 FS12a_D0 <- FS12a_rare %>% subset_samples(day == 'D0')
@@ -271,16 +349,16 @@ global_adon_D23 <- adonis(FS12a_D23@otu_table~treatment,
 
 
 
-
+global_adon_D23
 #day F.model=54.605 pval=0.001
 #treat day0 F.model=1.1205, pval=0.109
 #treat day 24 F.model=1.4638 pval=0.001
 
 
-write <- global_adon$aov.tab
-write$variable <- rownames(write)
-
-write <- write %>% select(variable, everything())
+# write <- global_adon$aov.tab
+# write$variable <- rownames(write)
+# 
+# write <- write %>% select(variable, everything())
 # write_csv(write, 'GLOB_ADON')
 #### Deseq comparisons
 # D23 each diet vs control
@@ -302,7 +380,7 @@ write <- write %>% select(variable, everything())
 #                                                                         'Malto', 
 #                                                                         'SBP'))
 FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control', 'Acid', 'Bglu', 'Malto', 'Phyto', 'Pos_control', 'RCS', 'RPS', 'SBP', 'ZnCu'))
-
+FS12a@sam_data$treatment <- fct_recode(FS12a@sam_data$treatment, !!!new_names)
 # 
 # unique(FS12a@sam_data$treatment)
 # 
@@ -311,6 +389,8 @@ FS12a@sam_data$treatment <- factor(FS12a@sam_data$treatment, levels = c('Control
 # this can stay right?
 # something weird is happening here....  treatment factor levels being replaced by integers
 # it happened after I loaded te Rtsne package.... went away when I restarted R
+
+# begin figure 3 #
 
 library(DESeq2)
 tmpres <- list()
@@ -345,12 +425,45 @@ my_pal <- c(pal, pal_light)
 names(my_pal) <- levs
 
 
+###NEW NAMES ###
 
+NEW_NAMES2 <- c(CT='Pos_control',
+                RSpo='RPS',
+                SCF='Malto',
+                SBP='SBP',
+                FAM='Acid',
+                PHY='Phyto',
+                CuZn='ZnCu',
+                RScn='RCS',
+                BG='Bglu',
+                down_CT='down_Pos_control',
+                down_RSpo='down_RPS',
+                down_SCF='down_Malto',
+                down_SBP='down_SBP',
+                down_FAM='down_Acid',
+                down_PHY='down_Phyto',
+                down_CuZn='down_ZnCu',
+                down_RScn='down_RCS',
+                down_BG='down_Bglu')
 
 
 # 
 ### I THINK THIS ONE IS GOOD!
 nrow(tmpres$OTU)
+# wrong
+# tmpres$OTU %>% mutate(comp2=fct_recode(comp, !!!NEW_NAMES2))
+
+tmpres$OTU$comp <- factor(tmpres$OTU$comp ,
+                          levels = c("CT_vs_NC",
+                                     "RSpo_vs_NC",
+                                     "SCF_vs_NC",
+                                     "SBP_vs_NC",
+                                     "FAM_vs_NC",
+                                     "PHY_vs_NC",
+                                     "CuZn_vs_NC",
+                                     "RScn_vs_NC",
+                                     "BG_vs_NC"))
+
 
 tmpres$OTU %>% group_by(comp) %>%
   tally() %>% 
@@ -366,39 +479,50 @@ tmpres$OTU %>% filter(day !='D0') %>%#filter(comp %in% theseones) %>%
   ggplot(aes(x=Family, y=log2FoldChange, fill=comp)) +
   geom_hline(yintercept = 0, color='grey50', size=2) +
   geom_point(color='black', shape=21, size=3) + coord_flip() + 
-  scale_fill_brewer(palette = 'Set1')+
-  theme(axis.text.y = element_blank()) + theme_bw() +
-  ggtitle('Significantly differentially abundant OTUs compared to the Control group')
+  scale_fill_brewer(palette = 'Set1', name='Comparison')+
+  theme(axis.text.y = element_text(size=10),panel.grid.major.x = element_line(color='grey')) +
+  ggtitle('')
+
+
+
+
 unique(tmpres$OTU$Family)
 gram_negs <- c('Enterobacteriaceae', 'Desulfovibrionaceae', 'Proteobacteria_unclassified', 'Campylobacteraceae','Deltaproteobacteria_unclassified', 'Gammaproteobacteria_unclassified')
-tmpres$OTU %>% filter(day !='D0') %>%filter(Family %in% gram_negs) %>%
+
+
+# CHANGE LEGEND TITLE #
+tmpres$OTU %>% filter(day !='D0') %>%
+  filter(Family %in% gram_negs) %>%
   ggplot(aes(x=Genus, y=log2FoldChange, fill=comp)) +
   geom_hline(yintercept = 0, color='grey50', size=2) +
-  geom_point(color='black', shape=21, size=3) + coord_flip() + 
-  scale_fill_brewer(palette = 'Set1')+
-  theme(axis.text.y = element_blank()) + theme_bw()
+  geom_point(color='black', shape=21, size=4) + coord_flip() + 
+  # scale_fill_discrete(drop=FALSE)+
+  scale_fill_brewer(palette = 'Set1',drop=FALSE, name='Comparison')+
+  theme(panel.grid.major.x = element_line(color='grey'), 
+        legend.title = element_text()) +
+  ylim(-4.5,4.5)
 
 
 
 
-tmpres$Genus %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) +
-  geom_text(aes(label=Genus, y=0))+ facet_wrap(~comp, scales = 'free')
-
-
-tmpres$Family %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) +
-  geom_text(aes(label=Family, y=0))
-
-
-tmpres$Order %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
-  geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) +
-  geom_text(aes(label=Order, y=0))
-
-FS12a@sam_data %>% group_by(day, tissue, treatment) %>% tally()
-
-
-taxa$Genus
+# tmpres$Genus %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) +
+#   geom_text(aes(label=Genus, y=0))+ facet_wrap(~comp, scales = 'free')
+# 
+# 
+# tmpres$Family %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) +
+#   geom_text(aes(label=Family, y=0))
+# 
+# 
+# tmpres$Order %>% filter(day !='D0') %>%  ggplot(aes(x=OTU, y=log2FoldChange, fill=Treatment)) +
+#   geom_col(color='black') + coord_flip() + scale_fill_manual(values = my_pal) +
+#   geom_text(aes(label=Order, y=0))
+# 
+# FS12a@sam_data %>% group_by(day, tissue, treatment) %>% tally()
+# 
+# 
+# taxa$Genus
 ###### BLAST RESULTS FOR ALL THESE OTUS
 
 # tocontf %>% select(OTU) %>% unlist(use.names = FALSE) %>% write_lines('./data/FS12a_int_OTUs.txt')
@@ -419,7 +543,7 @@ FS12a_dispersdf$group <- rownames(FS12a_dispersdf)
 FS12a@sam_data$sample_ID == FS12a_dispersdf$group
 
 
-meta$sample_ID %in% FS12a_dispersdf$group
+# meta$sample_ID %in% FS12a_dispersdf$group
 
 colnames(FS12a_dispersdf)[2] <- 'sample_ID'
 FS12a_meta <- FS12a_NMDS[[1]]
@@ -506,7 +630,10 @@ nrow(glob_weight_assoc_23[[2]])
 
 glob_weight <- glob_weight_assoc_23[[2]]
 
-glob_weight_assoc_23[[1]] + xlab("Strength of ")
+p <- glob_weight_assoc_23[[1]] #+ xlab("Strength of ")
+
+ggsave(filename = './side_proj/Kerr_figs/NURSE_GAIN_OTUs.jpeg', plot = p, 
+        device = 'jpeg', width = 170, height = 185, units = 'mm')
 
 ##### ASIDE ####
 
@@ -545,28 +672,30 @@ tmpres$OTU %>% filter(OTU %in% glob_weight$OTU)
 
   
 ###################
-Cont_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'Control'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-RPS_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'RPS'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-RCS_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'RCS'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-Acid_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'Acid'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-Bglu_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'Bglu'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-ZnCu_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'ZnCu'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-Phyto_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'Phyto'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-Pos_control_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'Pos_control'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+FS12a_prune@sam_data$treatment
+
+Cont_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'NC'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+RPS_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'RSpo'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+RCS_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'RScn'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+Acid_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'FAM'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+Bglu_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'BG'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+ZnCu_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'CuZn'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+Phyto_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'PHY'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+Pos_control_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'CT'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
 SBP_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'SBP'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
-Malto_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'Malto'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
+Malto_weight_23 <- blarg(phyloseq_obj = subset_samples(FS12a_prune, treatment == 'SCF'), day = 'D23', tissue = 'F', covariate = 'nurse_gain', shrink_type = 'normal')
 
 
-Cont_weight_23[[2]]$treat <- 'Control'
-RPS_weight_23[[2]]$treat <- 'RPS'
-RCS_weight_23[[2]]$treat <- 'RCS'
-Acid_weight_23[[2]]$treat <- 'Acid'
-Bglu_weight_23[[2]]$treat <- 'Bglu'
-ZnCu_weight_23[[2]]$treat <- 'ZnCu'
-Phyto_weight_23[[2]]$treat <- 'Phyto'
-Pos_control_weight_23[[2]]$treat <- 'Pos_control'
+Cont_weight_23[[2]]$treat <- 'NC'
+RPS_weight_23[[2]]$treat <- 'RSpo'
+RCS_weight_23[[2]]$treat <- 'RScn'
+Acid_weight_23[[2]]$treat <- 'FAM'
+Bglu_weight_23[[2]]$treat <- 'BG'
+ZnCu_weight_23[[2]]$treat <- 'CuZn'
+Phyto_weight_23[[2]]$treat <- 'PHY'
+Pos_control_weight_23[[2]]$treat <- 'CT'
 SBP_weight_23[[2]]$treat <- 'SBP'
-Malto_weight_23[[2]]$treat <- 'Malto'
+Malto_weight_23[[2]]$treat <- 'SCF'
 
 
 all_treat_weight <- bind_rows(list(Cont_weight_23[[2]],
@@ -581,9 +710,14 @@ all_treat_weight <- bind_rows(list(Cont_weight_23[[2]],
 
 
 #####
+
+### I THINK THIS IS WHERE THE TREATMENTS NEED TO BE FIXED #
 sig_OTUs <- tmpres$OTU
 
-sig_OTUs$treat2 <- sub('down_','',sig_OTUs$Treatment)
+sig_OTUs$treat2 <- sub('down_treatment_','',sig_OTUs$Treatment)
+sig_OTUs$treat2 <- sub('treatment_','',sig_OTUs$treat2)
+sig_OTUs$treat2 <- sub('_vs_NC','',sig_OTUs$treat2)
+
 
 nested_sigs <- sig_OTUs %>% group_by(treat2) %>% nest()
 
@@ -595,7 +729,7 @@ sigs_n_weight[3,]$weight_data
 sigs_n_weight[3,]$data
 
 
-sigs_n_weight[3,]$weight_data[[1]]$OTU %in% sigs_n_weight[3,]$data[[1]]$OTU
+# sigs_n_weight[3,]$weight_data[[1]]$OTU %in% sigs_n_weight[3,]$data[[1]]$OTU
 
 
 testtt <- function(cont_cov_dat, diffabund_dat){
@@ -615,8 +749,14 @@ sigs_n_weight <- sigs_n_weight %>% filter(!map_lgl(.x = weight_data, .f = is.nul
 sigs_n_weight %>%
   mutate(good_OTUs=map2(.x = weight_data, .y = data, .f=testtt)) %>% 
   select(treat2, good_OTUs) %>% unnest() %>%
-  ggplot(aes(x=Genus, y=cont_cov_L2FC, fill=treat2))+ geom_hline(yintercept = 0) +
-  geom_point(shape=21, size=3) + coord_flip() + ylab('Strength of relationship with nursery preformance') +
+  mutate(treatment=factor(treat2, levels = names(new_names)[-1])) %>% 
+  ggplot(aes(x=Genus, y=cont_cov_L2FC, fill=treatment))+ 
+  geom_hline(yintercept = 0) +
+  geom_point(shape=21, size=4) + scale_fill_brewer(palette = 'Set1', drop=FALSE, name='Treatment') +
+  coord_flip() + ylim(-1.75, 1.75) + 
+  geom_text(aes(y=1.25, label=OTU))+
+  theme(panel.grid.major.x = element_line(color='grey'))+
+  ylab('Strength of relationship with nursery preformance') #+
   ggtitle('OTUs significantly associated with a treatment\n and nursery preformance in that same treatment')
 
 
