@@ -5,7 +5,6 @@ library(funfuns)
 library(DESeq2)
 library(vegan)
 library(funfuns)
-library(tidyverse)
 
 meta <- read.csv('./data/FS12_final_meta.csv', header = TRUE, stringsAsFactors = FALSE)
 shared <- read_delim('./data/FS12.shared', delim = '\t') %>% as.data.frame()
@@ -65,6 +64,47 @@ colnames(p_taxa) <- colnames(taxa)[-c(1,2,3)]
 # meta$treatment  
 FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # builds the phyloseq obj
 
+WRITE_ME <- FS12@sam_data %>% as(Class = 'matrix') %>% as.data.frame()
+
+WRITE_ME <- WRITE_ME %>% 
+  filter(pignum != 101) %>%
+  dplyr::select(sample_ID, everything(), -ends_with('ate'), -weight, -pig_day_tissue, -set) %>% 
+  arrange(experiment, tissue, day, treatment) %>% 
+  mutate(env_medium=case_when(tissue == 'F'      ~    'feces', 
+                              tissue == 'C'      ~    'cecal contents', 
+                              tissue == 'X'      ~    'cecal mucosa', 
+                              tissue == 'I'      ~    'ileal mucosa', 
+                              tissue == 'Q'      ~    'fecal tetrathionate broth enrichment', 
+                              TRUE               ~    'this should never happen'), 
+         collect_date=case_when(experiment  == 'X12b' & day == 'D0'  ~ '2017-10-01',
+                                experiment  == 'X12b' & day == 'D2'  ~ '2017-10-03',
+                                experiment  == 'X12b' & day == 'D7'  ~ '2017-10-08',
+                                experiment  == 'X12b' & day == 'D14' ~ '2017-10-15',
+                                experiment  == 'X12b' & day == 'D21' ~ '2017-10-22', 
+                                experiment  == 'X12a' & day == 'D0'  ~  '2017-09-01', 
+                                experiment  == 'X12a' & day == 'D3'  ~  '2017-09-04',
+                                experiment  == 'X12a' & day == 'D9'  ~  '2017-09-10',
+                                experiment  == 'X12a' & day == 'D14'  ~  '2017-09-15',
+                                experiment  == 'X12a' & day == 'D17'  ~  '2017-09-18',
+                                experiment  == 'X12a' & day == 'D23'  ~  '2017-09-24',
+                                experiment  == 'X12a' & day == 'D30'  ~  '2017-10-01', 
+                                TRUE                                  ~  'SOMETHINGSWRONG'))
+
+
+
+WRITE_ME %>% write_tsv('FS12_meta_for_ncbi.tsv')
+
+SRA_DATA <- WRITE_ME %>% 
+  dplyr::select(sample_ID, env_medium) %>%
+  mutate(filename_1 = paste0(sample_ID, '_R1.fq.gz'), 
+         filename_2 = paste0(sample_ID, '_R2.fq.gz'), 
+         title = paste('16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome:', env_medium)) %>% 
+  write_tsv('SRA_metadata.tsv')
+
+SRA_DATA %>% dplyr::pull(filename_1) %>% write_lines('R1_good.txt')
+
+SRA_DATA %>% dplyr::pull(filename_2) %>% write_lines('R2_good.txt')
+
 ### mock stuff ###
 # 
 # rownames(mocks)
@@ -82,7 +122,7 @@ FS12 <- phyloseq(p_meta, p_taxa, otu_table(shared, taxa_are_rows = FALSE))  # bu
 
 ##### NMDS #####
 
-
+# prob should write these out #
 FS12b <- subset_samples(FS12, experiment == 'X12b' & pignum != 101)
 
 FS12b <- subset_samples(FS12b, treatment %in% c('Control', 'RPS', 'Acid', 'RCS'))
@@ -126,7 +166,8 @@ FS12b <- prune_taxa(taxa_sums(FS12b) > 10, FS12b) # removes sequences that occur
 FS12b_feces <- FS12b %>% prune_samples(samples = FS12b@sam_data$tissue =='F')
 
 FS12b_feces_meta <- FS12b_feces@sam_data %>% data.frame()
-FS12b_feces_OTU <- rrarefy(FS12b_feces@otu_table, min(rowSums(FS12b_feces@otu_table))) %>% data.frame()
+FS12b_feces_OTU <- rrarefy(FS12b_feces@otu_table, min(rowSums(FS12b_feces@otu_table))) %>%
+  data.frame()
 
 
 FS12b_feces_nmds <- NMDS_ellipse(metadata = FS12b_feces_meta,

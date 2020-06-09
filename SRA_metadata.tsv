@@ -1,0 +1,876 @@
+sample_ID	env_medium	filename_1	filename_2	title
+X12N11WD0	feces	X12N11WD0_R1.fq.gz	X12N11WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N26WD0	feces	X12N26WD0_R1.fq.gz	X12N26WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N31WD0	feces	X12N31WD0_R1.fq.gz	X12N31WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N36WD0	feces	X12N36WD0_R1.fq.gz	X12N36WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N43WD0	feces	X12N43WD0_R1.fq.gz	X12N43WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N6WD0	feces	X12N6WD0_R1.fq.gz	X12N6WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N70WD0	feces	X12N70WD0_R1.fq.gz	X12N70WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N73WD0	feces	X12N73WD0_R1.fq.gz	X12N73WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N76WD0	feces	X12N76WD0_R1.fq.gz	X12N76WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N86WD0	feces	X12N86WD0_R1.fq.gz	X12N86WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N29WD0	feces	X12N29WD0_R1.fq.gz	X12N29WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N2WD0	feces	X12N2WD0_R1.fq.gz	X12N2WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N46WD0	feces	X12N46WD0_R1.fq.gz	X12N46WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N48WD0	feces	X12N48WD0_R1.fq.gz	X12N48WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N51WD0	feces	X12N51WD0_R1.fq.gz	X12N51WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N93WD0	feces	X12N93WD0_R1.fq.gz	X12N93WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N16WD0	feces	X12N16WD0_R1.fq.gz	X12N16WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N18WD0	feces	X12N18WD0_R1.fq.gz	X12N18WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N25WD0	feces	X12N25WD0_R1.fq.gz	X12N25WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N32WD0	feces	X12N32WD0_R1.fq.gz	X12N32WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N39WD0	feces	X12N39WD0_R1.fq.gz	X12N39WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N45WD0	feces	X12N45WD0_R1.fq.gz	X12N45WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N68WD0	feces	X12N68WD0_R1.fq.gz	X12N68WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N69WD0	feces	X12N69WD0_R1.fq.gz	X12N69WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N84WD0	feces	X12N84WD0_R1.fq.gz	X12N84WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N92WD0	feces	X12N92WD0_R1.fq.gz	X12N92WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N22WD0	feces	X12N22WD0_R1.fq.gz	X12N22WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N41WD0	feces	X12N41WD0_R1.fq.gz	X12N41WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N50WD0	feces	X12N50WD0_R1.fq.gz	X12N50WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N55WD0	feces	X12N55WD0_R1.fq.gz	X12N55WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N56WD0	feces	X12N56WD0_R1.fq.gz	X12N56WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N60WD0	feces	X12N60WD0_R1.fq.gz	X12N60WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N67WD0	feces	X12N67WD0_R1.fq.gz	X12N67WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N74WD0	feces	X12N74WD0_R1.fq.gz	X12N74WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N77WD0	feces	X12N77WD0_R1.fq.gz	X12N77WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N77WD0dup	feces	X12N77WD0dup_R1.fq.gz	X12N77WD0dup_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N96WD0	feces	X12N96WD0_R1.fq.gz	X12N96WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N12WD0	feces	X12N12WD0_R1.fq.gz	X12N12WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N33WD0	feces	X12N33WD0_R1.fq.gz	X12N33WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N34WD0	feces	X12N34WD0_R1.fq.gz	X12N34WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N38WD0	feces	X12N38WD0_R1.fq.gz	X12N38WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N42WD0	feces	X12N42WD0_R1.fq.gz	X12N42WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N4WD0	feces	X12N4WD0_R1.fq.gz	X12N4WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N58WD0	feces	X12N58WD0_R1.fq.gz	X12N58WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N62WD0	feces	X12N62WD0_R1.fq.gz	X12N62WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N64WD0	feces	X12N64WD0_R1.fq.gz	X12N64WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N64WD0dup	feces	X12N64WD0dup_R1.fq.gz	X12N64WD0dup_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N8WD0	feces	X12N8WD0_R1.fq.gz	X12N8WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N14WD0	feces	X12N14WD0_R1.fq.gz	X12N14WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N23WD0	feces	X12N23WD0_R1.fq.gz	X12N23WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N47WD0	feces	X12N47WD0_R1.fq.gz	X12N47WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N52WD0	feces	X12N52WD0_R1.fq.gz	X12N52WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N57WD0	feces	X12N57WD0_R1.fq.gz	X12N57WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N63WD0	feces	X12N63WD0_R1.fq.gz	X12N63WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N72WD0	feces	X12N72WD0_R1.fq.gz	X12N72WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N7WD0	feces	X12N7WD0_R1.fq.gz	X12N7WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N83WD0	feces	X12N83WD0_R1.fq.gz	X12N83WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N89WD0	feces	X12N89WD0_R1.fq.gz	X12N89WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N13WD0	feces	X12N13WD0_R1.fq.gz	X12N13WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N24WD0	feces	X12N24WD0_R1.fq.gz	X12N24WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N28WD0	feces	X12N28WD0_R1.fq.gz	X12N28WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N35WD0	feces	X12N35WD0_R1.fq.gz	X12N35WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N40WD0	feces	X12N40WD0_R1.fq.gz	X12N40WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N5WD0	feces	X12N5WD0_R1.fq.gz	X12N5WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N80WD0	feces	X12N80WD0_R1.fq.gz	X12N80WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N91WD0	feces	X12N91WD0_R1.fq.gz	X12N91WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N94WD0	feces	X12N94WD0_R1.fq.gz	X12N94WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N9WD0	feces	X12N9WD0_R1.fq.gz	X12N9WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N19WD0	feces	X12N19WD0_R1.fq.gz	X12N19WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N20WD0	feces	X12N20WD0_R1.fq.gz	X12N20WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N37WD0	feces	X12N37WD0_R1.fq.gz	X12N37WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N49WD0	feces	X12N49WD0_R1.fq.gz	X12N49WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N65WD0	feces	X12N65WD0_R1.fq.gz	X12N65WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N71WD0	feces	X12N71WD0_R1.fq.gz	X12N71WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N75WD0	feces	X12N75WD0_R1.fq.gz	X12N75WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N79WD0	feces	X12N79WD0_R1.fq.gz	X12N79WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N1WD0	feces	X12N1WD0_R1.fq.gz	X12N1WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N27WD0	feces	X12N27WD0_R1.fq.gz	X12N27WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N30WD0	feces	X12N30WD0_R1.fq.gz	X12N30WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N3WD0	feces	X12N3WD0_R1.fq.gz	X12N3WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N54WD0	feces	X12N54WD0_R1.fq.gz	X12N54WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N61WD0	feces	X12N61WD0_R1.fq.gz	X12N61WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N78WD0	feces	X12N78WD0_R1.fq.gz	X12N78WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N81WD0	feces	X12N81WD0_R1.fq.gz	X12N81WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N82WD0	feces	X12N82WD0_R1.fq.gz	X12N82WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N88WD0	feces	X12N88WD0_R1.fq.gz	X12N88WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N15WD0	feces	X12N15WD0_R1.fq.gz	X12N15WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N17WD0	feces	X12N17WD0_R1.fq.gz	X12N17WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N44WD0	feces	X12N44WD0_R1.fq.gz	X12N44WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N53WD0	feces	X12N53WD0_R1.fq.gz	X12N53WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N59WD0	feces	X12N59WD0_R1.fq.gz	X12N59WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N66WD0	feces	X12N66WD0_R1.fq.gz	X12N66WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N85WD0	feces	X12N85WD0_R1.fq.gz	X12N85WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N87WD0	feces	X12N87WD0_R1.fq.gz	X12N87WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N90WD0	feces	X12N90WD0_R1.fq.gz	X12N90WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N95WD0	feces	X12N95WD0_R1.fq.gz	X12N95WD0_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N29WD14	feces	X12N29WD14_R1.fq.gz	X12N29WD14_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N2WD14	feces	X12N2WD14_R1.fq.gz	X12N2WD14_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N46WD14	feces	X12N46WD14_R1.fq.gz	X12N46WD14_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N48WD14	feces	X12N48WD14_R1.fq.gz	X12N48WD14_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N93WD14	feces	X12N93WD14_R1.fq.gz	X12N93WD14_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N50WD14	feces	X12N50WD14_R1.fq.gz	X12N50WD14_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N29WD17	feces	X12N29WD17_R1.fq.gz	X12N29WD17_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N2WD17	feces	X12N2WD17_R1.fq.gz	X12N2WD17_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N46WD17	feces	X12N46WD17_R1.fq.gz	X12N46WD17_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N48WD17	feces	X12N48WD17_R1.fq.gz	X12N48WD17_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N93WD17	feces	X12N93WD17_R1.fq.gz	X12N93WD17_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N50WD17	feces	X12N50WD17_R1.fq.gz	X12N50WD17_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N11WD23	feces	X12N11WD23_R1.fq.gz	X12N11WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N26WD23	feces	X12N26WD23_R1.fq.gz	X12N26WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N31WD23	feces	X12N31WD23_R1.fq.gz	X12N31WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N36WD23	feces	X12N36WD23_R1.fq.gz	X12N36WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N43WD23	feces	X12N43WD23_R1.fq.gz	X12N43WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N6WD23	feces	X12N6WD23_R1.fq.gz	X12N6WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N70WD23	feces	X12N70WD23_R1.fq.gz	X12N70WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N73WD23	feces	X12N73WD23_R1.fq.gz	X12N73WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N76WD23	feces	X12N76WD23_R1.fq.gz	X12N76WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N29WD23	feces	X12N29WD23_R1.fq.gz	X12N29WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N46WD23	feces	X12N46WD23_R1.fq.gz	X12N46WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N48WD23	feces	X12N48WD23_R1.fq.gz	X12N48WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N93WD23	feces	X12N93WD23_R1.fq.gz	X12N93WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N16WD23	feces	X12N16WD23_R1.fq.gz	X12N16WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N18WD23	feces	X12N18WD23_R1.fq.gz	X12N18WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N32WD23	feces	X12N32WD23_R1.fq.gz	X12N32WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N39WD23	feces	X12N39WD23_R1.fq.gz	X12N39WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N45WD23	feces	X12N45WD23_R1.fq.gz	X12N45WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N68WD23	feces	X12N68WD23_R1.fq.gz	X12N68WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P121WD23	feces	X12P121WD23_R1.fq.gz	X12P121WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P125WD23	feces	X12P125WD23_R1.fq.gz	X12P125WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P157WD23	feces	X12P157WD23_R1.fq.gz	X12P157WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P159WD23	feces	X12P159WD23_R1.fq.gz	X12P159WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P160WD23	feces	X12P160WD23_R1.fq.gz	X12P160WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P191WD23	feces	X12P191WD23_R1.fq.gz	X12P191WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P192WD23	feces	X12P192WD23_R1.fq.gz	X12P192WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P193WD23	feces	X12P193WD23_R1.fq.gz	X12P193WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P195WD23	feces	X12P195WD23_R1.fq.gz	X12P195WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P221WD23	feces	X12P221WD23_R1.fq.gz	X12P221WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P222WD23	feces	X12P222WD23_R1.fq.gz	X12P222WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P223WD23	feces	X12P223WD23_R1.fq.gz	X12P223WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P224WD23	feces	X12P224WD23_R1.fq.gz	X12P224WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P225WD23	feces	X12P225WD23_R1.fq.gz	X12P225WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P336WD23	feces	X12P336WD23_R1.fq.gz	X12P336WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P337WD23	feces	X12P337WD23_R1.fq.gz	X12P337WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P338WD23	feces	X12P338WD23_R1.fq.gz	X12P338WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P339WD23	feces	X12P339WD23_R1.fq.gz	X12P339WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P340WD23	feces	X12P340WD23_R1.fq.gz	X12P340WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P342WD23	feces	X12P342WD23_R1.fq.gz	X12P342WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P343WD23	feces	X12P343WD23_R1.fq.gz	X12P343WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P344WD23	feces	X12P344WD23_R1.fq.gz	X12P344WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P345WD23	feces	X12P345WD23_R1.fq.gz	X12P345WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P416WD23	feces	X12P416WD23_R1.fq.gz	X12P416WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P417WD23	feces	X12P417WD23_R1.fq.gz	X12P417WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P418WD23	feces	X12P418WD23_R1.fq.gz	X12P418WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P419WD23	feces	X12P419WD23_R1.fq.gz	X12P419WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P420WD23	feces	X12P420WD23_R1.fq.gz	X12P420WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P456WD23	feces	X12P456WD23_R1.fq.gz	X12P456WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P457WD23	feces	X12P457WD23_R1.fq.gz	X12P457WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P458WD23	feces	X12P458WD23_R1.fq.gz	X12P458WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P459WD23	feces	X12P459WD23_R1.fq.gz	X12P459WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P460WD23	feces	X12P460WD23_R1.fq.gz	X12P460WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P76WD23	feces	X12P76WD23_R1.fq.gz	X12P76WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P77WD23	feces	X12P77WD23_R1.fq.gz	X12P77WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P78WD23	feces	X12P78WD23_R1.fq.gz	X12P78WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P80WD23	feces	X12P80WD23_R1.fq.gz	X12P80WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P87WD23	feces	X12P87WD23_R1.fq.gz	X12P87WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P88WD23	feces	X12P88WD23_R1.fq.gz	X12P88WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P89WD23	feces	X12P89WD23_R1.fq.gz	X12P89WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N22WD23	feces	X12N22WD23_R1.fq.gz	X12N22WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N50WD23	feces	X12N50WD23_R1.fq.gz	X12N50WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N55WD23	feces	X12N55WD23_R1.fq.gz	X12N55WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N56WD23	feces	X12N56WD23_R1.fq.gz	X12N56WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N60WD23	feces	X12N60WD23_R1.fq.gz	X12N60WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N67WD23	feces	X12N67WD23_R1.fq.gz	X12N67WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N74WD23	feces	X12N74WD23_R1.fq.gz	X12N74WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N77WD23	feces	X12N77WD23_R1.fq.gz	X12N77WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N12WD23	feces	X12N12WD23_R1.fq.gz	X12N12WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N33WD23	feces	X12N33WD23_R1.fq.gz	X12N33WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N34WD23	feces	X12N34WD23_R1.fq.gz	X12N34WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N42WD23	feces	X12N42WD23_R1.fq.gz	X12N42WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N58WD23	feces	X12N58WD23_R1.fq.gz	X12N58WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N62WD23	feces	X12N62WD23_R1.fq.gz	X12N62WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N64WD23	feces	X12N64WD23_R1.fq.gz	X12N64WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N8WD23	feces	X12N8WD23_R1.fq.gz	X12N8WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N14WD23	feces	X12N14WD23_R1.fq.gz	X12N14WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N23WD23	feces	X12N23WD23_R1.fq.gz	X12N23WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N47WD23	feces	X12N47WD23_R1.fq.gz	X12N47WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N52WD23	feces	X12N52WD23_R1.fq.gz	X12N52WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N57WD23	feces	X12N57WD23_R1.fq.gz	X12N57WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N63WD23	feces	X12N63WD23_R1.fq.gz	X12N63WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N72WD23	feces	X12N72WD23_R1.fq.gz	X12N72WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N7WD23	feces	X12N7WD23_R1.fq.gz	X12N7WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N83WD23	feces	X12N83WD23_R1.fq.gz	X12N83WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N89WD23	feces	X12N89WD23_R1.fq.gz	X12N89WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N24WD23	feces	X12N24WD23_R1.fq.gz	X12N24WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N35WD23	feces	X12N35WD23_R1.fq.gz	X12N35WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N40WD23	feces	X12N40WD23_R1.fq.gz	X12N40WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N5WD23	feces	X12N5WD23_R1.fq.gz	X12N5WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N80WD23	feces	X12N80WD23_R1.fq.gz	X12N80WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N91WD23	feces	X12N91WD23_R1.fq.gz	X12N91WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N9WD23	feces	X12N9WD23_R1.fq.gz	X12N9WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N10WD23	feces	X12N10WD23_R1.fq.gz	X12N10WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N19WD23	feces	X12N19WD23_R1.fq.gz	X12N19WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N20WD23	feces	X12N20WD23_R1.fq.gz	X12N20WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N37WD23	feces	X12N37WD23_R1.fq.gz	X12N37WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N49WD23	feces	X12N49WD23_R1.fq.gz	X12N49WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N65WD23	feces	X12N65WD23_R1.fq.gz	X12N65WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N75WD23	feces	X12N75WD23_R1.fq.gz	X12N75WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N79WD23	feces	X12N79WD23_R1.fq.gz	X12N79WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N1WD23	feces	X12N1WD23_R1.fq.gz	X12N1WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N30WD23	feces	X12N30WD23_R1.fq.gz	X12N30WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N3WD23	feces	X12N3WD23_R1.fq.gz	X12N3WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N54WD23	feces	X12N54WD23_R1.fq.gz	X12N54WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N61WD23	feces	X12N61WD23_R1.fq.gz	X12N61WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N78WD23	feces	X12N78WD23_R1.fq.gz	X12N78WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N81WD23	feces	X12N81WD23_R1.fq.gz	X12N81WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N82WD23	feces	X12N82WD23_R1.fq.gz	X12N82WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N88WD23	feces	X12N88WD23_R1.fq.gz	X12N88WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N15WD23	feces	X12N15WD23_R1.fq.gz	X12N15WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N44WD23	feces	X12N44WD23_R1.fq.gz	X12N44WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N53WD23	feces	X12N53WD23_R1.fq.gz	X12N53WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N66WD23	feces	X12N66WD23_R1.fq.gz	X12N66WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N87WD23	feces	X12N87WD23_R1.fq.gz	X12N87WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N90WD23	feces	X12N90WD23_R1.fq.gz	X12N90WD23_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N29WD3	feces	X12N29WD3_R1.fq.gz	X12N29WD3_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N2WD3	feces	X12N2WD3_R1.fq.gz	X12N2WD3_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N46WD3	feces	X12N46WD3_R1.fq.gz	X12N46WD3_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N48WD3	feces	X12N48WD3_R1.fq.gz	X12N48WD3_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N93WD3	feces	X12N93WD3_R1.fq.gz	X12N93WD3_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N50WD3	feces	X12N50WD3_R1.fq.gz	X12N50WD3_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N11FD30dup	feces	X12N11FD30dup_R1.fq.gz	X12N11FD30dup_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N26FD30	feces	X12N26FD30_R1.fq.gz	X12N26FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N31FD30	feces	X12N31FD30_R1.fq.gz	X12N31FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N36FD30	feces	X12N36FD30_R1.fq.gz	X12N36FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N43FD30	feces	X12N43FD30_R1.fq.gz	X12N43FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N6FD30	feces	X12N6FD30_R1.fq.gz	X12N6FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N73FD30	feces	X12N73FD30_R1.fq.gz	X12N73FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N76FD30	feces	X12N76FD30_R1.fq.gz	X12N76FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N86FD30	feces	X12N86FD30_R1.fq.gz	X12N86FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N29FD30	feces	X12N29FD30_R1.fq.gz	X12N29FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N2FD30	feces	X12N2FD30_R1.fq.gz	X12N2FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N46FD30	feces	X12N46FD30_R1.fq.gz	X12N46FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N48FD30	feces	X12N48FD30_R1.fq.gz	X12N48FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N93FD30	feces	X12N93FD30_R1.fq.gz	X12N93FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N16FD30	feces	X12N16FD30_R1.fq.gz	X12N16FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N18FD30	feces	X12N18FD30_R1.fq.gz	X12N18FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N25FD30	feces	X12N25FD30_R1.fq.gz	X12N25FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N32FD30	feces	X12N32FD30_R1.fq.gz	X12N32FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N39FD30	feces	X12N39FD30_R1.fq.gz	X12N39FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N45FD30	feces	X12N45FD30_R1.fq.gz	X12N45FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N68FD30	feces	X12N68FD30_R1.fq.gz	X12N68FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N69FD30	feces	X12N69FD30_R1.fq.gz	X12N69FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N84FD30	feces	X12N84FD30_R1.fq.gz	X12N84FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N92FD30	feces	X12N92FD30_R1.fq.gz	X12N92FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N14FD30	feces	X12N14FD30_R1.fq.gz	X12N14FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N23FD30	feces	X12N23FD30_R1.fq.gz	X12N23FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N47FD30	feces	X12N47FD30_R1.fq.gz	X12N47FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N52FD30	feces	X12N52FD30_R1.fq.gz	X12N52FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N57FD30	feces	X12N57FD30_R1.fq.gz	X12N57FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N63FD30	feces	X12N63FD30_R1.fq.gz	X12N63FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N72FD30	feces	X12N72FD30_R1.fq.gz	X12N72FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N7FD30	feces	X12N7FD30_R1.fq.gz	X12N7FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N83FD30	feces	X12N83FD30_R1.fq.gz	X12N83FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N13FD30	feces	X12N13FD30_R1.fq.gz	X12N13FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N24FD30	feces	X12N24FD30_R1.fq.gz	X12N24FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N28FD30	feces	X12N28FD30_R1.fq.gz	X12N28FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N35FD30	feces	X12N35FD30_R1.fq.gz	X12N35FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N40FD30	feces	X12N40FD30_R1.fq.gz	X12N40FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N5FD30	feces	X12N5FD30_R1.fq.gz	X12N5FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N80FD30	feces	X12N80FD30_R1.fq.gz	X12N80FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N91FD30	feces	X12N91FD30_R1.fq.gz	X12N91FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N94FD30	feces	X12N94FD30_R1.fq.gz	X12N94FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N9FD30	feces	X12N9FD30_R1.fq.gz	X12N9FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N10FD30	feces	X12N10FD30_R1.fq.gz	X12N10FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N20FD30dup	feces	X12N20FD30dup_R1.fq.gz	X12N20FD30dup_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N21FD30	feces	X12N21FD30_R1.fq.gz	X12N21FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N37FD30	feces	X12N37FD30_R1.fq.gz	X12N37FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N49FD30	feces	X12N49FD30_R1.fq.gz	X12N49FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N65FD30	feces	X12N65FD30_R1.fq.gz	X12N65FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N71FD30	feces	X12N71FD30_R1.fq.gz	X12N71FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N75FD30	feces	X12N75FD30_R1.fq.gz	X12N75FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N79FD30	feces	X12N79FD30_R1.fq.gz	X12N79FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N15FD30	feces	X12N15FD30_R1.fq.gz	X12N15FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N17FD30	feces	X12N17FD30_R1.fq.gz	X12N17FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N44FD30	feces	X12N44FD30_R1.fq.gz	X12N44FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N53FD30	feces	X12N53FD30_R1.fq.gz	X12N53FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N59FD30	feces	X12N59FD30_R1.fq.gz	X12N59FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N66FD30	feces	X12N66FD30_R1.fq.gz	X12N66FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N85FD30	feces	X12N85FD30_R1.fq.gz	X12N85FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N87FD30	feces	X12N87FD30_R1.fq.gz	X12N87FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N90FD30	feces	X12N90FD30_R1.fq.gz	X12N90FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N95FD30	feces	X12N95FD30_R1.fq.gz	X12N95FD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N29WD9	feces	X12N29WD9_R1.fq.gz	X12N29WD9_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N2WD9	feces	X12N2WD9_R1.fq.gz	X12N2WD9_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N46WD9	feces	X12N46WD9_R1.fq.gz	X12N46WD9_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N48WD9	feces	X12N48WD9_R1.fq.gz	X12N48WD9_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N93WD9	feces	X12N93WD9_R1.fq.gz	X12N93WD9_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N50WD9	feces	X12N50WD9_R1.fq.gz	X12N50WD9_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12N11XD30	cecal mucosa	X12N11XD30_R1.fq.gz	X12N11XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N26XD30	cecal mucosa	X12N26XD30_R1.fq.gz	X12N26XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N31XD30	cecal mucosa	X12N31XD30_R1.fq.gz	X12N31XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N36XD30	cecal mucosa	X12N36XD30_R1.fq.gz	X12N36XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N43XD30	cecal mucosa	X12N43XD30_R1.fq.gz	X12N43XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N6XD30	cecal mucosa	X12N6XD30_R1.fq.gz	X12N6XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N73XD30	cecal mucosa	X12N73XD30_R1.fq.gz	X12N73XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N76XD30	cecal mucosa	X12N76XD30_R1.fq.gz	X12N76XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N86XD30	cecal mucosa	X12N86XD30_R1.fq.gz	X12N86XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N29XD30	cecal mucosa	X12N29XD30_R1.fq.gz	X12N29XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N2XD30	cecal mucosa	X12N2XD30_R1.fq.gz	X12N2XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N46XD30	cecal mucosa	X12N46XD30_R1.fq.gz	X12N46XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N48XD30	cecal mucosa	X12N48XD30_R1.fq.gz	X12N48XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N51XD30	cecal mucosa	X12N51XD30_R1.fq.gz	X12N51XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N93XD30	cecal mucosa	X12N93XD30_R1.fq.gz	X12N93XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N16XD30	cecal mucosa	X12N16XD30_R1.fq.gz	X12N16XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N18XD30	cecal mucosa	X12N18XD30_R1.fq.gz	X12N18XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N25XD30	cecal mucosa	X12N25XD30_R1.fq.gz	X12N25XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N32XD30	cecal mucosa	X12N32XD30_R1.fq.gz	X12N32XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N39XD30	cecal mucosa	X12N39XD30_R1.fq.gz	X12N39XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N68XD30	cecal mucosa	X12N68XD30_R1.fq.gz	X12N68XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N69XD30	cecal mucosa	X12N69XD30_R1.fq.gz	X12N69XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N84XD30	cecal mucosa	X12N84XD30_R1.fq.gz	X12N84XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N92XD30	cecal mucosa	X12N92XD30_R1.fq.gz	X12N92XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N70XD30	cecal mucosa	X12N70XD30_R1.fq.gz	X12N70XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N14XD30	cecal mucosa	X12N14XD30_R1.fq.gz	X12N14XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N23XD30	cecal mucosa	X12N23XD30_R1.fq.gz	X12N23XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N45XD30	cecal mucosa	X12N45XD30_R1.fq.gz	X12N45XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N47XD30	cecal mucosa	X12N47XD30_R1.fq.gz	X12N47XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N52XD30	cecal mucosa	X12N52XD30_R1.fq.gz	X12N52XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N63XD30	cecal mucosa	X12N63XD30_R1.fq.gz	X12N63XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N72XD30	cecal mucosa	X12N72XD30_R1.fq.gz	X12N72XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N7XD30	cecal mucosa	X12N7XD30_R1.fq.gz	X12N7XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N83XD30	cecal mucosa	X12N83XD30_R1.fq.gz	X12N83XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N89XD30	cecal mucosa	X12N89XD30_R1.fq.gz	X12N89XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N13XD30	cecal mucosa	X12N13XD30_R1.fq.gz	X12N13XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N24XD30	cecal mucosa	X12N24XD30_R1.fq.gz	X12N24XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N28XD30	cecal mucosa	X12N28XD30_R1.fq.gz	X12N28XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N35XD30	cecal mucosa	X12N35XD30_R1.fq.gz	X12N35XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N40XD30	cecal mucosa	X12N40XD30_R1.fq.gz	X12N40XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N5XD30	cecal mucosa	X12N5XD30_R1.fq.gz	X12N5XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N80XD30	cecal mucosa	X12N80XD30_R1.fq.gz	X12N80XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N91XD30	cecal mucosa	X12N91XD30_R1.fq.gz	X12N91XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N9XD30	cecal mucosa	X12N9XD30_R1.fq.gz	X12N9XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N10XD30	cecal mucosa	X12N10XD30_R1.fq.gz	X12N10XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N19XD30	cecal mucosa	X12N19XD30_R1.fq.gz	X12N19XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N20XD30	cecal mucosa	X12N20XD30_R1.fq.gz	X12N20XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N21XD30	cecal mucosa	X12N21XD30_R1.fq.gz	X12N21XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N37XD30	cecal mucosa	X12N37XD30_R1.fq.gz	X12N37XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N49XD30	cecal mucosa	X12N49XD30_R1.fq.gz	X12N49XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N65XD30	cecal mucosa	X12N65XD30_R1.fq.gz	X12N65XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N71XD30	cecal mucosa	X12N71XD30_R1.fq.gz	X12N71XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N75XD30	cecal mucosa	X12N75XD30_R1.fq.gz	X12N75XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N79XD30	cecal mucosa	X12N79XD30_R1.fq.gz	X12N79XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N15XD30	cecal mucosa	X12N15XD30_R1.fq.gz	X12N15XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N17XD30	cecal mucosa	X12N17XD30_R1.fq.gz	X12N17XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N44XD30	cecal mucosa	X12N44XD30_R1.fq.gz	X12N44XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N53XD30	cecal mucosa	X12N53XD30_R1.fq.gz	X12N53XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N59XD30	cecal mucosa	X12N59XD30_R1.fq.gz	X12N59XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N66XD30	cecal mucosa	X12N66XD30_R1.fq.gz	X12N66XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N85XD30	cecal mucosa	X12N85XD30_R1.fq.gz	X12N85XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N87XD30	cecal mucosa	X12N87XD30_R1.fq.gz	X12N87XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N90XD30	cecal mucosa	X12N90XD30_R1.fq.gz	X12N90XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12N95XD30	cecal mucosa	X12N95XD30_R1.fq.gz	X12N95XD30_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP126D21C	cecal contents	X12bP126D21C_R1.fq.gz	X12bP126D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP152D21C	cecal contents	X12bP152D21C_R1.fq.gz	X12bP152D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP178D21C	cecal contents	X12bP178D21C_R1.fq.gz	X12bP178D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP211D21C	cecal contents	X12bP211D21C_R1.fq.gz	X12bP211D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP26D21C	cecal contents	X12bP26D21C_R1.fq.gz	X12bP26D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP348D21C	cecal contents	X12bP348D21C_R1.fq.gz	X12bP348D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP361D21C	cecal contents	X12bP361D21C_R1.fq.gz	X12bP361D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP378D21C	cecal contents	X12bP378D21C_R1.fq.gz	X12bP378D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP426D21C	cecal contents	X12bP426D21C_R1.fq.gz	X12bP426D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP52D21C	cecal contents	X12bP52D21C_R1.fq.gz	X12bP52D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP141D21C	cecal contents	X12bP141D21C_R1.fq.gz	X12bP141D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP144D21C	cecal contents	X12bP144D21C_R1.fq.gz	X12bP144D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP226D21C	cecal contents	X12bP226D21C_R1.fq.gz	X12bP226D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP228D21C	cecal contents	X12bP228D21C_R1.fq.gz	X12bP228D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP240D21C	cecal contents	X12bP240D21C_R1.fq.gz	X12bP240D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP253D21C	cecal contents	X12bP253D21C_R1.fq.gz	X12bP253D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP273D21C	cecal contents	X12bP273D21C_R1.fq.gz	X12bP273D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP461D21C	cecal contents	X12bP461D21C_R1.fq.gz	X12bP461D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP6D21C	cecal contents	X12bP6D21C_R1.fq.gz	X12bP6D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP8D21C	cecal contents	X12bP8D21C_R1.fq.gz	X12bP8D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP122D21C	cecal contents	X12bP122D21C_R1.fq.gz	X12bP122D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP160D21C	cecal contents	X12bP160D21C_R1.fq.gz	X12bP160D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP191D21C	cecal contents	X12bP191D21C_R1.fq.gz	X12bP191D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP224D21C	cecal contents	X12bP224D21C_R1.fq.gz	X12bP224D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP337D21C	cecal contents	X12bP337D21C_R1.fq.gz	X12bP337D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP345D21C	cecal contents	X12bP345D21C_R1.fq.gz	X12bP345D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP419D21C	cecal contents	X12bP419D21C_R1.fq.gz	X12bP419D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP458D21C	cecal contents	X12bP458D21C_R1.fq.gz	X12bP458D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP77D21C	cecal contents	X12bP77D21C_R1.fq.gz	X12bP77D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP87D21C	cecal contents	X12bP87D21C_R1.fq.gz	X12bP87D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP119D21C	cecal contents	X12bP119D21C_R1.fq.gz	X12bP119D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP138D21C	cecal contents	X12bP138D21C_R1.fq.gz	X12bP138D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP175D21C	cecal contents	X12bP175D21C_R1.fq.gz	X12bP175D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP198D21C	cecal contents	X12bP198D21C_R1.fq.gz	X12bP198D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP22D21C	cecal contents	X12bP22D21C_R1.fq.gz	X12bP22D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP397D21C	cecal contents	X12bP397D21C_R1.fq.gz	X12bP397D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP43D21C	cecal contents	X12bP43D21C_R1.fq.gz	X12bP43D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP453D21C	cecal contents	X12bP453D21C_R1.fq.gz	X12bP453D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP469D21C	cecal contents	X12bP469D21C_R1.fq.gz	X12bP469D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP65D21C	cecal contents	X12bP65D21C_R1.fq.gz	X12bP65D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP181D21C	cecal contents	X12bP181D21C_R1.fq.gz	X12bP181D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP244D21C	cecal contents	X12bP244D21C_R1.fq.gz	X12bP244D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP321D21C	cecal contents	X12bP321D21C_R1.fq.gz	X12bP321D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP355D21C	cecal contents	X12bP355D21C_R1.fq.gz	X12bP355D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP373D21C	cecal contents	X12bP373D21C_R1.fq.gz	X12bP373D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP392D21C	cecal contents	X12bP392D21C_R1.fq.gz	X12bP392D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP50D21C	cecal contents	X12bP50D21C_R1.fq.gz	X12bP50D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP93D21C	cecal contents	X12bP93D21C_R1.fq.gz	X12bP93D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP97D21C	cecal contents	X12bP97D21C_R1.fq.gz	X12bP97D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP219D21C	cecal contents	X12bP219D21C_R1.fq.gz	X12bP219D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP265D21C	cecal contents	X12bP265D21C_R1.fq.gz	X12bP265D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP295D21C	cecal contents	X12bP295D21C_R1.fq.gz	X12bP295D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP326D21C	cecal contents	X12bP326D21C_R1.fq.gz	X12bP326D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP422D21C	cecal contents	X12bP422D21C_R1.fq.gz	X12bP422D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP432D21C	cecal contents	X12bP432D21C_R1.fq.gz	X12bP432D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP450D21C	cecal contents	X12bP450D21C_R1.fq.gz	X12bP450D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP472D21C	cecal contents	X12bP472D21C_R1.fq.gz	X12bP472D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP74D21C	cecal contents	X12bP74D21C_R1.fq.gz	X12bP74D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP83D21C	cecal contents	X12bP83D21C_R1.fq.gz	X12bP83D21C_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal contents
+X12bP126D0F	feces	X12bP126D0F_R1.fq.gz	X12bP126D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP152D0F	feces	X12bP152D0F_R1.fq.gz	X12bP152D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP178D0F	feces	X12bP178D0F_R1.fq.gz	X12bP178D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP211D0F	feces	X12bP211D0F_R1.fq.gz	X12bP211D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP26D0F	feces	X12bP26D0F_R1.fq.gz	X12bP26D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP348D0F	feces	X12bP348D0F_R1.fq.gz	X12bP348D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP361D0F	feces	X12bP361D0F_R1.fq.gz	X12bP361D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP378D0F	feces	X12bP378D0F_R1.fq.gz	X12bP378D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP426D0F	feces	X12bP426D0F_R1.fq.gz	X12bP426D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP52D0F	feces	X12bP52D0F_R1.fq.gz	X12bP52D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP141D0F	feces	X12bP141D0F_R1.fq.gz	X12bP141D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP144D0F	feces	X12bP144D0F_R1.fq.gz	X12bP144D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP226D0F	feces	X12bP226D0F_R1.fq.gz	X12bP226D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP228D0F	feces	X12bP228D0F_R1.fq.gz	X12bP228D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP237D0F	feces	X12bP237D0F_R1.fq.gz	X12bP237D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP240D0F	feces	X12bP240D0F_R1.fq.gz	X12bP240D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP253D0F	feces	X12bP253D0F_R1.fq.gz	X12bP253D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP461D0F	feces	X12bP461D0F_R1.fq.gz	X12bP461D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP6D0F	feces	X12bP6D0F_R1.fq.gz	X12bP6D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP8D0F	feces	X12bP8D0F_R1.fq.gz	X12bP8D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP122D0F	feces	X12bP122D0F_R1.fq.gz	X12bP122D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP160D0F	feces	X12bP160D0F_R1.fq.gz	X12bP160D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP191D0F	feces	X12bP191D0F_R1.fq.gz	X12bP191D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP224D0F	feces	X12bP224D0F_R1.fq.gz	X12bP224D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP337D0F	feces	X12bP337D0F_R1.fq.gz	X12bP337D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP345D0F	feces	X12bP345D0F_R1.fq.gz	X12bP345D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP419D0F	feces	X12bP419D0F_R1.fq.gz	X12bP419D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP458D0F	feces	X12bP458D0F_R1.fq.gz	X12bP458D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP77D0F	feces	X12bP77D0F_R1.fq.gz	X12bP77D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP87D0F	feces	X12bP87D0F_R1.fq.gz	X12bP87D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP119D0F	feces	X12bP119D0F_R1.fq.gz	X12bP119D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP138D0F	feces	X12bP138D0F_R1.fq.gz	X12bP138D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP175D0F	feces	X12bP175D0F_R1.fq.gz	X12bP175D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP198D0F	feces	X12bP198D0F_R1.fq.gz	X12bP198D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP22D0F	feces	X12bP22D0F_R1.fq.gz	X12bP22D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP397D0F	feces	X12bP397D0F_R1.fq.gz	X12bP397D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP43D0F	feces	X12bP43D0F_R1.fq.gz	X12bP43D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP453D0F	feces	X12bP453D0F_R1.fq.gz	X12bP453D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP469D0F	feces	X12bP469D0F_R1.fq.gz	X12bP469D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP65D0F	feces	X12bP65D0F_R1.fq.gz	X12bP65D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP181D0F	feces	X12bP181D0F_R1.fq.gz	X12bP181D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP244D0F	feces	X12bP244D0F_R1.fq.gz	X12bP244D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP321D0F	feces	X12bP321D0F_R1.fq.gz	X12bP321D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP355D0F	feces	X12bP355D0F_R1.fq.gz	X12bP355D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP373D0F	feces	X12bP373D0F_R1.fq.gz	X12bP373D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP392D0F	feces	X12bP392D0F_R1.fq.gz	X12bP392D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP93D0F	feces	X12bP93D0F_R1.fq.gz	X12bP93D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP97D0F	feces	X12bP97D0F_R1.fq.gz	X12bP97D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP219D0F	feces	X12bP219D0F_R1.fq.gz	X12bP219D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP265D0F	feces	X12bP265D0F_R1.fq.gz	X12bP265D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP295D0F	feces	X12bP295D0F_R1.fq.gz	X12bP295D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP326D0F	feces	X12bP326D0F_R1.fq.gz	X12bP326D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP422D0F	feces	X12bP422D0F_R1.fq.gz	X12bP422D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP432D0F	feces	X12bP432D0F_R1.fq.gz	X12bP432D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP450D0F	feces	X12bP450D0F_R1.fq.gz	X12bP450D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP472D0F	feces	X12bP472D0F_R1.fq.gz	X12bP472D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP74D0F	feces	X12bP74D0F_R1.fq.gz	X12bP74D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP83D0F	feces	X12bP83D0F_R1.fq.gz	X12bP83D0F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP126D14F	feces	X12bP126D14F_R1.fq.gz	X12bP126D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP152D14F	feces	X12bP152D14F_R1.fq.gz	X12bP152D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP178D14F	feces	X12bP178D14F_R1.fq.gz	X12bP178D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP26D14F	feces	X12bP26D14F_R1.fq.gz	X12bP26D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP348D14F	feces	X12bP348D14F_R1.fq.gz	X12bP348D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP361D14F	feces	X12bP361D14F_R1.fq.gz	X12bP361D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP378D14F	feces	X12bP378D14F_R1.fq.gz	X12bP378D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP426D14F	feces	X12bP426D14F_R1.fq.gz	X12bP426D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP52D14F	feces	X12bP52D14F_R1.fq.gz	X12bP52D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP141D14F	feces	X12bP141D14F_R1.fq.gz	X12bP141D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP144D14F	feces	X12bP144D14F_R1.fq.gz	X12bP144D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP226D14F	feces	X12bP226D14F_R1.fq.gz	X12bP226D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP228D14F	feces	X12bP228D14F_R1.fq.gz	X12bP228D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP237D14F	feces	X12bP237D14F_R1.fq.gz	X12bP237D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP240D14F	feces	X12bP240D14F_R1.fq.gz	X12bP240D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP461D14F	feces	X12bP461D14F_R1.fq.gz	X12bP461D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP6D14F	feces	X12bP6D14F_R1.fq.gz	X12bP6D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP8D14F	feces	X12bP8D14F_R1.fq.gz	X12bP8D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP122D14F	feces	X12bP122D14F_R1.fq.gz	X12bP122D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP160D14F	feces	X12bP160D14F_R1.fq.gz	X12bP160D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP191D14F	feces	X12bP191D14F_R1.fq.gz	X12bP191D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP224D14F	feces	X12bP224D14F_R1.fq.gz	X12bP224D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP337D14F	feces	X12bP337D14F_R1.fq.gz	X12bP337D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP345D14F	feces	X12bP345D14F_R1.fq.gz	X12bP345D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP419D14F	feces	X12bP419D14F_R1.fq.gz	X12bP419D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP458D14F	feces	X12bP458D14F_R1.fq.gz	X12bP458D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP77D14F	feces	X12bP77D14F_R1.fq.gz	X12bP77D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP87D14F	feces	X12bP87D14F_R1.fq.gz	X12bP87D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP119D14F	feces	X12bP119D14F_R1.fq.gz	X12bP119D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP138D14F	feces	X12bP138D14F_R1.fq.gz	X12bP138D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP175D14F	feces	X12bP175D14F_R1.fq.gz	X12bP175D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP198D14F	feces	X12bP198D14F_R1.fq.gz	X12bP198D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP22D14F	feces	X12bP22D14F_R1.fq.gz	X12bP22D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP397D14F	feces	X12bP397D14F_R1.fq.gz	X12bP397D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP43D14F	feces	X12bP43D14F_R1.fq.gz	X12bP43D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP453D14F	feces	X12bP453D14F_R1.fq.gz	X12bP453D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP469D14F	feces	X12bP469D14F_R1.fq.gz	X12bP469D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP65D14F	feces	X12bP65D14F_R1.fq.gz	X12bP65D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP181D14F	feces	X12bP181D14F_R1.fq.gz	X12bP181D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP244D14F	feces	X12bP244D14F_R1.fq.gz	X12bP244D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP321D14F	feces	X12bP321D14F_R1.fq.gz	X12bP321D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP355D14F	feces	X12bP355D14F_R1.fq.gz	X12bP355D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP373D14F	feces	X12bP373D14F_R1.fq.gz	X12bP373D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP392D14F	feces	X12bP392D14F_R1.fq.gz	X12bP392D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP50D14F	feces	X12bP50D14F_R1.fq.gz	X12bP50D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP93D14F	feces	X12bP93D14F_R1.fq.gz	X12bP93D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP97D14F	feces	X12bP97D14F_R1.fq.gz	X12bP97D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP219D14F	feces	X12bP219D14F_R1.fq.gz	X12bP219D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP265D14F	feces	X12bP265D14F_R1.fq.gz	X12bP265D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP295D14F	feces	X12bP295D14F_R1.fq.gz	X12bP295D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP326D14F	feces	X12bP326D14F_R1.fq.gz	X12bP326D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP422D14F	feces	X12bP422D14F_R1.fq.gz	X12bP422D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP432D14F	feces	X12bP432D14F_R1.fq.gz	X12bP432D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP450D14F	feces	X12bP450D14F_R1.fq.gz	X12bP450D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP472D14F	feces	X12bP472D14F_R1.fq.gz	X12bP472D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP74D14F	feces	X12bP74D14F_R1.fq.gz	X12bP74D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP83D14F	feces	X12bP83D14F_R1.fq.gz	X12bP83D14F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP1261D2F	feces	X12bP1261D2F_R1.fq.gz	X12bP1261D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP152D2F	feces	X12bP152D2F_R1.fq.gz	X12bP152D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP178D2F	feces	X12bP178D2F_R1.fq.gz	X12bP178D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP211D2F	feces	X12bP211D2F_R1.fq.gz	X12bP211D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP26D2F	feces	X12bP26D2F_R1.fq.gz	X12bP26D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP348D2F	feces	X12bP348D2F_R1.fq.gz	X12bP348D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP361D2F	feces	X12bP361D2F_R1.fq.gz	X12bP361D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP378D2F	feces	X12bP378D2F_R1.fq.gz	X12bP378D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP426D2F	feces	X12bP426D2F_R1.fq.gz	X12bP426D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP52D2F	feces	X12bP52D2F_R1.fq.gz	X12bP52D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP141D2F	feces	X12bP141D2F_R1.fq.gz	X12bP141D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP144D2F	feces	X12bP144D2F_R1.fq.gz	X12bP144D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP226D2F	feces	X12bP226D2F_R1.fq.gz	X12bP226D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP228D2F	feces	X12bP228D2F_R1.fq.gz	X12bP228D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP237D2F	feces	X12bP237D2F_R1.fq.gz	X12bP237D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP240D2F	feces	X12bP240D2F_R1.fq.gz	X12bP240D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP253D2F	feces	X12bP253D2F_R1.fq.gz	X12bP253D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP461D2F	feces	X12bP461D2F_R1.fq.gz	X12bP461D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP6D2F	feces	X12bP6D2F_R1.fq.gz	X12bP6D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP8D2F	feces	X12bP8D2F_R1.fq.gz	X12bP8D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP122D2F	feces	X12bP122D2F_R1.fq.gz	X12bP122D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP160D2F	feces	X12bP160D2F_R1.fq.gz	X12bP160D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP191D2F	feces	X12bP191D2F_R1.fq.gz	X12bP191D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP224D2F	feces	X12bP224D2F_R1.fq.gz	X12bP224D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP337D2F	feces	X12bP337D2F_R1.fq.gz	X12bP337D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP345D2F	feces	X12bP345D2F_R1.fq.gz	X12bP345D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP419D2F	feces	X12bP419D2F_R1.fq.gz	X12bP419D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP458D2F	feces	X12bP458D2F_R1.fq.gz	X12bP458D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP77D2F	feces	X12bP77D2F_R1.fq.gz	X12bP77D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP87D2F	feces	X12bP87D2F_R1.fq.gz	X12bP87D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP119D2F	feces	X12bP119D2F_R1.fq.gz	X12bP119D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP138D2F	feces	X12bP138D2F_R1.fq.gz	X12bP138D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP175D2F	feces	X12bP175D2F_R1.fq.gz	X12bP175D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP198D2F	feces	X12bP198D2F_R1.fq.gz	X12bP198D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP22D2F	feces	X12bP22D2F_R1.fq.gz	X12bP22D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP397D2F	feces	X12bP397D2F_R1.fq.gz	X12bP397D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP43D2F	feces	X12bP43D2F_R1.fq.gz	X12bP43D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP453D2F	feces	X12bP453D2F_R1.fq.gz	X12bP453D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP469D2F	feces	X12bP469D2F_R1.fq.gz	X12bP469D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP65D2F	feces	X12bP65D2F_R1.fq.gz	X12bP65D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP244D2F	feces	X12bP244D2F_R1.fq.gz	X12bP244D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP321D2F	feces	X12bP321D2F_R1.fq.gz	X12bP321D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP355D2F	feces	X12bP355D2F_R1.fq.gz	X12bP355D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP373D2F	feces	X12bP373D2F_R1.fq.gz	X12bP373D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP392D2F	feces	X12bP392D2F_R1.fq.gz	X12bP392D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP50D2F	feces	X12bP50D2F_R1.fq.gz	X12bP50D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP93D2F	feces	X12bP93D2F_R1.fq.gz	X12bP93D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP97D2F	feces	X12bP97D2F_R1.fq.gz	X12bP97D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP219D2F	feces	X12bP219D2F_R1.fq.gz	X12bP219D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP265D2F	feces	X12bP265D2F_R1.fq.gz	X12bP265D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP295D2F	feces	X12bP295D2F_R1.fq.gz	X12bP295D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP326D2F	feces	X12bP326D2F_R1.fq.gz	X12bP326D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP422D2F	feces	X12bP422D2F_R1.fq.gz	X12bP422D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP432D2F	feces	X12bP432D2F_R1.fq.gz	X12bP432D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP450D2F	feces	X12bP450D2F_R1.fq.gz	X12bP450D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP472D2F	feces	X12bP472D2F_R1.fq.gz	X12bP472D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP74D2F	feces	X12bP74D2F_R1.fq.gz	X12bP74D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP83D2F	feces	X12bP83D2F_R1.fq.gz	X12bP83D2F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP126D21F	feces	X12bP126D21F_R1.fq.gz	X12bP126D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP152D21F	feces	X12bP152D21F_R1.fq.gz	X12bP152D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP178D21F	feces	X12bP178D21F_R1.fq.gz	X12bP178D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP211D21F	feces	X12bP211D21F_R1.fq.gz	X12bP211D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP26D21F	feces	X12bP26D21F_R1.fq.gz	X12bP26D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP348D21F	feces	X12bP348D21F_R1.fq.gz	X12bP348D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP361D21F	feces	X12bP361D21F_R1.fq.gz	X12bP361D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP378D21F	feces	X12bP378D21F_R1.fq.gz	X12bP378D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP426D21F	feces	X12bP426D21F_R1.fq.gz	X12bP426D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP52D21F	feces	X12bP52D21F_R1.fq.gz	X12bP52D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP141D21F	feces	X12bP141D21F_R1.fq.gz	X12bP141D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP144D21F	feces	X12bP144D21F_R1.fq.gz	X12bP144D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP226D21F	feces	X12bP226D21F_R1.fq.gz	X12bP226D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP228D21F	feces	X12bP228D21F_R1.fq.gz	X12bP228D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP237D21F	feces	X12bP237D21F_R1.fq.gz	X12bP237D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP240D21F	feces	X12bP240D21F_R1.fq.gz	X12bP240D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP253D21F	feces	X12bP253D21F_R1.fq.gz	X12bP253D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP461D21F	feces	X12bP461D21F_R1.fq.gz	X12bP461D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP6D21F	feces	X12bP6D21F_R1.fq.gz	X12bP6D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP8D21F	feces	X12bP8D21F_R1.fq.gz	X12bP8D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP122D21F	feces	X12bP122D21F_R1.fq.gz	X12bP122D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP160D21F	feces	X12bP160D21F_R1.fq.gz	X12bP160D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP191D21F	feces	X12bP191D21F_R1.fq.gz	X12bP191D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP224D21F	feces	X12bP224D21F_R1.fq.gz	X12bP224D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP337D21F	feces	X12bP337D21F_R1.fq.gz	X12bP337D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP345D21F	feces	X12bP345D21F_R1.fq.gz	X12bP345D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP419D21F	feces	X12bP419D21F_R1.fq.gz	X12bP419D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP458D21F	feces	X12bP458D21F_R1.fq.gz	X12bP458D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP77D21F	feces	X12bP77D21F_R1.fq.gz	X12bP77D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP87D21F	feces	X12bP87D21F_R1.fq.gz	X12bP87D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP119D21F	feces	X12bP119D21F_R1.fq.gz	X12bP119D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP138D21F	feces	X12bP138D21F_R1.fq.gz	X12bP138D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP175D21F	feces	X12bP175D21F_R1.fq.gz	X12bP175D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP198D21F	feces	X12bP198D21F_R1.fq.gz	X12bP198D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP22D21F	feces	X12bP22D21F_R1.fq.gz	X12bP22D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP397D21F	feces	X12bP397D21F_R1.fq.gz	X12bP397D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP43D21F	feces	X12bP43D21F_R1.fq.gz	X12bP43D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP453D21F	feces	X12bP453D21F_R1.fq.gz	X12bP453D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP65D21F	feces	X12bP65D21F_R1.fq.gz	X12bP65D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP181D21F	feces	X12bP181D21F_R1.fq.gz	X12bP181D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP244D21F	feces	X12bP244D21F_R1.fq.gz	X12bP244D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP321D21F	feces	X12bP321D21F_R1.fq.gz	X12bP321D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP355D21F	feces	X12bP355D21F_R1.fq.gz	X12bP355D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP373D21F	feces	X12bP373D21F_R1.fq.gz	X12bP373D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP392D21F	feces	X12bP392D21F_R1.fq.gz	X12bP392D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP50D21F	feces	X12bP50D21F_R1.fq.gz	X12bP50D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP93D21F	feces	X12bP93D21F_R1.fq.gz	X12bP93D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP97D21F	feces	X12bP97D21F_R1.fq.gz	X12bP97D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP219D21F	feces	X12bP219D21F_R1.fq.gz	X12bP219D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP265D21F	feces	X12bP265D21F_R1.fq.gz	X12bP265D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP295D21F	feces	X12bP295D21F_R1.fq.gz	X12bP295D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP326D21F	feces	X12bP326D21F_R1.fq.gz	X12bP326D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP422D21F	feces	X12bP422D21F_R1.fq.gz	X12bP422D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP432D21F	feces	X12bP432D21F_R1.fq.gz	X12bP432D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP450D21F	feces	X12bP450D21F_R1.fq.gz	X12bP450D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP472D21F	feces	X12bP472D21F_R1.fq.gz	X12bP472D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP74D21F	feces	X12bP74D21F_R1.fq.gz	X12bP74D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP83D21F	feces	X12bP83D21F_R1.fq.gz	X12bP83D21F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP126D7F	feces	X12bP126D7F_R1.fq.gz	X12bP126D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP152D7F	feces	X12bP152D7F_R1.fq.gz	X12bP152D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP178D7F	feces	X12bP178D7F_R1.fq.gz	X12bP178D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP26D7F	feces	X12bP26D7F_R1.fq.gz	X12bP26D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP348D7F	feces	X12bP348D7F_R1.fq.gz	X12bP348D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP361D7F	feces	X12bP361D7F_R1.fq.gz	X12bP361D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP378D7F	feces	X12bP378D7F_R1.fq.gz	X12bP378D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP426D7F	feces	X12bP426D7F_R1.fq.gz	X12bP426D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP52D7F	feces	X12bP52D7F_R1.fq.gz	X12bP52D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP141D7F	feces	X12bP141D7F_R1.fq.gz	X12bP141D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP144D7F	feces	X12bP144D7F_R1.fq.gz	X12bP144D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP226D7F	feces	X12bP226D7F_R1.fq.gz	X12bP226D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP228D7F	feces	X12bP228D7F_R1.fq.gz	X12bP228D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP237D7F	feces	X12bP237D7F_R1.fq.gz	X12bP237D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP253D7F	feces	X12bP253D7F_R1.fq.gz	X12bP253D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP461D7F	feces	X12bP461D7F_R1.fq.gz	X12bP461D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP6D7F	feces	X12bP6D7F_R1.fq.gz	X12bP6D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP8D7F	feces	X12bP8D7F_R1.fq.gz	X12bP8D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP122D7F	feces	X12bP122D7F_R1.fq.gz	X12bP122D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP160D7F	feces	X12bP160D7F_R1.fq.gz	X12bP160D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP191D7F	feces	X12bP191D7F_R1.fq.gz	X12bP191D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP224D7F	feces	X12bP224D7F_R1.fq.gz	X12bP224D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP337D7F	feces	X12bP337D7F_R1.fq.gz	X12bP337D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP345D7F	feces	X12bP345D7F_R1.fq.gz	X12bP345D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP419D7F	feces	X12bP419D7F_R1.fq.gz	X12bP419D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP458D7F	feces	X12bP458D7F_R1.fq.gz	X12bP458D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP77D7F	feces	X12bP77D7F_R1.fq.gz	X12bP77D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP87D7F	feces	X12bP87D7F_R1.fq.gz	X12bP87D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP119D7F	feces	X12bP119D7F_R1.fq.gz	X12bP119D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP138D7F	feces	X12bP138D7F_R1.fq.gz	X12bP138D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP175D7F	feces	X12bP175D7F_R1.fq.gz	X12bP175D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP198D7F	feces	X12bP198D7F_R1.fq.gz	X12bP198D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP22D7F	feces	X12bP22D7F_R1.fq.gz	X12bP22D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP397D7F	feces	X12bP397D7F_R1.fq.gz	X12bP397D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP43D7F	feces	X12bP43D7F_R1.fq.gz	X12bP43D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP453D7F	feces	X12bP453D7F_R1.fq.gz	X12bP453D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP469D7F	feces	X12bP469D7F_R1.fq.gz	X12bP469D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP65D7F	feces	X12bP65D7F_R1.fq.gz	X12bP65D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP181D7F	feces	X12bP181D7F_R1.fq.gz	X12bP181D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP244D7F	feces	X12bP244D7F_R1.fq.gz	X12bP244D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP321D7F	feces	X12bP321D7F_R1.fq.gz	X12bP321D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP355D7F	feces	X12bP355D7F_R1.fq.gz	X12bP355D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP373D7F	feces	X12bP373D7F_R1.fq.gz	X12bP373D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP392D7F	feces	X12bP392D7F_R1.fq.gz	X12bP392D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP50D7F	feces	X12bP50D7F_R1.fq.gz	X12bP50D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP93D7F	feces	X12bP93D7F_R1.fq.gz	X12bP93D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP97D7F	feces	X12bP97D7F_R1.fq.gz	X12bP97D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP219D7F	feces	X12bP219D7F_R1.fq.gz	X12bP219D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP265D7F	feces	X12bP265D7F_R1.fq.gz	X12bP265D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP295D7F	feces	X12bP295D7F_R1.fq.gz	X12bP295D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP326D7F	feces	X12bP326D7F_R1.fq.gz	X12bP326D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP422D7F	feces	X12bP422D7F_R1.fq.gz	X12bP422D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP432D7F	feces	X12bP432D7F_R1.fq.gz	X12bP432D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP450D7F	feces	X12bP450D7F_R1.fq.gz	X12bP450D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP472D7F	feces	X12bP472D7F_R1.fq.gz	X12bP472D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP74D7F	feces	X12bP74D7F_R1.fq.gz	X12bP74D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12bP83D7F	feces	X12bP83D7F_R1.fq.gz	X12bP83D7F_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: feces
+X12P126iD50	ileal mucosa	X12P126iD50_R1.fq.gz	X12P126iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P152iD50	ileal mucosa	X12P152iD50_R1.fq.gz	X12P152iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P178iD50	ileal mucosa	X12P178iD50_R1.fq.gz	X12P178iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P211iD50	ileal mucosa	X12P211iD50_R1.fq.gz	X12P211iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P26iD50	ileal mucosa	X12P26iD50_R1.fq.gz	X12P26iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P348iD50	ileal mucosa	X12P348iD50_R1.fq.gz	X12P348iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P361iD50	ileal mucosa	X12P361iD50_R1.fq.gz	X12P361iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P378iD50	ileal mucosa	X12P378iD50_R1.fq.gz	X12P378iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P426iD50	ileal mucosa	X12P426iD50_R1.fq.gz	X12P426iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P52iD50	ileal mucosa	X12P52iD50_R1.fq.gz	X12P52iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P141iD50	ileal mucosa	X12P141iD50_R1.fq.gz	X12P141iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P144iD50	ileal mucosa	X12P144iD50_R1.fq.gz	X12P144iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P226iD50	ileal mucosa	X12P226iD50_R1.fq.gz	X12P226iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P228iD50	ileal mucosa	X12P228iD50_R1.fq.gz	X12P228iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P237iD50	ileal mucosa	X12P237iD50_R1.fq.gz	X12P237iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P253iD50	ileal mucosa	X12P253iD50_R1.fq.gz	X12P253iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P461iD50	ileal mucosa	X12P461iD50_R1.fq.gz	X12P461iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P6iD50	ileal mucosa	X12P6iD50_R1.fq.gz	X12P6iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P8iD50	ileal mucosa	X12P8iD50_R1.fq.gz	X12P8iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P122iD50	ileal mucosa	X12P122iD50_R1.fq.gz	X12P122iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P160iD50	ileal mucosa	X12P160iD50_R1.fq.gz	X12P160iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P191iD50	ileal mucosa	X12P191iD50_R1.fq.gz	X12P191iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P224iD50	ileal mucosa	X12P224iD50_R1.fq.gz	X12P224iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P337iD50	ileal mucosa	X12P337iD50_R1.fq.gz	X12P337iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P419iD50	ileal mucosa	X12P419iD50_R1.fq.gz	X12P419iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P458iD50	ileal mucosa	X12P458iD50_R1.fq.gz	X12P458iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P87iD50	ileal mucosa	X12P87iD50_R1.fq.gz	X12P87iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P138iD50	ileal mucosa	X12P138iD50_R1.fq.gz	X12P138iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P198iD50	ileal mucosa	X12P198iD50_R1.fq.gz	X12P198iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P22iD50	ileal mucosa	X12P22iD50_R1.fq.gz	X12P22iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P397iD50	ileal mucosa	X12P397iD50_R1.fq.gz	X12P397iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P43iD50	ileal mucosa	X12P43iD50_R1.fq.gz	X12P43iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P453iD50	ileal mucosa	X12P453iD50_R1.fq.gz	X12P453iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P469iD50	ileal mucosa	X12P469iD50_R1.fq.gz	X12P469iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P65iD50	ileal mucosa	X12P65iD50_R1.fq.gz	X12P65iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P181iD50	ileal mucosa	X12P181iD50_R1.fq.gz	X12P181iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P244iD50	ileal mucosa	X12P244iD50_R1.fq.gz	X12P244iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P355iD50	ileal mucosa	X12P355iD50_R1.fq.gz	X12P355iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P373iD50	ileal mucosa	X12P373iD50_R1.fq.gz	X12P373iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P392iD50	ileal mucosa	X12P392iD50_R1.fq.gz	X12P392iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P50iD50	ileal mucosa	X12P50iD50_R1.fq.gz	X12P50iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P93iD50	ileal mucosa	X12P93iD50_R1.fq.gz	X12P93iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P97iD50	ileal mucosa	X12P97iD50_R1.fq.gz	X12P97iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P219iD50	ileal mucosa	X12P219iD50_R1.fq.gz	X12P219iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P265iD50	ileal mucosa	X12P265iD50_R1.fq.gz	X12P265iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P295iD50	ileal mucosa	X12P295iD50_R1.fq.gz	X12P295iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P326iD50	ileal mucosa	X12P326iD50_R1.fq.gz	X12P326iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P422iD50	ileal mucosa	X12P422iD50_R1.fq.gz	X12P422iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P432iD50	ileal mucosa	X12P432iD50_R1.fq.gz	X12P432iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P450iD50	ileal mucosa	X12P450iD50_R1.fq.gz	X12P450iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P472iD50	ileal mucosa	X12P472iD50_R1.fq.gz	X12P472iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P74iD50	ileal mucosa	X12P74iD50_R1.fq.gz	X12P74iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12P83iD50	ileal mucosa	X12P83iD50_R1.fq.gz	X12P83iD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: ileal mucosa
+X12bP126D0Q	fecal tetrathionate broth enrichment	X12bP126D0Q_R1.fq.gz	X12bP126D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP152D0Q	fecal tetrathionate broth enrichment	X12bP152D0Q_R1.fq.gz	X12bP152D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP178D0Q	fecal tetrathionate broth enrichment	X12bP178D0Q_R1.fq.gz	X12bP178D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP211D0Q	fecal tetrathionate broth enrichment	X12bP211D0Q_R1.fq.gz	X12bP211D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP26D0Q	fecal tetrathionate broth enrichment	X12bP26D0Q_R1.fq.gz	X12bP26D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP348D0Q	fecal tetrathionate broth enrichment	X12bP348D0Q_R1.fq.gz	X12bP348D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP361D0Q	fecal tetrathionate broth enrichment	X12bP361D0Q_R1.fq.gz	X12bP361D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP378D0Q	fecal tetrathionate broth enrichment	X12bP378D0Q_R1.fq.gz	X12bP378D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP426D0Q	fecal tetrathionate broth enrichment	X12bP426D0Q_R1.fq.gz	X12bP426D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP52D0Q	fecal tetrathionate broth enrichment	X12bP52D0Q_R1.fq.gz	X12bP52D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP141D0Q	fecal tetrathionate broth enrichment	X12bP141D0Q_R1.fq.gz	X12bP141D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP144D0Q	fecal tetrathionate broth enrichment	X12bP144D0Q_R1.fq.gz	X12bP144D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP226D0Q	fecal tetrathionate broth enrichment	X12bP226D0Q_R1.fq.gz	X12bP226D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP228D0Q	fecal tetrathionate broth enrichment	X12bP228D0Q_R1.fq.gz	X12bP228D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP240D0Q	fecal tetrathionate broth enrichment	X12bP240D0Q_R1.fq.gz	X12bP240D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP253D0Q	fecal tetrathionate broth enrichment	X12bP253D0Q_R1.fq.gz	X12bP253D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP461D0Q	fecal tetrathionate broth enrichment	X12bP461D0Q_R1.fq.gz	X12bP461D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP6D0Q	fecal tetrathionate broth enrichment	X12bP6D0Q_R1.fq.gz	X12bP6D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP8D0Q	fecal tetrathionate broth enrichment	X12bP8D0Q_R1.fq.gz	X12bP8D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP122D0Q	fecal tetrathionate broth enrichment	X12bP122D0Q_R1.fq.gz	X12bP122D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP160D0Q	fecal tetrathionate broth enrichment	X12bP160D0Q_R1.fq.gz	X12bP160D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP191D0Q	fecal tetrathionate broth enrichment	X12bP191D0Q_R1.fq.gz	X12bP191D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP224D0Q	fecal tetrathionate broth enrichment	X12bP224D0Q_R1.fq.gz	X12bP224D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP337D0Q	fecal tetrathionate broth enrichment	X12bP337D0Q_R1.fq.gz	X12bP337D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP345D0Q	fecal tetrathionate broth enrichment	X12bP345D0Q_R1.fq.gz	X12bP345D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP419D0Q	fecal tetrathionate broth enrichment	X12bP419D0Q_R1.fq.gz	X12bP419D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP458D0Q	fecal tetrathionate broth enrichment	X12bP458D0Q_R1.fq.gz	X12bP458D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP77D0Q	fecal tetrathionate broth enrichment	X12bP77D0Q_R1.fq.gz	X12bP77D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP87D0Q	fecal tetrathionate broth enrichment	X12bP87D0Q_R1.fq.gz	X12bP87D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP119D0Q	fecal tetrathionate broth enrichment	X12bP119D0Q_R1.fq.gz	X12bP119D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP138D0Q	fecal tetrathionate broth enrichment	X12bP138D0Q_R1.fq.gz	X12bP138D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP175D0Q	fecal tetrathionate broth enrichment	X12bP175D0Q_R1.fq.gz	X12bP175D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP198D0Q	fecal tetrathionate broth enrichment	X12bP198D0Q_R1.fq.gz	X12bP198D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP22D0Q	fecal tetrathionate broth enrichment	X12bP22D0Q_R1.fq.gz	X12bP22D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP397D0Q	fecal tetrathionate broth enrichment	X12bP397D0Q_R1.fq.gz	X12bP397D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP43D0Q	fecal tetrathionate broth enrichment	X12bP43D0Q_R1.fq.gz	X12bP43D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP65D0Q	fecal tetrathionate broth enrichment	X12bP65D0Q_R1.fq.gz	X12bP65D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP181D0Q	fecal tetrathionate broth enrichment	X12bP181D0Q_R1.fq.gz	X12bP181D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP244D0Q	fecal tetrathionate broth enrichment	X12bP244D0Q_R1.fq.gz	X12bP244D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP321D0Q	fecal tetrathionate broth enrichment	X12bP321D0Q_R1.fq.gz	X12bP321D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP355D0Q	fecal tetrathionate broth enrichment	X12bP355D0Q_R1.fq.gz	X12bP355D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP373D0Q	fecal tetrathionate broth enrichment	X12bP373D0Q_R1.fq.gz	X12bP373D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP392D0Q	fecal tetrathionate broth enrichment	X12bP392D0Q_R1.fq.gz	X12bP392D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP50D0Q	fecal tetrathionate broth enrichment	X12bP50D0Q_R1.fq.gz	X12bP50D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP93D0Q	fecal tetrathionate broth enrichment	X12bP93D0Q_R1.fq.gz	X12bP93D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP97D0Q	fecal tetrathionate broth enrichment	X12bP97D0Q_R1.fq.gz	X12bP97D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP219D0Q	fecal tetrathionate broth enrichment	X12bP219D0Q_R1.fq.gz	X12bP219D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP265D0Q	fecal tetrathionate broth enrichment	X12bP265D0Q_R1.fq.gz	X12bP265D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP295D0Q	fecal tetrathionate broth enrichment	X12bP295D0Q_R1.fq.gz	X12bP295D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP326D0Q	fecal tetrathionate broth enrichment	X12bP326D0Q_R1.fq.gz	X12bP326D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP422D0Q	fecal tetrathionate broth enrichment	X12bP422D0Q_R1.fq.gz	X12bP422D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP432D0Q	fecal tetrathionate broth enrichment	X12bP432D0Q_R1.fq.gz	X12bP432D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP450D0Q	fecal tetrathionate broth enrichment	X12bP450D0Q_R1.fq.gz	X12bP450D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP472D0Q	fecal tetrathionate broth enrichment	X12bP472D0Q_R1.fq.gz	X12bP472D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP74D0Q	fecal tetrathionate broth enrichment	X12bP74D0Q_R1.fq.gz	X12bP74D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12bP83D0Q	fecal tetrathionate broth enrichment	X12bP83D0Q_R1.fq.gz	X12bP83D0Q_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: fecal tetrathionate broth enrichment
+X12P126XD50	cecal mucosa	X12P126XD50_R1.fq.gz	X12P126XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P152XD50	cecal mucosa	X12P152XD50_R1.fq.gz	X12P152XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P178XD50	cecal mucosa	X12P178XD50_R1.fq.gz	X12P178XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P211XD50	cecal mucosa	X12P211XD50_R1.fq.gz	X12P211XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P26XD50	cecal mucosa	X12P26XD50_R1.fq.gz	X12P26XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P348XD50	cecal mucosa	X12P348XD50_R1.fq.gz	X12P348XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P361XD50	cecal mucosa	X12P361XD50_R1.fq.gz	X12P361XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P378XD50	cecal mucosa	X12P378XD50_R1.fq.gz	X12P378XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P426XD50	cecal mucosa	X12P426XD50_R1.fq.gz	X12P426XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P52XD50	cecal mucosa	X12P52XD50_R1.fq.gz	X12P52XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P141XD50	cecal mucosa	X12P141XD50_R1.fq.gz	X12P141XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P144XD50	cecal mucosa	X12P144XD50_R1.fq.gz	X12P144XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P228XD50	cecal mucosa	X12P228XD50_R1.fq.gz	X12P228XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P237XD50	cecal mucosa	X12P237XD50_R1.fq.gz	X12P237XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P240XD50	cecal mucosa	X12P240XD50_R1.fq.gz	X12P240XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P253XD50	cecal mucosa	X12P253XD50_R1.fq.gz	X12P253XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P461XD50	cecal mucosa	X12P461XD50_R1.fq.gz	X12P461XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P6XD50	cecal mucosa	X12P6XD50_R1.fq.gz	X12P6XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P8XD50	cecal mucosa	X12P8XD50_R1.fq.gz	X12P8XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP122D21X	cecal mucosa	X12bP122D21X_R1.fq.gz	X12bP122D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP160D21X	cecal mucosa	X12bP160D21X_R1.fq.gz	X12bP160D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP191D21X	cecal mucosa	X12bP191D21X_R1.fq.gz	X12bP191D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP224D21X	cecal mucosa	X12bP224D21X_R1.fq.gz	X12bP224D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP337D21X	cecal mucosa	X12bP337D21X_R1.fq.gz	X12bP337D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP345D21X	cecal mucosa	X12bP345D21X_R1.fq.gz	X12bP345D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP419D21X	cecal mucosa	X12bP419D21X_R1.fq.gz	X12bP419D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP458D21X	cecal mucosa	X12bP458D21X_R1.fq.gz	X12bP458D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP77D21X	cecal mucosa	X12bP77D21X_R1.fq.gz	X12bP77D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP87D21X	cecal mucosa	X12bP87D21X_R1.fq.gz	X12bP87D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P119XD50	cecal mucosa	X12P119XD50_R1.fq.gz	X12P119XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P138XD50	cecal mucosa	X12P138XD50_R1.fq.gz	X12P138XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P175XD50	cecal mucosa	X12P175XD50_R1.fq.gz	X12P175XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P198XD50	cecal mucosa	X12P198XD50_R1.fq.gz	X12P198XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P22XD50	cecal mucosa	X12P22XD50_R1.fq.gz	X12P22XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P397XD50	cecal mucosa	X12P397XD50_R1.fq.gz	X12P397XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P43XD50	cecal mucosa	X12P43XD50_R1.fq.gz	X12P43XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P453XD50	cecal mucosa	X12P453XD50_R1.fq.gz	X12P453XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P469XD50	cecal mucosa	X12P469XD50_R1.fq.gz	X12P469XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P65XD50	cecal mucosa	X12P65XD50_R1.fq.gz	X12P65XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP181D21X	cecal mucosa	X12bP181D21X_R1.fq.gz	X12bP181D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP244D21X	cecal mucosa	X12bP244D21X_R1.fq.gz	X12bP244D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP321D21X	cecal mucosa	X12bP321D21X_R1.fq.gz	X12bP321D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP355D21X	cecal mucosa	X12bP355D21X_R1.fq.gz	X12bP355D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP373D21X	cecal mucosa	X12bP373D21X_R1.fq.gz	X12bP373D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP392D21X	cecal mucosa	X12bP392D21X_R1.fq.gz	X12bP392D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP50D21X	cecal mucosa	X12bP50D21X_R1.fq.gz	X12bP50D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP93D21X	cecal mucosa	X12bP93D21X_R1.fq.gz	X12bP93D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12bP97D21X	cecal mucosa	X12bP97D21X_R1.fq.gz	X12bP97D21X_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P219XD50	cecal mucosa	X12P219XD50_R1.fq.gz	X12P219XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P265XD50	cecal mucosa	X12P265XD50_R1.fq.gz	X12P265XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P295XD50	cecal mucosa	X12P295XD50_R1.fq.gz	X12P295XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P326XD50	cecal mucosa	X12P326XD50_R1.fq.gz	X12P326XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P422XD50	cecal mucosa	X12P422XD50_R1.fq.gz	X12P422XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P432XD50	cecal mucosa	X12P432XD50_R1.fq.gz	X12P432XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P450XD50	cecal mucosa	X12P450XD50_R1.fq.gz	X12P450XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P472XD50	cecal mucosa	X12P472XD50_R1.fq.gz	X12P472XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P74XD50	cecal mucosa	X12P74XD50_R1.fq.gz	X12P74XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa
+X12P83XD50	cecal mucosa	X12P83XD50_R1.fq.gz	X12P83XD50_R2.fq.gz	16S rRNA gene amplicon sequencing of Sus Scrofa gut derived metagenome: cecal mucosa

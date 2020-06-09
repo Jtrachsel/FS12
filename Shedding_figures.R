@@ -419,18 +419,44 @@ tis_RPS %>% ggplot(aes(x=shed, y=log_sal, group=shed, fill=shed)) +
   geom_boxplot(outlier.alpha = 0) +
   geom_jitter(shape=21,width = .1, size=2.25) +
   facet_wrap(~tissue) +
-  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple')) +
+  scale_fill_manual(values=c('#33CC33', '#246DB6', '#47D6FF', 'orange', 'red', 'grey', 'purple')) +
   ggtitle('Cecal Contents')
 
 sum_sal_RPS %>% ggplot(aes(x=shed, y=AULC, group=shed, fill=shed)) +
   geom_boxplot(outlier.alpha = 0) +
   geom_jitter(shape=21,width = .1, size=2.25) +
   #facet_wrap(~tissue) +
-  scale_fill_manual(values=c('#33CC33', '#C8C226', '#985CF9', 'orange', 'red', 'grey', 'purple')) +
+  scale_fill_manual(values=c('#33CC33', '#246DB6', '#47D6FF', 'orange', 'red', 'grey', 'purple')) +
   ggtitle('AULC')
+
 
 #C8C226
 #985CF9
+
+# CONTROL COLOR    '#33CC33'
+# RPS COLOR        '#3399FF'
+# HIGH SHED COLOR: '#246DB6'
+# LOW SHED COLOR:  '#47D6FF'
+
+darken('#3399FF')
+lighten('#3399FF')
+
+
+
+sum_sal %>% ggplot(aes(x=0, y=AULC,fill=treatment)) +
+  # geom_boxplot(outlier.alpha = 0) +
+  geom_jitter(shape=21,width = .01, size=2.25)+ geom_violin()
+
+
+
+sum_sal %>% 
+  ggplot(aes(x=AULC, fill=treatment)) +
+  geom_histogram(fill='grey', color='grey') +
+  geom_histogram(color=alpha('black', alpha = .5)) +
+  # geom_vline(xintercept = c(30.75, 44.5), color='purple') +
+  scale_fill_manual(values=c('#33CC33', '#3399FF', 'orange', 'red', 'grey', 'purple'))
+
+
 
 # 
 # 
