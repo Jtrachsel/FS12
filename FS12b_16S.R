@@ -419,6 +419,10 @@ disper_fecal_tests <- FS12b_meta %>%
          tid_tuk=map(TUK, tidy)) %>%
   select(day, tid_tuk) %>% unnest(cols = c(tid_tuk))# %>% select(day, starts_with('control'))
 
+disper_fecal_tests %>% filter(grepl('Control', comparison)) %>% 
+  filter(adj.p.value < 0.05)
+
+
 # 
 # get_pairs <- function(df){
 #   pp <- pairwise.wilcox.test(df$shan, df$treatment, p.adjust.method = 'none')
@@ -444,7 +448,8 @@ shan_fecal_tests <- FS12b_meta %>%
          tid_tuk=map(TUK, tidy)) %>%
   select(day, tid_tuk) %>% unnest(cols = c(tid_tuk))
 
-
+shan_fecal_tests %>% filter(grepl('Control', comparison)) %>% 
+  filter(adj.p.value < 0.05)
 
 
 
@@ -748,6 +753,9 @@ to_conts$treatment <- factor(to_conts$treatment, levels=c('RPS', 'Acid', 'ZnCu',
 
 
 ######## FIGURE 3 ##########
+
+# ADD ALPHA DIV and DISPERSION 
+
 to_conts %>% filter(tissue == 'feces') %>% ggplot(aes(x=day, y=F.Model, group=treatment, fill=treatment, color=treatment, label=p.fdr.lab)) +
   geom_line(size=1.52) + geom_point(shape=21) + scale_color_manual(values=c('#3399FF', 'orange', 'red', 'grey', 'purple')) + 
   geom_label(color='black') +
@@ -873,6 +881,9 @@ p1 <- to_conts %>% filter(tissue =='feces') %>%  ggplot(aes(x=day, y=F.Model, gr
   scale_fill_brewer(palette = 'Set1') + 
   ggtitle('Community differences compared to control group over time', subtitle = 'RPS only') + labs(fill='Shedding', 
                                                                                            color='Shedding')
+
+p1
+
 to_conts %>% filter(!(tissue %in% c('feces', 'tet'))) %>% 
   ggplot(aes(x=tissue, y=F.Model, fill=treatment)) +
   geom_col(position = 'dodge', color='black') + geom_text(aes(label=p.fdr.lab), position=position_dodge(width = 1), vjust=1.5) + 
@@ -1377,7 +1388,7 @@ tocontf %>% ggplot(aes(x=Genus, y=log2FoldChange, color=Treatment, shape=tissue)
 ###
 tocontf %>% filter(tissue == 'F') %>% ggplot(aes(x=Genus, y=log2FoldChange, color=Treatment)) + 
   geom_point() + coord_flip() + geom_hline(yintercept = 0, color='black', size=1) +
-  facet_wrap(~day, scales = 'free')
+  facet_wrap(~day, scales = 'free' ,ncol = 5)
 
 
 
@@ -1734,45 +1745,48 @@ blarg(phyloseq_obj = FS12_RPS, day = 'D21', tissue='X', covariate = 'caproate')
 FS12b.glom  = transform_sample_counts(FS12b, function(x) x / sum(x) )
 FS12b.glom = filter_taxa(FS12b.glom, function(x) mean(x) > 1e-5, TRUE)
 
+
+
+
 # PSMELT AND BOXPLOTS HERE!!!!!!!!!
 # prune_taxa()
 
 ######### WARNIGN!!!!! CAREFUL HERE !!!!!!
 # D14 doesnt work here because all RCS pigs have exactly the same shedding level at D14
-FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day != 'D0' & FS12b@sam_data$tissue =='F')
-
-
-FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 5, FS12b.glom)
-
-FS12b.glom@sam_data$log_sal
-
+# FS12b.glom <- FS12b %>% prune_samples(samples = FS12b@sam_data$day != 'D0' & FS12b@sam_data$tissue =='F')
+# 
+# 
+# FS12b.glom <- prune_taxa(taxa_sums(FS12b.glom) > 5, FS12b.glom)
+# 
 # FS12b.glom@sam_data$log_sal
-
-FS12b.de <- phyloseq_to_deseq2(FS12b.glom, ~log_sal)
-FS12b.de <- DESeq(FS12b.de, test = 'Wald', fitType = 'parametric')
-
-resultsNames(FS12b.de)
-
-# res <- results(FS12b.de, cooksCutoff = FALSE, name = 'log_sal')
-res <- lfcShrink(FS12b.de, coef = 'log_sal', type = 'apeglm')
-
+# 
+# # FS12b.glom@sam_data$log_sal
+# 
+# FS12b.de <- phyloseq_to_deseq2(FS12b.glom, ~log_sal)
+# FS12b.de <- DESeq(FS12b.de, test = 'Wald', fitType = 'parametric')
+# 
 # resultsNames(FS12b.de)
-
-res <- res[!is.na(res$padj),]
-res <- res[res$padj < 0.05,]
-sigtab <- res[abs(res$log2FoldChange) > .1 ,]
-sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(FS12b.glom)[rownames(sigtab), ], "matrix"))
-sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = TRUE)
-# sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, paste('down',treat, sep = '_'))
-sigtab$OTU <- rownames(sigtab)
-sigtab$salm <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
-sigtab <- sigtab[order(sigtab$log2FoldChange),]
-sigtab$OTU <- factor(sigtab$OTU, levels = sigtab$OTU)
-
-
-sigtab %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=salm)) +
-  geom_col(color='black') + coord_flip() + geom_text(aes(label=Genus, y=0))
-
+# 
+# # res <- results(FS12b.de, cooksCutoff = FALSE, name = 'log_sal')
+# res <- lfcShrink(FS12b.de, coef = 'log_sal', type = 'apeglm')
+# 
+# # resultsNames(FS12b.de)
+# 
+# res <- res[!is.na(res$padj),]
+# res <- res[res$padj < 0.05,]
+# sigtab <- res[abs(res$log2FoldChange) > .1 ,]
+# sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(FS12b.glom)[rownames(sigtab), ], "matrix"))
+# sigtab$newp <- format(round(sigtab$padj, digits = 3), scientific = TRUE)
+# # sigtab$Treatment <- ifelse(sigtab$log2FoldChange >=0, treat, paste('down',treat, sep = '_'))
+# sigtab$OTU <- rownames(sigtab)
+# sigtab$salm <- ifelse(sigtab$log2FoldChange >0 , 'increased', 'decreased')
+# sigtab <- sigtab[order(sigtab$log2FoldChange),]
+# sigtab$OTU <- factor(sigtab$OTU, levels = sigtab$OTU)
+# 
+# 
+# sigtab %>% ggplot(aes(x=OTU, y=log2FoldChange, fill=salm)) +
+#   geom_col(color='black') + coord_flip() + geom_text(aes(label=Genus, y=0))
+# 
 ### END WRAP ###
 
 
